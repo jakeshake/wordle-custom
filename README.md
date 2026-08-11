@@ -5,7 +5,9 @@ A clean, mobile-friendly Wordle clone with:
 - **5 or 6 letter mode** — toggle in the header, adjusts guess count (6 tries for 5-letter, 7 for 6-letter, matching Wordle's own word-length + 1 convention).
 - **Daily Challenge** — everyone gets the same word each day (per length), computed deterministically from the date so it resets automatically at local midnight, same as real Wordle. No server round-trip needed to pick it.
 - **Practice mode** — unlimited random-word games, doesn't touch the leaderboard.
-- **Shared leaderboard** — pick a name (no password), play the Daily Challenge, and your result is submitted to a small backend so everyone on the household server sees the same standings. Tracks games played, win %, current streak, best streak, and average guesses, separately for 5- and 6-letter.
+- **Shared leaderboard** — pick a name (no password), play the Daily Challenge, and your result is submitted to a small backend so everyone on the household server sees the same standings. Tracks games played, win %, current streak, best streak, average guesses, best time, and average luck, separately for 5- and 6-letter.
+- **Speed timer** — starts on your first keystroke each Daily game, shown live above the board, recorded on completion, and tracked on the leaderboard as each player's best time.
+- **Luck rating** — on a win, shows how many answer-pool words were still possible right before your winning guess. Solve it in few guesses despite a wide-open field and you'll score high on luck; narrow it down methodically and you'll score low ("All Skill"). Averaged per player on the leaderboard.
 - **11 themes** — Dark, Light, Ocean, Sunset, Forest, Halloween, Christmas, Synthwave, Spooky, Retro Terminal, Bubblegum — picked from the palette button, saved across visits.
 - A **huge valid-word dictionary** (8,645 five-letter / 15,232 six-letter words) so common guesses never get rejected, while the daily/practice *answer* always comes from a smaller curated common-word list (2,315 / 1,233 words) so the puzzle itself stays fair and guessable.
 

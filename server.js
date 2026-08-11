@@ -78,6 +78,18 @@ function computeLeaderboard(length) {
       ? Math.round((winGuesses.reduce((a, b) => a + b, 0) / winGuesses.length) * 10) / 10
       : null;
 
+    const winTimes = playerGames
+      .filter((g) => g.won && Number.isFinite(g.timeMs))
+      .map((g) => g.timeMs);
+    const bestTimeMs = winTimes.length ? Math.min(...winTimes) : null;
+
+    const luckValues = playerGames
+      .filter((g) => g.won && Number.isFinite(g.luck))
+      .map((g) => g.luck);
+    const avgLuck = luckValues.length
+      ? Math.round(luckValues.reduce((a, b) => a + b, 0) / luckValues.length)
+      : null;
+
     let maxStreak = 0;
     let running = 0;
     let prevDate = null;
@@ -105,7 +117,17 @@ function computeLeaderboard(length) {
       }
     }
 
-    result.push({ name, played, wins, winPct, currentStreak, maxStreak, avgGuesses });
+    result.push({
+      name,
+      played,
+      wins,
+      winPct,
+      currentStreak,
+      maxStreak,
+      avgGuesses,
+      bestTimeMs,
+      avgLuck,
+    });
   }
 
   result.sort((a, b) => b.wins - a.wins || b.winPct - a.winPct || a.name.localeCompare(b.name));
@@ -113,7 +135,7 @@ function computeLeaderboard(length) {
 }
 
 function submitScore(body) {
-  const { name, length, date, won, guesses } = body;
+  const { name, length, date, won, guesses, timeMs, luck } = body;
 
   if (typeof name !== "string" || !name.trim() || name.trim().length > 40) {
     throw new Error("invalid name");
@@ -130,6 +152,16 @@ function submitScore(body) {
   if (won && (!Number.isInteger(guesses) || guesses < 1 || guesses > length + 1)) {
     throw new Error("invalid guesses");
   }
+  if (timeMs !== undefined && timeMs !== null) {
+    if (!Number.isFinite(timeMs) || timeMs < 0 || timeMs > 24 * 60 * 60 * 1000) {
+      throw new Error("invalid timeMs");
+    }
+  }
+  if (luck !== undefined && luck !== null) {
+    if (!Number.isInteger(luck) || luck < 0 || luck > 100) {
+      throw new Error("invalid luck");
+    }
+  }
 
   const cleanName = name.trim().slice(0, 40);
   const record = {
@@ -138,6 +170,8 @@ function submitScore(body) {
     date,
     won,
     guesses: won ? guesses : null,
+    timeMs: won && timeMs !== undefined && timeMs !== null ? timeMs : null,
+    luck: won && luck !== undefined && luck !== null ? luck : null,
     submittedAt: new Date().toISOString(),
   };
 

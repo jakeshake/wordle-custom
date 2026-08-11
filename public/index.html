@@ -39,6 +39,7 @@
     <input id="gate-name-input" class="text-input" type="text" maxlength="40" placeholder="Your name" autocomplete="off" />
     <button id="gate-name-btn" class="primary-btn">Start Daily Challenge</button>
   </div>
+  <div id="daily-timer" class="daily-timer hidden">0:00</div>
   <div id="board" class="board"></div>
 </main>
 
@@ -81,6 +82,7 @@
     </div>
     <p class="example-text"><strong>U</strong> is not in the word at all.</p>
     <p><strong>Daily</strong> gives everyone the same word each day, resetting at midnight — play it to show up on the leaderboard. <strong>Practice</strong> is unlimited and doesn't count toward scores.</p>
+    <p>Daily games are timed from your first keystroke, and a win shows a <strong>Luck</strong> rating — how many possible words were still in play right before your winning guess. A low score means you solved it through deduction; a high score means you got there despite the odds.</p>
   </div>
 </div>
 
@@ -125,6 +127,16 @@
     <button class="modal-close" data-close="result-modal" aria-label="Close">&times;</button>
     <h2 id="result-title">Nice!</h2>
     <p id="result-word" class="result-word"></p>
+    <div id="result-stats" class="result-stats hidden">
+      <div class="result-stat">
+        <span class="result-stat-label">Time</span>
+        <span id="result-time" class="result-stat-value">—</span>
+      </div>
+      <div class="result-stat">
+        <span class="result-stat-label">Luck</span>
+        <span id="result-luck" class="result-stat-value">—</span>
+      </div>
+    </div>
     <p id="result-countdown" class="result-countdown hidden"></p>
     <button id="play-again-btn" class="primary-btn">Play Again</button>
   </div>

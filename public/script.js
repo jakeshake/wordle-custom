@@ -29,14 +29,16 @@
     daily: (length, date) => `wordly:daily:${length}:${date}`,
   };
 
-  /** @type {{mode:string, length:number, answer:string, guesses:string[], current:string, maxGuesses:number, over:boolean, won:boolean, date:string, submitted:boolean, guessSet:Set<string>, keyStates:Map<string,string>}} */
+  /** @type {{mode:string, length:number, answer:string, guesses:string[], current:string, maxGuesses:number, over:boolean, won:boolean, date:string, submitted:boolean, startedAt:number|null, completedAt:number|null, luck:number|null, guessSet:Set<string>, keyStates:Map<string,string>}} */
   let state;
   let countdownTimer = null;
+  let liveTimerInterval = null;
 
   const boardEl = document.getElementById("board");
   const keyboardEl = document.getElementById("keyboard");
   const toastContainer = document.getElementById("toast-container");
   const nameGateEl = document.getElementById("name-gate");
+  const dailyTimerEl = document.getElementById("daily-timer");
 
   // ---------- word helpers ----------
 
@@ -86,6 +88,20 @@
     const h = Math.floor(totalMinutes / 60);
     const m = totalMinutes % 60;
     return `Next word in ${h}h ${m}m`;
+  }
+
+  function formatTimer(ms) {
+    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m}:${String(s).padStart(2, "0")}`;
+  }
+
+  function luckLabel(score) {
+    if (score >= 81) return "Incredibly Lucky";
+    if (score >= 51) return "Lucky";
+    if (score >= 21) return "Solid";
+    return "All Skill";
   }
 
   // ---------- player identity ----------
@@ -143,6 +159,9 @@
       over: saved ? saved.over : false,
       won: saved ? saved.won : false,
       submitted: saved ? !!saved.submitted : false,
+      startedAt: saved ? saved.startedAt || null : null,
+      completedAt: saved ? saved.completedAt || null : null,
+      luck: saved ? saved.luck ?? null : null,
       guessSet: guessSetFor(length),
       keyStates: new Map(),
     };
@@ -153,12 +172,18 @@
     syncHeaderButtons();
 
     if (state.over) {
+      stopLiveTimer();
       showResult(state.won);
+    } else if (state.startedAt) {
+      startLiveTimer();
+    } else {
+      stopLiveTimer();
     }
   }
 
   function startPractice(length) {
     hideNameGate();
+    stopLiveTimer();
     state = {
       mode: "practice",
       length,
@@ -214,13 +239,13 @@
   function renderBoard() {
     boardEl.innerHTML = "";
     boardEl.style.gridTemplateColumns = "1fr";
-    boardEl.style.gridTemplateRows = `repeat(${state.maxGuesses}, 1fr)`;
+    boardEl.style.gridTemplateRows = `repeat(${state.maxGuesses}, minmax(0, 1fr))`;
     boardEl.style.display = "grid";
 
     for (let r = 0; r < state.maxGuesses; r++) {
       const row = document.createElement("div");
       row.className = "board-row";
-      row.style.gridTemplateColumns = `repeat(${state.length}, 1fr)`;
+      row.style.gridTemplateColumns = `repeat(${state.length}, minmax(0, 1fr))`;
       row.dataset.row = String(r);
 
       const guess = state.guesses[r];
@@ -249,11 +274,36 @@
     }
   }
 
-  function statusFor(guess, index) {
+  function statusForTarget(guess, index, target) {
     const letter = guess[index];
-    if (state.answer[index] === letter) return "correct";
-    if (state.answer.includes(letter)) return "present";
+    if (target[index] === letter) return "correct";
+    if (target.includes(letter)) return "present";
     return "absent";
+  }
+
+  function statusFor(guess, index) {
+    return statusForTarget(guess, index, state.answer);
+  }
+
+  function getPattern(guess, target) {
+    return guess.split("").map((_, i) => statusForTarget(guess, i, target));
+  }
+
+  // How many words in the answer pool were still possible right before the
+  // winning guess. Few guesses used against a still-wide-open field = lucky.
+  function computeLuck() {
+    const priorGuesses = state.guesses.slice(0, -1);
+    let candidates = ANSWERS[state.length];
+    for (const g of priorGuesses) {
+      const observed = getPattern(g, state.answer);
+      candidates = candidates.filter((word) => {
+        const pattern = getPattern(g, word);
+        return pattern.every((s, i) => s === observed[i]);
+      });
+    }
+    const remaining = candidates.length;
+    if (remaining <= 1) return 0;
+    return Math.min(100, Math.round((1 - 1 / remaining) * 100));
   }
 
   function renderKeyboard() {
@@ -331,7 +381,28 @@
       over: state.over,
       won: state.won,
       submitted: state.submitted,
+      startedAt: state.startedAt,
+      completedAt: state.completedAt,
+      luck: state.luck,
     });
+  }
+
+  function stopLiveTimer() {
+    if (liveTimerInterval) {
+      clearInterval(liveTimerInterval);
+      liveTimerInterval = null;
+    }
+    dailyTimerEl.classList.add("hidden");
+  }
+
+  function startLiveTimer() {
+    stopLiveTimer();
+    dailyTimerEl.classList.remove("hidden");
+    const tick = () => {
+      dailyTimerEl.textContent = formatTimer(Date.now() - state.startedAt);
+    };
+    tick();
+    liveTimerInterval = setInterval(tick, 250);
   }
 
   function submitGuess() {
@@ -360,6 +431,11 @@
       if (guess === state.answer) {
         state.over = true;
         state.won = true;
+        if (state.mode === "daily") {
+          state.completedAt = Date.now();
+          state.luck = computeLuck();
+          stopLiveTimer();
+        }
         persistDailyProgress();
         const row = boardEl.querySelector(`[data-row="${rowIndex}"]`);
         if (row) row.classList.add("win");
@@ -370,6 +446,10 @@
       if (state.guesses.length >= state.maxGuesses) {
         state.over = true;
         state.won = false;
+        if (state.mode === "daily") {
+          state.completedAt = Date.now();
+          stopLiveTimer();
+        }
         persistDailyProgress();
         setTimeout(() => showResult(false), 200);
         return;
@@ -393,6 +473,10 @@
           date: state.date,
           won: state.won,
           guesses: state.won ? state.guesses.length : null,
+          timeMs: state.won && state.startedAt && state.completedAt
+            ? state.completedAt - state.startedAt
+            : null,
+          luck: state.won ? state.luck : null,
         }),
       });
       if (!res.ok) throw new Error("bad response");
@@ -418,6 +502,9 @@
     const wordEl = document.getElementById("result-word");
     const countdownEl = document.getElementById("result-countdown");
     const playAgainBtn = document.getElementById("play-again-btn");
+    const statsEl = document.getElementById("result-stats");
+    const timeEl = document.getElementById("result-time");
+    const luckEl = document.getElementById("result-luck");
 
     title.textContent = won
       ? ["Genius!", "Magnificent!", "Impressive!", "Splendid!", "Great!", "Phew!", "Nice!"][
@@ -427,6 +514,16 @@
     wordEl.textContent = won
       ? `You got it in ${state.guesses.length} ${state.guesses.length === 1 ? "guess" : "guesses"}.`
       : `The word was ${state.answer.toUpperCase()}.`;
+
+    const hasTime = won && state.mode === "daily" && state.startedAt && state.completedAt;
+    const hasLuck = won && state.mode === "daily" && Number.isInteger(state.luck);
+    if (hasTime || hasLuck) {
+      statsEl.classList.remove("hidden");
+      timeEl.textContent = hasTime ? formatTimer(state.completedAt - state.startedAt) : "—";
+      luckEl.textContent = hasLuck ? `${state.luck} · ${luckLabel(state.luck)}` : "—";
+    } else {
+      statsEl.classList.add("hidden");
+    }
 
     if (state.mode === "daily") {
       countdownEl.classList.remove("hidden");
@@ -447,6 +544,11 @@
 
   function handleKeyInput(key) {
     if (state.over) return;
+    if (state.mode === "daily" && !state.startedAt) {
+      state.startedAt = Date.now();
+      persistDailyProgress();
+      startLiveTimer();
+    }
     if (key === "enter") {
       submitGuess();
     } else if (key === "back") {
@@ -601,7 +703,10 @@
     table.className = "lb-table";
     table.innerHTML = `
       <thead>
-        <tr><th>Player</th><th>Played</th><th>Win %</th><th>Streak</th><th>Best</th><th>Avg</th></tr>
+        <tr>
+          <th>Player</th><th>Played</th><th>Win %</th><th>Streak</th><th>Best</th>
+          <th>Avg Guesses</th><th>Best Time</th><th>Avg Luck</th>
+        </tr>
       </thead>
       <tbody>
         ${rows
@@ -614,6 +719,8 @@
             <td>${r.currentStreak}</td>
             <td>${r.maxStreak}</td>
             <td>${r.avgGuesses ?? "—"}</td>
+            <td>${Number.isFinite(r.bestTimeMs) ? formatTimer(r.bestTimeMs) : "—"}</td>
+            <td>${Number.isFinite(r.avgLuck) ? r.avgLuck : "—"}</td>
           </tr>`
           )
           .join("")}

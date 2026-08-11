@@ -61,15 +61,19 @@ jobs:
           echo "Checking static frontend is served..."
           curl -sf http://localhost:8080/ | grep -q "WORDLY" || (echo "index.html missing expected content" && exit 1)
 
-          echo "Submitting a test score..."
+          echo "Submitting a test score with time and luck..."
           RESPONSE=$(curl -sf -X POST http://localhost:8080/api/score \
             -H "Content-Type: application/json" \
-            -d '{"name":"ci-smoke-test","length":5,"date":"2020-01-01","won":true,"guesses":3}')
+            -d '{"name":"ci-smoke-test","length":5,"date":"2020-01-01","won":true,"guesses":3,"timeMs":45000,"luck":72}')
           echo "$RESPONSE" | grep -q '"name":"ci-smoke-test"' || (echo "score submission response unexpected: $RESPONSE" && exit 1)
+          echo "$RESPONSE" | grep -q '"timeMs":45000' || (echo "score submission missing timeMs: $RESPONSE" && exit 1)
+          echo "$RESPONSE" | grep -q '"luck":72' || (echo "score submission missing luck: $RESPONSE" && exit 1)
 
           echo "Fetching leaderboard..."
           LB=$(curl -sf "http://localhost:8080/api/leaderboard?length=5")
           echo "$LB" | grep -q 'ci-smoke-test' || (echo "leaderboard missing submitted score: $LB" && exit 1)
+          echo "$LB" | grep -q '"bestTimeMs":45000' || (echo "leaderboard missing bestTimeMs: $LB" && exit 1)
+          echo "$LB" | grep -q '"avgLuck":72' || (echo "leaderboard missing avgLuck: $LB" && exit 1)
 
           echo "Smoke test passed"
           docker stop wordly-smoketest
