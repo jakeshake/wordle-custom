@@ -27,6 +27,30 @@ Then visit `http://localhost:5173`.
 
 This is a static site — push it to a repo and enable GitHub Pages (Settings → Pages → deploy from branch), or drop the folder onto any static host (Netlify, Vercel, Cloudflare Pages, etc.). No build step required.
 
+### Docker / Unraid
+
+A `Dockerfile` (nginx serving the static files) and a GitHub Actions workflow (`.github/workflows/docker-publish.yml`) are included. Every push to `main` builds and publishes the image to GitHub Container Registry at:
+
+```
+ghcr.io/<your-github-username>/wordle-custom:latest
+```
+
+To run it on Unraid:
+
+1. **Docker tab → Add Container.**
+2. **Repository**: `ghcr.io/<your-github-username>/wordle-custom:latest`
+3. **Port**: map container port `80` to whatever host port you want (e.g. `8080`).
+4. Apply — Unraid pulls the image and starts it. Visit `http://<unraid-ip>:8080`.
+
+If the GHCR package is private, Unraid needs a registry login first (Docker tab → gear icon → add a registry with a GitHub personal access token that has `read:packages` scope). Making the repo/package public avoids this.
+
+To build and run locally instead (no GHCR):
+
+```bash
+docker build -t wordly .
+docker run -p 8080:80 wordly
+```
+
 ## Dictionary
 
 - **5-letter words**: the original curated Wordle answer list (2,314 words), hand-picked for commonness by the game's original creator — no obscure words.
