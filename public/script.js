@@ -10,6 +10,7 @@
     { id: "halloween", name: "Halloween", swatch: "#ff7518" },
     { id: "christmas", name: "Christmas", swatch: "#c41e3a" },
     { id: "synthwave", name: "Synthwave", swatch: "#ff2ec4" },
+    { id: "neon80s", name: "Neon 80s", swatch: "#ff6b00" },
     { id: "spooky", name: "Spooky", swatch: "#7cb342" },
     { id: "terminal", name: "Retro Terminal", swatch: "#33ff33" },
     { id: "bubblegum", name: "Bubblegum", swatch: "#ff8fc7" },

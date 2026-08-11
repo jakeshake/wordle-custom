@@ -160,6 +160,26 @@
   --color-danger: #ff4d6d;
 }
 
+[data-theme="neon80s"] {
+  --color-bg: #050810;
+  --color-surface: #0c1226;
+  --color-text: #f5faff;
+  --color-text-dim: #7fa8cc;
+  --color-border: #1a2440;
+  --color-border-strong: #2c3d66;
+  --color-accent: #ff6b00;
+
+  --color-correct: #ff6b00;
+  --color-present: #00d9ff;
+  --color-absent: #1a2440;
+  --key-text-on-color: #050810;
+
+  --color-key-bg: #1a2440;
+  --color-key-text: #f5faff;
+  --color-modal-overlay: rgba(0, 0, 0, 0.75);
+  --color-danger: #ff3b3b;
+}
+
 [data-theme="spooky"] {
   --color-bg: #060a08;
   --color-surface: #0d140f;
@@ -242,6 +262,10 @@
 }
 
 /* ---------- Base ---------- */
+:root {
+  --tile-gap: 5px;
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -385,7 +409,7 @@ button {
 
 .board {
   display: grid;
-  gap: 5px;
+  gap: var(--tile-gap);
   width: 100%;
   max-width: 360px;
   flex: 1 1 auto;
@@ -413,7 +437,7 @@ button {
 
 .board-row {
   display: grid;
-  gap: 5px;
+  gap: var(--tile-gap);
   grid-auto-flow: column;
   min-height: 0;
 }
@@ -837,8 +861,8 @@ button {
   .daily-timer {
     font-size: 0.85rem;
   }
-  .board {
-    gap: 4px;
+  :root {
+    --tile-gap: 4px;
   }
   .keyboard-wrap {
     padding: 0.25rem 0.25rem calc(0.25rem + env(safe-area-inset-bottom));
@@ -867,8 +891,8 @@ button {
     height: 36px;
     font-size: 0.7rem;
   }
-  .board {
-    gap: 3px;
+  :root {
+    --tile-gap: 3px;
   }
   .tile {
     font-size: clamp(0.8rem, 5vw, 1.4rem);
