@@ -22,7 +22,7 @@
 
 [data-theme="light"] {
   --color-bg: #ffffff;
-  --color-surface: #ffffff;
+  --color-surface: #f4f5f6;
   --color-text: #1a1a1b;
   --color-text-dim: #626466;
   --color-border: #d3d6da;
@@ -244,7 +244,7 @@
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
     --color-bg: #ffffff;
-    --color-surface: #ffffff;
+    --color-surface: #f4f5f6;
     --color-text: #1a1a1b;
     --color-text-dim: #626466;
     --color-border: #d3d6da;
@@ -263,7 +263,7 @@
 
 /* ---------- Base ---------- */
 :root {
-  --tile-gap: 5px;
+  --tile-gap: 7px;
 }
 
 * {
@@ -446,6 +446,7 @@ button {
   aspect-ratio: 1 / 1;
   min-height: 0;
   min-width: 0;
+  background: var(--color-surface);
   border: 2px solid var(--color-border);
   display: flex;
   align-items: center;
@@ -485,9 +486,13 @@ button {
 }
 
 .tile.correct,
-.tile.present,
-.tile.absent {
+.tile.present {
   color: var(--key-text-on-color);
+  border-color: transparent;
+}
+
+.tile.absent {
+  color: var(--color-text);
   border-color: transparent;
 }
 
@@ -566,7 +571,7 @@ button {
 
 .key.correct { background: var(--color-correct); color: var(--key-text-on-color); }
 .key.present { background: var(--color-present); color: var(--key-text-on-color); }
-.key.absent { background: var(--color-absent); color: var(--key-text-on-color); opacity: 0.7; }
+.key.absent { background: var(--color-absent); color: var(--color-text); opacity: 0.7; }
 
 /* ---------- Toast ---------- */
 .toast-container {
@@ -862,7 +867,7 @@ button {
     font-size: 0.85rem;
   }
   :root {
-    --tile-gap: 4px;
+    --tile-gap: 5px;
   }
   .keyboard-wrap {
     padding: 0.25rem 0.25rem calc(0.25rem + env(safe-area-inset-bottom));
@@ -892,7 +897,7 @@ button {
     font-size: 0.7rem;
   }
   :root {
-    --tile-gap: 3px;
+    --tile-gap: 4px;
   }
   .tile {
     font-size: clamp(0.8rem, 5vw, 1.4rem);
