@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#121213">
+<title>Wordly — 5 or 6 Letter Word Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<header class="app-header">
+  <button id="help-btn" class="icon-btn" aria-label="How to play" title="How to play">?</button>
+
+  <h1 class="app-title">WORDLY</h1>
+
+  <div class="header-controls">
+    <div class="length-toggle" role="group" aria-label="Word length">
+      <button class="len-btn active" data-len="5">5</button>
+      <button class="len-btn" data-len="6">6</button>
+    </div>
+    <button id="theme-btn" class="icon-btn" aria-label="Change theme" title="Change theme">&#9681;</button>
+    <button id="new-game-btn" class="icon-btn" aria-label="New game" title="New game">&#8635;</button>
+  </div>
+</header>
+
+<main class="game-main">
+  <div id="board" class="board"></div>
+</main>
+
+<footer class="keyboard-wrap">
+  <div id="keyboard" class="keyboard"></div>
+</footer>
+
+<!-- How to play modal -->
+<div id="help-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="help-modal" aria-label="Close">&times;</button>
+    <h2>How to Play</h2>
+    <p>Guess the word before you run out of tries.</p>
+    <ul class="help-list">
+      <li>Each guess must be a valid word of the current length.</li>
+      <li>After each guess, tile colors show how close you were.</li>
+    </ul>
+    <div class="example-row">
+      <div class="tile correct">W</div>
+      <div class="tile">O</div>
+      <div class="tile">R</div>
+      <div class="tile">D</div>
+      <div class="tile">S</div>
+    </div>
+    <p class="example-text"><strong>W</strong> is in the word and in the correct spot.</p>
+    <div class="example-row">
+      <div class="tile">L</div>
+      <div class="tile present">I</div>
+      <div class="tile">G</div>
+      <div class="tile">H</div>
+      <div class="tile">T</div>
+    </div>
+    <p class="example-text"><strong>I</strong> is in the word but in the wrong spot.</p>
+    <div class="example-row">
+      <div class="tile">V</div>
+      <div class="tile">A</div>
+      <div class="tile">G</div>
+      <div class="tile absent">U</div>
+      <div class="tile">E</div>
+    </div>
+    <p class="example-text"><strong>U</strong> is not in the word at all.</p>
+    <p>Switch between 5 and 6 letter words anytime with the toggle up top, and pick a theme with the palette button.</p>
+  </div>
+</div>
+
+<!-- Theme picker modal -->
+<div id="theme-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="theme-modal" aria-label="Close">&times;</button>
+    <h2>Theme</h2>
+    <div id="theme-list" class="theme-list"></div>
+  </div>
+</div>
+
+<!-- End of game modal -->
+<div id="result-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="result-modal" aria-label="Close">&times;</button>
+    <h2 id="result-title">Nice!</h2>
+    <p id="result-word" class="result-word"></p>
+    <button id="play-again-btn" class="primary-btn">Play Again</button>
+  </div>
+</div>
+
+<script src="words.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
