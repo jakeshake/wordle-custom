@@ -1,7 +1,14 @@
-FROM nginx:alpine
+FROM node:20-alpine
 
-COPY index.html style.css script.js words.js /usr/share/nginx/html/
+WORKDIR /app
+COPY server.js ./
+COPY public ./public
 
+ENV PORT=80
+ENV DATA_DIR=/data
 EXPOSE 80
+VOLUME ["/data"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -q -O /dev/null http://localhost/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -q -O /dev/null http://localhost/api/health || exit 1
+
+CMD ["node", "server.js"]

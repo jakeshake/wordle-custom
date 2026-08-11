@@ -100,6 +100,126 @@
   --color-danger: #e0655c;
 }
 
+[data-theme="halloween"] {
+  --color-bg: #0d0605;
+  --color-surface: #1a0f0a;
+  --color-text: #ffe8cc;
+  --color-text-dim: #c99a6c;
+  --color-border: #3d2410;
+  --color-border-strong: #5c3a17;
+  --color-accent: #ff7518;
+
+  --color-correct: #ff7518;
+  --color-present: #7d3c98;
+  --color-absent: #2b1a12;
+  --key-text-on-color: #ffffff;
+
+  --color-key-bg: #3d2410;
+  --color-key-text: #ffe8cc;
+  --color-modal-overlay: rgba(0, 0, 0, 0.7);
+  --color-danger: #ff4d4d;
+}
+
+[data-theme="christmas"] {
+  --color-bg: #0b2410;
+  --color-surface: #123018;
+  --color-text: #fdf6f0;
+  --color-text-dim: #a8c9ac;
+  --color-border: #1f4726;
+  --color-border-strong: #2e5c37;
+  --color-accent: #c41e3a;
+
+  --color-correct: #2e7d32;
+  --color-present: #d4af37;
+  --color-absent: #1f4726;
+  --key-text-on-color: #ffffff;
+
+  --color-key-bg: #1f4726;
+  --color-key-text: #fdf6f0;
+  --color-modal-overlay: rgba(0, 0, 0, 0.65);
+  --color-danger: #c41e3a;
+}
+
+[data-theme="synthwave"] {
+  --color-bg: #0d0221;
+  --color-surface: #1a0b34;
+  --color-text: #f5e9ff;
+  --color-text-dim: #a68fd6;
+  --color-border: #3a1f66;
+  --color-border-strong: #55308c;
+  --color-accent: #ff2ec4;
+
+  --color-correct: #00fff0;
+  --color-present: #ff2ec4;
+  --color-absent: #2a1750;
+  --key-text-on-color: #0d0221;
+
+  --color-key-bg: #2a1750;
+  --color-key-text: #f5e9ff;
+  --color-modal-overlay: rgba(0, 0, 0, 0.7);
+  --color-danger: #ff4d6d;
+}
+
+[data-theme="spooky"] {
+  --color-bg: #060a08;
+  --color-surface: #0d140f;
+  --color-text: #dff5e1;
+  --color-text-dim: #7fa88a;
+  --color-border: #1c2e20;
+  --color-border-strong: #2c452f;
+  --color-accent: #7cb342;
+
+  --color-correct: #4f7942;
+  --color-present: #5e3a7e;
+  --color-absent: #16201a;
+  --key-text-on-color: #ffffff;
+
+  --color-key-bg: #1c2e20;
+  --color-key-text: #dff5e1;
+  --color-modal-overlay: rgba(0, 0, 0, 0.75);
+  --color-danger: #c94f4f;
+}
+
+[data-theme="terminal"] {
+  --color-bg: #000000;
+  --color-surface: #0a0f0a;
+  --color-text: #33ff33;
+  --color-text-dim: #1f9c1f;
+  --color-border: #0f3d0f;
+  --color-border-strong: #1a661a;
+  --color-accent: #33ff33;
+
+  --color-correct: #33ff33;
+  --color-present: #1f9c1f;
+  --color-absent: #0f2a0f;
+  --key-text-on-color: #000000;
+
+  --color-key-bg: #0f3d0f;
+  --color-key-text: #33ff33;
+  --color-modal-overlay: rgba(0, 0, 0, 0.85);
+  --color-danger: #ff3333;
+}
+
+[data-theme="bubblegum"] {
+  --color-bg: #fff0f6;
+  --color-surface: #ffffff;
+  --color-text: #5a2a52;
+  --color-text-dim: #a878a0;
+  --color-border: #f3c9e0;
+  --color-border-strong: #e3a1c9;
+  --color-accent: #ff8fc7;
+
+  --color-correct: #8fd9a8;
+  --color-present: #ffd479;
+  --color-absent: #d8cfe0;
+  --key-text-on-color: #4a2c45;
+
+  --color-key-bg: #f3d9ec;
+  --color-key-text: #5a2a52;
+  --color-modal-overlay: rgba(90, 42, 82, 0.35);
+  --color-danger: #e0556f;
+}
+
 /* Respect system preference until the user picks explicitly */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
@@ -150,11 +270,23 @@ button {
 /* ---------- Header ---------- */
 .app-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.4rem;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--color-border);
   flex-shrink: 0;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.controls-row {
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .app-title {
@@ -162,12 +294,6 @@ button {
   font-weight: 700;
   letter-spacing: 0.08em;
   margin: 0;
-}
-
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .icon-btn {
@@ -212,6 +338,28 @@ button {
   color: #fff;
 }
 
+.mode-toggle {
+  display: flex;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mode-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  background: var(--color-accent);
+  color: #fff;
+}
+
 /* ---------- Board ---------- */
 .game-main {
   flex: 1 1 auto;
@@ -230,6 +378,23 @@ button {
   height: 100%;
   max-height: 420px;
   margin: 0 auto;
+}
+
+.name-gate {
+  max-width: 320px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.name-gate h2 {
+  margin-top: 0;
+}
+
+.name-gate p {
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
 }
 
 .board-row {
@@ -408,8 +573,8 @@ button {
   padding: 1rem;
 }
 
-.modal-overlay.hidden {
-  display: none;
+.hidden {
+  display: none !important;
 }
 
 .modal {
@@ -423,6 +588,10 @@ button {
   max-height: 85vh;
   overflow-y: auto;
   position: relative;
+}
+
+.modal-wide {
+  max-width: 480px;
 }
 
 .modal h2 {
@@ -505,6 +674,83 @@ button {
   text-transform: uppercase;
 }
 
+.result-countdown {
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
+  margin-top: -0.25rem;
+}
+
+.text-input {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.leaderboard-tabs {
+  display: flex;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  overflow: hidden;
+  width: fit-content;
+  margin-bottom: 1rem;
+}
+
+.lb-tab {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lb-tab.active {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.leaderboard-content {
+  overflow-x: auto;
+}
+
+.lb-status {
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
+}
+
+.lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.lb-table th,
+.lb-table td {
+  padding: 0.5rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.lb-table th {
+  color: var(--color-text-dim);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 .primary-btn {
   background: var(--color-accent);
   color: #fff;
@@ -527,7 +773,7 @@ button {
     height: 46px;
     font-size: 0.75rem;
   }
-  .header-controls {
+  .controls-row {
     gap: 0.3rem;
   }
 }
