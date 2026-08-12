@@ -61,11 +61,11 @@
   --color-danger: #ff3366;
 }
 
-[data-theme="neon-standard"] .tile.correct {
-  box-shadow: 0 0 12px #39ff14, inset 0 0 4px #39ff14;
+html[data-theme="neon-standard"] .tile.correct {
+  box-shadow: 0 0 12px #39ff14, inset 0 0 4px #39ff14 !important;
 }
-[data-theme="neon-standard"] .tile.present {
-  box-shadow: 0 0 12px #ffe600, inset 0 0 4px #ffe600;
+html[data-theme="neon-standard"] .tile.present {
+  box-shadow: 0 0 12px #ffe600, inset 0 0 4px #ffe600 !important;
 }
 
 /* ---------- Neon City ---------- */
@@ -89,31 +89,32 @@
   --color-danger: #ff007f;
 }
 
-[data-theme="neon-city"] .tile {
-  border: 2px solid #8b00ff;
-  box-shadow: 0 0 6px #8b00ff;
-  color: #00e5ff;
+html[data-theme="neon-city"] .tile {
+  border: 2px solid #8b00ff !important;
+  box-shadow: 0 0 6px #8b00ff !important;
+  color: #00e5ff !important;
 }
-[data-theme="neon-city"] .tile.correct {
+html[data-theme="neon-city"] .tile.correct {
   border: 2px solid #00e5ff !important;
-  box-shadow: 0 0 12px #00e5ff, inset 0 0 6px #8b00ff;
-  color: #ffffff;
-  background: #8b00ff;
+  box-shadow: 0 0 12px #00e5ff, inset 0 0 6px #8b00ff !important;
+  color: #ffffff !important;
+  background: #8b00ff !important;
 }
-[data-theme="neon-city"] .tile.present {
+html[data-theme="neon-city"] .tile.present {
   border: 2px solid #ffff00 !important;
-  box-shadow: 0 0 14px #ffff00;
-  background: #ffff00;
-  color: #000000;
+  box-shadow: 0 0 14px #ffff00 !important;
+  background: #ffff00 !important;
+  color: #000000 !important;
   font-weight: 800;
 }
-[data-theme="neon-city"] .tile.absent {
+html[data-theme="neon-city"] .tile.absent {
   border: 2px solid #8b00ff !important;
-  box-shadow: 0 0 6px #8b00ff;
-  color: #00e5ff;
+  box-shadow: 0 0 6px #8b00ff !important;
+  color: #00e5ff !important;
+  background: #150f37 !important;
 }
 
-/* ---------- Neon 80s (Outlined Neon Variant) ---------- */
+/* ---------- Neon 80s ---------- */
 [data-theme="neon80s"] {
   --color-bg: #050810;
   --color-surface: #0c1226;
@@ -134,61 +135,61 @@
   --color-danger: #ff3b3b;
 }
 
-[data-theme="neon80s"] .tile {
-  border: 2px solid #00d9ff;
-  box-shadow: 0 0 6px #00d9ff;
-  color: #00d9ff;
-}
-
-[data-theme="neon80s"] .tile.correct {
-  border: 2px solid #ff007f !important;
-  box-shadow: 0 0 12px #ff6b00, 0 0 6px #ff007f;
-  background: #ff6b00;
-  color: #050810;
-  font-weight: 800;
-}
-
-[data-theme="neon80s"] .tile.present {
-  border: 2px solid #ff6b00 !important;
-  box-shadow: 0 0 12px #00d9ff;
-  background: #00d9ff;
-  color: #050810;
-  font-weight: 800;
-}
-
-[data-theme="neon80s"] .tile.absent {
+html[data-theme="neon80s"] .tile {
   border: 2px solid #00d9ff !important;
-  box-shadow: 0 0 4px #00d9ff;
-  color: #00d9ff;
-  opacity: 0.6;
+  box-shadow: 0 0 6px #00d9ff !important;
+  color: #00d9ff !important;
 }
 
-/* Neon 80s Glowing Keyboard */
-[data-theme="neon80s"] .key {
-  border: 1px solid #00d9ff;
-  box-shadow: 0 0 4px rgba(0, 217, 255, 0.3);
+html[data-theme="neon80s"] .tile.correct {
+  border: 2px solid #ff007f !important;
+  box-shadow: 0 0 12px #ff6b00, 0 0 6px #ff007f !important;
+  background: #ff6b00 !important;
+  color: #050810 !important;
+  font-weight: 800;
 }
 
-[data-theme="neon80s"] .key.correct {
-  background: #ff6b00;
-  color: #050810;
-  border-color: #ff007f;
-  box-shadow: 0 0 8px #ff6b00;
+html[data-theme="neon80s"] .tile.present {
+  border: 2px solid #ff6b00 !important;
+  box-shadow: 0 0 12px #00d9ff !important;
+  background: #00d9ff !important;
+  color: #050810 !important;
+  font-weight: 800;
 }
 
-[data-theme="neon80s"] .key.present {
-  background: #00d9ff;
-  color: #050810;
-  border-color: #ff6b00;
-  box-shadow: 0 0 8px #00d9ff;
+html[data-theme="neon80s"] .tile.absent {
+  border: 2px solid #00d9ff !important;
+  box-shadow: 0 0 4px #00d9ff !important;
+  color: #00d9ff !important;
+  background: #0c1226 !important;
+  opacity: 0.8;
 }
 
-[data-theme="neon80s"] .key.absent {
-  background: #0c1226;
-  color: #2c3d66;
-  border-color: #1a2440;
+html[data-theme="neon80s"] .key {
+  border: 1px solid #00d9ff !important;
+  box-shadow: 0 0 4px rgba(0, 217, 255, 0.3) !important;
+}
+
+html[data-theme="neon80s"] .key.correct {
+  background: #ff6b00 !important;
+  color: #050810 !important;
+  border-color: #ff007f !important;
+  box-shadow: 0 0 8px #ff6b00 !important;
+}
+
+html[data-theme="neon80s"] .key.present {
+  background: #00d9ff !important;
+  color: #050810 !important;
+  border-color: #ff6b00 !important;
+  box-shadow: 0 0 8px #00d9ff !important;
+}
+
+html[data-theme="neon80s"] .key.absent {
+  background: #0c1226 !important;
+  color: #2c3d66 !important;
+  border-color: #1a2440 !important;
   opacity: 0.5;
-  box-shadow: none;
+  box-shadow: none !important;
 }
 
 /* ---------- Synthwave ---------- */
@@ -212,21 +213,24 @@
   --color-danger: #ff4d6d;
 }
 
-[data-theme="synthwave"] .tile {
-  border: 2px solid #55308c;
-}
-[data-theme="synthwave"] .tile.correct {
-  border: 2px solid #ff2ec4 !important;
-  box-shadow: 0 0 10px #ff2ec4;
-  color: #0d0221;
-}
-[data-theme="synthwave"] .tile.present {
-  border: 2px solid #00fff0 !important;
-  box-shadow: 0 0 10px #00fff0;
-  color: #ffffff;
-}
-[data-theme="synthwave"] .tile.absent {
+html[data-theme="synthwave"] .tile {
   border: 2px solid #55308c !important;
+}
+html[data-theme="synthwave"] .tile.correct {
+  border: 2px solid #ff2ec4 !important;
+  box-shadow: 0 0 10px #ff2ec4 !important;
+  background: #00fff0 !important;
+  color: #0d0221 !important;
+}
+html[data-theme="synthwave"] .tile.present {
+  border: 2px solid #00fff0 !important;
+  box-shadow: 0 0 10px #00fff0 !important;
+  background: #ff2ec4 !important;
+  color: #ffffff !important;
+}
+html[data-theme="synthwave"] .tile.absent {
+  border: 2px solid #55308c !important;
+  background: #2a1750 !important;
 }
 
 /* ---------- Christmas ---------- */
@@ -241,7 +245,7 @@
 
   --color-correct: #2e7d32;
   --color-present: #c41e3a;
-  --color-absent: #5a121d; /* Dark Berry Red for picked letters not on board */
+  --color-absent: #5a121d;
   --key-text-on-color: #ffffff;
 
   --color-key-bg: #1f4726;
@@ -250,40 +254,38 @@
   --color-danger: #c41e3a;
 }
 
-/* Christmas Outlines & Tiles */
-[data-theme="christmas"] .tile {
-  border: 2px solid #1f4726;
+html[data-theme="christmas"] .tile {
+  border: 2px solid #1f4726 !important;
 }
 
-[data-theme="christmas"] .tile.correct {
-  background: #2e7d32;
-  border: 2px solid #c41e3a !important; /* Red outline on Green tile */
-  box-shadow: 0 0 8px #c41e3a;
-  color: #ffffff;
+html[data-theme="christmas"] .tile.correct {
+  background: #2e7d32 !important;
+  border: 2px solid #c41e3a !important;
+  box-shadow: 0 0 8px #c41e3a !important;
+  color: #ffffff !important;
 }
 
-[data-theme="christmas"] .tile.present {
-  background: #c41e3a; /* Red tile for right letter/wrong spot */
-  border: 2px solid #2e7d32 !important; /* Green outline on Red tile */
-  box-shadow: 0 0 8px #2e7d32;
-  color: #ffffff;
+html[data-theme="christmas"] .tile.present {
+  background: #c41e3a !important;
+  border: 2px solid #2e7d32 !important;
+  box-shadow: 0 0 8px #2e7d32 !important;
+  color: #ffffff !important;
 }
 
-[data-theme="christmas"] .tile.absent {
-  background: #123018;
+html[data-theme="christmas"] .tile.absent {
+  background: #123018 !important;
   border: 2px solid #5a121d !important;
-  color: #a8c9ac;
+  color: #a8c9ac !important;
 }
 
-/* Christmas Keyboard Specifics */
-[data-theme="christmas"] .key.present {
-  background: #c41e3a;
-  color: #ffffff;
+html[data-theme="christmas"] .key.present {
+  background: #c41e3a !important;
+  color: #ffffff !important;
 }
 
-[data-theme="christmas"] .key.absent {
-  background: #5a121d; /* Darker Red for letters not on the board */
-  color: #d19ca4;
+html[data-theme="christmas"] .key.absent {
+  background: #5a121d !important;
+  color: #d19ca4 !important;
   opacity: 0.8;
 }
 
@@ -308,13 +310,13 @@
   --color-danger: #ff5277;
 }
 
-[data-theme="bubblegum-3d"] .tile {
-  border-radius: 12px;
-  border-width: 1px;
+html[data-theme="bubblegum-3d"] .tile {
+  border-radius: 12px !important;
+  border-width: 1px !important;
 }
-[data-theme="bubblegum-3d"] .tile.correct,
-[data-theme="bubblegum-3d"] .tile.present {
-  box-shadow: inset -2px -3px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.7);
+html[data-theme="bubblegum-3d"] .tile.correct,
+html[data-theme="bubblegum-3d"] .tile.present {
+  box-shadow: inset -2px -3px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.7) !important;
   font-weight: 800;
 }
 
