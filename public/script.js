@@ -6,13 +6,13 @@
     { id: "light", name: "Light", swatch: "#6aaa64" },
     { id: "neon-standard", name: "Standard Neon", swatch: "#39ff14" },
     { id: "neon-city", name: "Neon City", swatch: "#00e5ff" },
+    { id: "synthwave", name: "Synthwave", swatch: "#ff2ec4" },
     { id: "bubblegum-3d", name: "Bubblegum 3D", swatch: "#f3aa94" },
     { id: "ocean", name: "Ocean", swatch: "#2ea8b8" },
     { id: "sunset", name: "Sunset", swatch: "#e0703f" },
     { id: "forest", name: "Forest", swatch: "#6fae4f" },
     { id: "halloween", name: "Halloween", swatch: "#ff7518" },
     { id: "christmas", name: "Christmas", swatch: "#c41e3a" },
-    { id: "synthwave", name: "Synthwave", swatch: "#ff2ec4" },
     { id: "neon80s", name: "Neon 80s", swatch: "#ff6b00" },
     { id: "spooky", name: "Spooky", swatch: "#7cb342" },
     { id: "terminal", name: "Retro Terminal", swatch: "#33ff33" },
@@ -243,7 +243,7 @@
   function renderBoard() {
     boardEl.innerHTML = "";
     boardEl.style.gridTemplateColumns = "1fr";
-    boardEl.style.gridTemplateRows = `repeat(${state.maxGuesses}, minmax(0, 1fr))`;
+    boardEl.style.gridAutoRows = "max-content"; /* Grid auto row fix */
     boardEl.style.display = "grid";
 
     for (let r = 0; r < state.maxGuesses; r++) {
@@ -547,7 +547,7 @@
       countdownTimer = setInterval(tick, 30000);
     } else {
       countdownEl.classList.add("hidden");
-      playAgainBtn.remove("hidden");
+      playAgainBtn.classList.remove("hidden");
     }
 
     openModal("result-modal");
