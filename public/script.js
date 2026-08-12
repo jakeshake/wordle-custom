@@ -257,6 +257,8 @@
         ? state.current.split("")
         : [];
 
+      const pattern = guess ? getPattern(guess, state.answer) : null;
+
       for (let c = 0; c < state.length; c++) {
         const tile = document.createElement("div");
         tile.className = "tile";
@@ -265,9 +267,8 @@
           tile.textContent = letter;
           tile.classList.add("filled");
         }
-        if (guess) {
-          const status = statusFor(guess, c);
-          tile.classList.add(status);
+        if (pattern) {
+          tile.classList.add(pattern[c]);
         }
         row.appendChild(tile);
       }
@@ -275,19 +276,31 @@
     }
   }
 
-  function statusForTarget(guess, index, target) {
-    const letter = guess[index];
-    if (target[index] === letter) return "correct";
-    if (target.includes(letter)) return "present";
-    return "absent";
-  }
-
-  function statusFor(guess, index) {
-    return statusForTarget(guess, index, state.answer);
-  }
-
+  // Duplicate-letter-aware scoring, matching real Wordle: a letter can only
+  // be marked correct/present as many times as it actually appears in the
+  // target. Exact-position matches are resolved first and consume from the
+  // target's letter pool; only the remaining pool is available for "present".
   function getPattern(guess, target) {
-    return guess.split("").map((_, i) => statusForTarget(guess, i, target));
+    const length = guess.length;
+    const result = new Array(length).fill("absent");
+    const counts = {};
+    for (const letter of target) counts[letter] = (counts[letter] || 0) + 1;
+
+    for (let i = 0; i < length; i++) {
+      if (guess[i] === target[i]) {
+        result[i] = "correct";
+        counts[guess[i]]--;
+      }
+    }
+    for (let i = 0; i < length; i++) {
+      if (result[i] === "correct") continue;
+      const letter = guess[i];
+      if (counts[letter] > 0) {
+        result[i] = "present";
+        counts[letter]--;
+      }
+    }
+    return result;
   }
 
   // How many words in the answer pool were still possible right before the
@@ -332,8 +345,9 @@
 
   function updateKeyStates(guess) {
     const rank = { absent: 0, present: 1, correct: 2 };
+    const pattern = getPattern(guess, state.answer);
     guess.split("").forEach((letter, i) => {
-      const status = statusFor(guess, i);
+      const status = pattern[i];
       const prev = state.keyStates.get(letter);
       if (!prev || rank[status] > rank[prev]) {
         state.keyStates.set(letter, status);
@@ -360,12 +374,12 @@
     const row = boardEl.querySelector(`[data-row="${rowIndex}"]`);
     if (!row) return callback && callback();
     const tiles = row.querySelectorAll(".tile");
+    const pattern = getPattern(state.guesses[rowIndex], state.answer);
     tiles.forEach((tile, i) => {
       setTimeout(() => {
         tile.classList.add("flip");
         setTimeout(() => {
-          const status = statusFor(state.guesses[rowIndex], i);
-          tile.classList.add(status);
+          tile.classList.add(pattern[i]);
         }, 250);
       }, i * 220);
     });
