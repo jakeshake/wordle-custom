@@ -289,6 +289,62 @@ html[data-theme="christmas"] .key.absent {
   opacity: 0.8;
 }
 
+/* ---------- Spooky ---------- */
+[data-theme="spooky"] {
+  --color-bg: #060a08;
+  --color-surface: #0d140f;
+  --color-text: #dff5e1;
+  --color-text-dim: #7fa88a;
+  --color-border: #1c2e20;
+  --color-border-strong: #2c452f;
+  --color-accent: #7cb342;
+
+  --color-correct: #4f7942;
+  --color-present: #5e3a7e;
+  --color-absent: #2a1838; /* Dark Purple for eliminated letters */
+  --key-text-on-color: #ffffff;
+
+  --color-key-bg: #1c2e20;
+  --color-key-text: #dff5e1;
+  --color-modal-overlay: rgba(0, 0, 0, 0.75);
+  --color-danger: #c94f4f;
+}
+
+html[data-theme="spooky"] .tile {
+  border: 2px solid #1c2e20 !important;
+}
+
+html[data-theme="spooky"] .tile.correct {
+  background: #4f7942 !important; /* Green tile */
+  border: 2px solid #5e3a7e !important; /* Purple outline on Green tile */
+  box-shadow: 0 0 8px #5e3a7e !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="spooky"] .tile.present {
+  background: #5e3a7e !important; /* Purple tile */
+  border: 2px solid #4f7942 !important; /* Green outline on Purple tile */
+  box-shadow: 0 0 8px #4f7942 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="spooky"] .tile.absent {
+  background: #0d140f !important;
+  border: 2px solid #2a1838 !important;
+  color: #7fa88a !important;
+}
+
+html[data-theme="spooky"] .key.present {
+  background: #5e3a7e !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="spooky"] .key.absent {
+  background: #2a1838 !important; /* Darker Purple for absent keys */
+  color: #9f86b5 !important;
+  opacity: 0.8;
+}
+
 /* ---------- 3D Glossy Bubblegum ---------- */
 [data-theme="bubblegum-3d"] {
   --color-bg: #222938;
@@ -398,26 +454,6 @@ html[data-theme="bubblegum-3d"] .tile.present {
   --color-key-text: #ffe8cc;
   --color-modal-overlay: rgba(0, 0, 0, 0.7);
   --color-danger: #ff4d4d;
-}
-
-[data-theme="spooky"] {
-  --color-bg: #060a08;
-  --color-surface: #0d140f;
-  --color-text: #dff5e1;
-  --color-text-dim: #7fa88a;
-  --color-border: #1c2e20;
-  --color-border-strong: #2c452f;
-  --color-accent: #7cb342;
-
-  --color-correct: #4f7942;
-  --color-present: #5e3a7e;
-  --color-absent: #16201a;
-  --key-text-on-color: #ffffff;
-
-  --color-key-bg: #1c2e20;
-  --color-key-text: #dff5e1;
-  --color-modal-overlay: rgba(0, 0, 0, 0.75);
-  --color-danger: #c94f4f;
 }
 
 [data-theme="terminal"] {
