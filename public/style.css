@@ -40,6 +40,150 @@
   --color-danger: #d24949;
 }
 
+/* ---------- Neon Standard ---------- */
+[data-theme="neon-standard"] {
+  --color-bg: #0d0e12;
+  --color-surface: #15161d;
+  --color-text: #ffffff;
+  --color-text-dim: #8e95a5;
+  --color-border: #2a2d3a;
+  --color-border-strong: #3f4458;
+  --color-accent: #39ff14;
+
+  --color-correct: #39ff14;
+  --color-present: #ffe600;
+  --color-absent: #1a1c24;
+  --key-text-on-color: #000000;
+
+  --color-key-bg: #222530;
+  --color-key-text: #ffffff;
+  --color-modal-overlay: rgba(0, 0, 0, 0.8);
+  --color-danger: #ff3366;
+}
+
+[data-theme="neon-standard"] .tile.correct {
+  box-shadow: 0 0 12px #39ff14, inset 0 0 4px #39ff14;
+}
+[data-theme="neon-standard"] .tile.present {
+  box-shadow: 0 0 12px #ffe600, inset 0 0 4px #ffe600;
+}
+
+/* ---------- Neon City ---------- */
+[data-theme="neon-city"] {
+  --color-bg: #0b071e;
+  --color-surface: #140e33;
+  --color-text: #00e5ff;
+  --color-text-dim: #9955ff;
+  --color-border: #321c6e;
+  --color-border-strong: #8b00ff;
+  --color-accent: #00e5ff;
+
+  --color-correct: #8b00ff;
+  --color-present: #ffff00;
+  --color-absent: #150f37;
+  --key-text-on-color: #ffffff;
+
+  --color-key-bg: #23184d;
+  --color-key-text: #00e5ff;
+  --color-modal-overlay: rgba(5, 2, 20, 0.85);
+  --color-danger: #ff007f;
+}
+
+/* Neon City Outlines & Letter Colors */
+[data-theme="neon-city"] .tile {
+  border: 2px solid #8b00ff;
+  box-shadow: 0 0 6px #8b00ff;
+  color: #00e5ff;
+}
+[data-theme="neon-city"] .tile.correct {
+  border: 2px solid #00e5ff !important;
+  box-shadow: 0 0 12px #00e5ff, inset 0 0 6px #8b00ff;
+  color: #ffffff;
+  background: #8b00ff;
+}
+[data-theme="neon-city"] .tile.present {
+  border: 2px solid #ffff00 !important;
+  box-shadow: 0 0 14px #ffff00;
+  background: #ffff00;
+  color: #000000; /* Solves invisible yellow letter bug */
+  font-weight: 800;
+}
+[data-theme="neon-city"] .tile.absent {
+  border: 2px solid #8b00ff !important;
+  box-shadow: 0 0 6px #8b00ff;
+  color: #00e5ff;
+}
+
+/* ---------- Synthwave ---------- */
+[data-theme="synthwave"] {
+  --color-bg: #0d0221;
+  --color-surface: #1a0b34;
+  --color-text: #f5e9ff;
+  --color-text-dim: #a68fd6;
+  --color-border: #3a1f66;
+  --color-border-strong: #55308c;
+  --color-accent: #ff2ec4;
+
+  --color-correct: #00fff0;
+  --color-present: #ff2ec4;
+  --color-absent: #2a1750;
+  --key-text-on-color: #0d0221;
+
+  --color-key-bg: #2a1750;
+  --color-key-text: #f5e9ff;
+  --color-modal-overlay: rgba(0, 0, 0, 0.7);
+  --color-danger: #ff4d6d;
+}
+
+/* Synthwave Tile Outlines */
+[data-theme="synthwave"] .tile {
+  border: 2px solid #55308c;
+}
+[data-theme="synthwave"] .tile.correct {
+  border: 2px solid #ff2ec4 !important; /* Neon Pink outline on Light Blue tile */
+  box-shadow: 0 0 10px #ff2ec4;
+  color: #0d0221;
+}
+[data-theme="synthwave"] .tile.present {
+  border: 2px solid #00fff0 !important; /* Light Blue outline on Pink tile */
+  box-shadow: 0 0 10px #00fff0;
+  color: #ffffff;
+}
+[data-theme="synthwave"] .tile.absent {
+  border: 2px solid #55308c !important;
+}
+
+/* ---------- 3D Glossy Bubblegum ---------- */
+[data-theme="bubblegum-3d"] {
+  --color-bg: #222938;
+  --color-surface: #2d3648;
+  --color-text: #ffffff;
+  --color-text-dim: #8b9bb4;
+  --color-border: #3d4a60;
+  --color-border-strong: #526380;
+  --color-accent: #ff9ebb;
+
+  --color-correct: #f3aa94;
+  --color-present: #9ce3d8;
+  --color-absent: #384356;
+  --key-text-on-color: #222938;
+
+  --color-key-bg: #384356;
+  --color-key-text: #ffffff;
+  --color-modal-overlay: rgba(15, 18, 25, 0.75);
+  --color-danger: #ff5277;
+}
+
+[data-theme="bubblegum-3d"] .tile {
+  border-radius: 12px;
+  border-width: 1px;
+}
+[data-theme="bubblegum-3d"] .tile.correct,
+[data-theme="bubblegum-3d"] .tile.present {
+  box-shadow: inset -2px -3px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.7);
+  font-weight: 800;
+}
+
 [data-theme="ocean"] {
   --color-bg: #06222f;
   --color-surface: #0c2f40;
@@ -140,26 +284,6 @@
   --color-danger: #c41e3a;
 }
 
-[data-theme="synthwave"] {
-  --color-bg: #0d0221;
-  --color-surface: #1a0b34;
-  --color-text: #f5e9ff;
-  --color-text-dim: #a68fd6;
-  --color-border: #3a1f66;
-  --color-border-strong: #55308c;
-  --color-accent: #ff2ec4;
-
-  --color-correct: #00fff0;
-  --color-present: #ff2ec4;
-  --color-absent: #2a1750;
-  --key-text-on-color: #0d0221;
-
-  --color-key-bg: #2a1750;
-  --color-key-text: #f5e9ff;
-  --color-modal-overlay: rgba(0, 0, 0, 0.7);
-  --color-danger: #ff4d6d;
-}
-
 [data-theme="neon80s"] {
   --color-bg: #050810;
   --color-surface: #0c1226;
@@ -238,99 +362,6 @@
   --color-key-text: #5a2a52;
   --color-modal-overlay: rgba(90, 42, 82, 0.35);
   --color-danger: #e0556f;
-}
-
-/* ---------- Neon Standard (Dark Brick & Neon Glow) ---------- */
-[data-theme="neon-standard"] {
-  --color-bg: #0d0e12;
-  --color-surface: #15161d;
-  --color-text: #ffffff;
-  --color-text-dim: #8e95a5;
-  --color-border: #2a2d3a;
-  --color-border-strong: #3f4458;
-  --color-accent: #39ff14;
-
-  --color-correct: #39ff14;
-  --color-present: #ffe600;
-  --color-absent: #1a1c24;
-  --key-text-on-color: #000000;
-
-  --color-key-bg: #222530;
-  --color-key-text: #ffffff;
-  --color-modal-overlay: rgba(0, 0, 0, 0.8);
-  --color-danger: #ff3366;
-}
-
-/* Enhanced Glow Effects for Neon Standard Tiles */
-[data-theme="neon-standard"] .tile.correct {
-  box-shadow: 0 0 12px #39ff14, inset 0 0 4px #39ff14;
-}
-[data-theme="neon-standard"] .tile.present {
-  box-shadow: 0 0 12px #ffe600, inset 0 0 4px #ffe600;
-}
-
-/* ---------- Neon City (Cyberpunk / Synth City) ---------- */
-[data-theme="neon-city"] {
-  --color-bg: #0b071e;
-  --color-surface: #140e33;
-  --color-text: #00e5ff;
-  --color-text-dim: #9955ff;
-  --color-border: #321c6e;
-  --color-border-strong: #8b00ff;
-  --color-accent: #00e5ff;
-
-  --color-correct: #8b00ff;
-  --color-present: #ffff00;
-  --color-absent: #1b133e;
-  --key-text-on-color: #ffffff;
-
-  --color-key-bg: #23184d;
-  --color-key-text: #00e5ff;
-  --color-modal-overlay: rgba(5, 2, 20, 0.85);
-  --color-danger: #ff007f;
-}
-
-/* Cyberpunk Neon Glow Effects */
-[data-theme="neon-city"] .tile.correct {
-  border: 2px solid #00e5ff !important;
-  box-shadow: 0 0 14px #8b00ff, 0 0 6px #00e5ff;
-}
-[data-theme="neon-city"] .tile.present {
-  border: 2px solid #ffff00 !important;
-  box-shadow: 0 0 14px #ffff00;
-  color: #ffff00;
-}
-
-/* ---------- 3D Glossy Bubblegum ---------- */
-[data-theme="bubblegum-3d"] {
-  --color-bg: #222938;
-  --color-surface: #2d3648;
-  --color-text: #ffffff;
-  --color-text-dim: #8b9bb4;
-  --color-border: #3d4a60;
-  --color-border-strong: #526380;
-  --color-accent: #ff9ebb;
-
-  --color-correct: #f3aa94;
-  --color-present: #9ce3d8;
-  --color-absent: #384356;
-  --key-text-on-color: #222938;
-
-  --color-key-bg: #384356;
-  --color-key-text: #ffffff;
-  --color-modal-overlay: rgba(15, 18, 25, 0.75);
-  --color-danger: #ff5277;
-}
-
-/* Glossy / Soft-rounded Tile Styling for Bubblegum */
-[data-theme="bubblegum-3d"] .tile {
-  border-radius: 12px;
-  border-width: 1px;
-}
-[data-theme="bubblegum-3d"] .tile.correct,
-[data-theme="bubblegum-3d"] .tile.present {
-  box-shadow: inset -2px -3px 5px rgba(0, 0, 0, 0.3), inset 2px 2px 5px rgba(255, 255, 255, 0.7);
-  font-weight: 800;
 }
 
 /* Respect system preference until the user picks explicitly */
@@ -507,8 +538,9 @@ button {
   max-width: 360px;
   flex: 1 1 auto;
   min-height: 0;
-  max-height: 400px;
+  max-height: 420px;
   margin: 0 auto;
+  align-content: center; /* Fixes vertical spacing across 5 & 6 letter modes */
 }
 
 .name-gate {
@@ -945,8 +977,7 @@ button {
   }
 }
 
-/* ---------- Short viewports (real phone browser chrome eats into
-   available height far more than devtools viewport presets suggest) ---------- */
+/* ---------- Short viewports ---------- */
 @media (max-height: 700px) {
   .app-header {
     padding: 0.3rem 0.6rem;
