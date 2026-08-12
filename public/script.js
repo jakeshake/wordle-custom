@@ -4,6 +4,9 @@
   const THEMES = [
     { id: "dark", name: "Dark", swatch: "#538d4e" },
     { id: "light", name: "Light", swatch: "#6aaa64" },
+    { id: "neon-standard", name: "Standard Neon", swatch: "#39ff14" },
+    { id: "neon-city", name: "Neon City", swatch: "#00e5ff" },
+    { id: "bubblegum-3d", name: "Bubblegum 3D", swatch: "#f3aa94" },
     { id: "ocean", name: "Ocean", swatch: "#2ea8b8" },
     { id: "sunset", name: "Sunset", swatch: "#e0703f" },
     { id: "forest", name: "Forest", swatch: "#6fae4f" },
@@ -276,10 +279,6 @@
     }
   }
 
-  // Duplicate-letter-aware scoring, matching real Wordle: a letter can only
-  // be marked correct/present as many times as it actually appears in the
-  // target. Exact-position matches are resolved first and consume from the
-  // target's letter pool; only the remaining pool is available for "present".
   function getPattern(guess, target) {
     const length = guess.length;
     const result = new Array(length).fill("absent");
@@ -303,8 +302,6 @@
     return result;
   }
 
-  // How many words in the answer pool were still possible right before the
-  // winning guess. Few guesses used against a still-wide-open field = lucky.
   function computeLuck() {
     const priorGuesses = state.guesses.slice(0, -1);
     let candidates = ANSWERS[state.length];
@@ -498,8 +495,7 @@
       state.submitted = true;
       persistDailyProgress();
     } catch {
-      // Offline or backend unavailable — will retry next time this
-      // completed game is loaded (submitted stays false).
+      // Offline or backend unavailable
     }
   }
 
@@ -551,7 +547,7 @@
       countdownTimer = setInterval(tick, 30000);
     } else {
       countdownEl.classList.add("hidden");
-      playAgainBtn.classList.remove("hidden");
+      playAgainBtn.remove("hidden");
     }
 
     openModal("result-modal");
