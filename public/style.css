@@ -74,44 +74,94 @@ html[data-theme="neon-standard"] .tile.present {
   --color-surface: #140e33;
   --color-text: #00e5ff;
   --color-text-dim: #9955ff;
-  --color-border: #321c6e;
+  --color-border: #362a5c;
   --color-border-strong: #8b00ff;
   --color-accent: #00e5ff;
 
   --color-correct: #8b00ff;
-  --color-present: #ffff00;
+  --color-present: #150f37;
   --color-absent: #150f37;
-  --key-text-on-color: #ffffff;
+  --key-text-on-color: #00e5ff;
 
-  --color-key-bg: #23184d;
+  --color-key-bg: #1e1542;
   --color-key-text: #00e5ff;
   --color-modal-overlay: rgba(5, 2, 20, 0.85);
   --color-danger: #ff007f;
 }
 
+/* Base Tile Styling (Dark Indigo Box with Cyan Text) */
 html[data-theme="neon-city"] .tile {
-  border: 2px solid #8b00ff !important;
-  box-shadow: 0 0 6px #8b00ff !important;
+  background: #181238 !important;
+  border: 2px solid #362a5c !important;
+  color: #bb55ff !important;
+  border-radius: 8px !important;
+}
+
+/* Filled (Typing before submit) */
+html[data-theme="neon-city"] .tile.filled {
+  border-color: #00e5ff !important;
+  box-shadow: 0 0 6px rgba(0, 229, 255, 0.4) !important;
   color: #00e5ff !important;
 }
+
+/* Correct Spot (Purple Background + Cyan Border & Glow + Cyan Text) */
 html[data-theme="neon-city"] .tile.correct {
+  background: #7a00e6 !important;
   border: 2px solid #00e5ff !important;
-  box-shadow: 0 0 12px #00e5ff, inset 0 0 6px #8b00ff !important;
+  box-shadow: 0 0 12px #00e5ff, inset 0 0 6px #00e5ff !important;
   color: #ffffff !important;
-  background: #8b00ff !important;
-}
-html[data-theme="neon-city"] .tile.present {
-  border: 2px solid #ffff00 !important;
-  box-shadow: 0 0 14px #ffff00 !important;
-  background: #ffff00 !important;
-  color: #000000 !important;
   font-weight: 800;
 }
-html[data-theme="neon-city"] .tile.absent {
-  border: 2px solid #8b00ff !important;
-  box-shadow: 0 0 6px #8b00ff !important;
-  color: #00e5ff !important;
+
+/* Present Spot (Dark Background + Yellow Neon Border & Yellow Glow + Yellow Text) */
+html[data-theme="neon-city"] .tile.present {
   background: #150f37 !important;
+  border: 2px solid #ffff00 !important;
+  box-shadow: 0 0 12px #ffff00, inset 0 0 4px #ffff00 !important;
+  color: #ffff00 !important;
+  font-weight: 800;
+}
+
+/* Absent Spot (Dark Fill + Faint Purple Outline) */
+html[data-theme="neon-city"] .tile.absent {
+  background: #110b2b !important;
+  border: 2px solid #2d2050 !important;
+  color: #3e3263 !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Neon City Keyboard ---------- */
+html[data-theme="neon-city"] .key {
+  background: #1a123d !important;
+  color: #00e5ff !important;
+  border: 1px solid #3a2b6e !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 4px rgba(139, 0, 255, 0.2) !important;
+}
+
+/* Keyboard - Correct Keys (Glowing Purple & Cyan) */
+html[data-theme="neon-city"] .key.correct {
+  background: #7a00e6 !important;
+  color: #ffffff !important;
+  border: 1px solid #00e5ff !important;
+  box-shadow: 0 0 10px #00e5ff !important;
+}
+
+/* Keyboard - Present Keys (Glowing Yellow) */
+html[data-theme="neon-city"] .key.present {
+  background: #150f37 !important;
+  color: #ffff00 !important;
+  border: 1px solid #ffff00 !important;
+  box-shadow: 0 0 10px #ffff00 !important;
+}
+
+/* Keyboard - Absent/Eliminated Keys */
+html[data-theme="neon-city"] .key.absent {
+  background: #0d0824 !important;
+  color: #3e3263 !important;
+  border-color: #1e153b !important;
+  opacity: 0.5;
+  box-shadow: none !important;
 }
 
 /* ---------- Neon 80s ---------- */
