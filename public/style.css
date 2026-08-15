@@ -577,24 +577,100 @@ html[data-theme="ocean"] .key.absent {
   box-shadow: none !important;
 }
 
+/* ---------- Sunset ---------- */
 [data-theme="sunset"] {
-  --color-bg: #221521;
-  --color-surface: #2c1c2b;
+  --color-bg: #1e101c;
+  --color-surface: #2b1728;
   --color-text: #fbeee6;
-  --color-text-dim: #cf9f9c;
-  --color-border: #4a2e42;
-  --color-border-strong: #6c3f56;
-  --color-accent: #e0703f;
+  --color-text-dim: #b8869c;
+  --color-border: #42203c;
+  --color-border-strong: #ffb700;
+  --color-accent: #e05a2b;
 
-  --color-correct: #d97a3f;
-  --color-present: #c3563f;
-  --color-absent: #4a2e42;
+  --color-correct: #e05a2b;
+  --color-present: #b83256;
+  --color-absent: #120811;
   --key-text-on-color: #ffffff;
 
-  --color-key-bg: #3d2538;
+  --color-key-bg: #281526;
   --color-key-text: #fbeee6;
-  --color-modal-overlay: rgba(0, 0, 0, 0.6);
-  --color-danger: #ff6b6b;
+  --color-modal-overlay: rgba(20, 8, 18, 0.85);
+  --color-danger: #ff4d6d;
+}
+
+/* Base Tile Styling */
+html[data-theme="sunset"] .tile {
+  background: #2b1728 !important;
+  border: 2px solid #42203c !important;
+  color: #b8869c !important;
+  border-radius: 8px !important;
+}
+
+/* Filled (Typing before submit) */
+html[data-theme="sunset"] .tile.filled {
+  border-color: #ffb700 !important;
+  box-shadow: 0 0 8px rgba(255, 183, 0, 0.4) !important;
+  color: #fbeee6 !important;
+}
+
+/* Correct Spot (Golden Glowing Sunset Orange Box) */
+html[data-theme="sunset"] .tile.correct {
+  background: #e05a2b !important;
+  border: 2px solid #ffb700 !important;
+  box-shadow: 0 0 14px #ffb700, inset 0 0 6px #ffb700 !important;
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+/* Present Spot (Coral Pink Glowing Magenta Box) */
+html[data-theme="sunset"] .tile.present {
+  background: #b83256 !important;
+  border: 2px solid #ff4081 !important;
+  box-shadow: 0 0 12px #ff4081, inset 0 0 4px #ff4081 !important;
+  color: #ffe3ec !important;
+  font-weight: 800;
+}
+
+/* Absent Spot (Dark Twilight Box) */
+html[data-theme="sunset"] .tile.absent {
+  background: #120811 !important;
+  border: 2px solid #281225 !important;
+  color: #5e3353 !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Sunset Keyboard ---------- */
+html[data-theme="sunset"] .key {
+  background: #281526 !important;
+  color: #fbeee6 !important;
+  border: 1px solid #42203c !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 4px rgba(224, 90, 43, 0.2) !important;
+}
+
+/* Keyboard - Correct Keys (Orange & Golden Glow) */
+html[data-theme="sunset"] .key.correct {
+  background: #e05a2b !important;
+  color: #ffffff !important;
+  border: 1px solid #ffb700 !important;
+  box-shadow: 0 0 10px #ffb700 !important;
+}
+
+/* Keyboard - Present Keys (Magenta & Coral Glow) */
+html[data-theme="sunset"] .key.present {
+  background: #b83256 !important;
+  color: #ffe3ec !important;
+  border: 1px solid #ff4081 !important;
+  box-shadow: 0 0 10px #ff4081 !important;
+}
+
+/* Keyboard - Absent/Eliminated Keys (Dark Twilight & Faded) */
+html[data-theme="sunset"] .key.absent {
+  background: #100610 !important;
+  color: #5e3353 !important;
+  border-color: #1f0b1d !important;
+  opacity: 0.45 !important;
+  box-shadow: none !important;
 }
 
 [data-theme="forest"] {
