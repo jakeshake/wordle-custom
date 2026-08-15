@@ -481,24 +481,100 @@ html[data-theme="bubblegum-3d"] .tile.present {
   font-weight: 800;
 }
 
+/* ---------- Ocean ---------- */
 [data-theme="ocean"] {
-  --color-bg: #06222f;
-  --color-surface: #0c2f40;
-  --color-text: #e8f6fb;
-  --color-text-dim: #7fb2c5;
-  --color-border: #1f4c5f;
-  --color-border-strong: #2f6b82;
-  --color-accent: #2ea8b8;
+  --color-bg: #041421;
+  --color-surface: #0a2236;
+  --color-text: #e0f7fc;
+  --color-text-dim: #5c9ebb;
+  --color-border: #133957;
+  --color-border-strong: #00f0ff;
+  --color-accent: #00f0ff;
 
-  --color-correct: #1f9c8f;
-  --color-present: #d6a336;
-  --color-absent: #1f4c5f;
-  --key-text-on-color: #ffffff;
+  --color-correct: #0b3859;
+  --color-present: #082e38;
+  --color-absent: #06111a;
+  --key-text-on-color: #00f0ff;
 
-  --color-key-bg: #164254;
-  --color-key-text: #e8f6fb;
-  --color-modal-overlay: rgba(0, 0, 0, 0.6);
-  --color-danger: #e0655c;
+  --color-key-bg: #0c2b42;
+  --color-key-text: #e0f7fc;
+  --color-modal-overlay: rgba(2, 10, 18, 0.85);
+  --color-danger: #ff5252;
+}
+
+/* Base Tile Styling */
+html[data-theme="ocean"] .tile {
+  background: #0a2236 !important;
+  border: 2px solid #133957 !important;
+  color: #5c9ebb !important;
+  border-radius: 8px !important;
+}
+
+/* Filled (Typing before submit) */
+html[data-theme="ocean"] .tile.filled {
+  border-color: #00f0ff !important;
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.4) !important;
+  color: #e0f7fc !important;
+}
+
+/* Correct Spot (Bioluminescent Cyan Glowing Box) */
+html[data-theme="ocean"] .tile.correct {
+  background: #0b3859 !important;
+  border: 2px solid #00f0ff !important;
+  box-shadow: 0 0 14px #00f0ff, inset 0 0 6px #00f0ff !important;
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+/* Present Spot (Seafoam Green Glowing Box) */
+html[data-theme="ocean"] .tile.present {
+  background: #082e38 !important;
+  border: 2px solid #20b2aa !important;
+  box-shadow: 0 0 12px #20b2aa, inset 0 0 4px #20b2aa !important;
+  color: #a8f5e9 !important;
+  font-weight: 800;
+}
+
+/* Absent Spot (Dark Deep-Trench Box) */
+html[data-theme="ocean"] .tile.absent {
+  background: #06111a !important;
+  border: 2px solid #0d2233 !important;
+  color: #2a4d6c !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Ocean Keyboard ---------- */
+html[data-theme="ocean"] .key {
+  background: #0d2b42 !important;
+  color: #e0f7fc !important;
+  border: 1px solid #1a4263 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 4px rgba(0, 240, 255, 0.2) !important;
+}
+
+/* Keyboard - Correct Keys (Cyan Glow) */
+html[data-theme="ocean"] .key.correct {
+  background: #0b3859 !important;
+  color: #ffffff !important;
+  border: 1px solid #00f0ff !important;
+  box-shadow: 0 0 10px #00f0ff !important;
+}
+
+/* Keyboard - Present Keys (Seafoam Glow) */
+html[data-theme="ocean"] .key.present {
+  background: #082e38 !important;
+  color: #a8f5e9 !important;
+  border: 1px solid #20b2aa !important;
+  box-shadow: 0 0 10px #20b2aa !important;
+}
+
+/* Keyboard - Absent/Eliminated Keys (Dark & Faded) */
+html[data-theme="ocean"] .key.absent {
+  background: #050d14 !important;
+  color: #2a4d6c !important;
+  border-color: #0c1a26 !important;
+  opacity: 0.45 !important;
+  box-shadow: none !important;
 }
 
 [data-theme="sunset"] {
