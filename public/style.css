@@ -249,12 +249,12 @@ html[data-theme="neon80s"] .key.absent {
   --color-text: #f5e9ff;
   --color-text-dim: #a68fd6;
   --color-border: #3a1f66;
-  --color-border-strong: #55308c;
+  --color-border-strong: #ff2ec4;
   --color-accent: #ff2ec4;
 
   --color-correct: #00fff0;
   --color-present: #ff2ec4;
-  --color-absent: #2a1750;
+  --color-absent: #150a2b;
   --key-text-on-color: #0d0221;
 
   --color-key-bg: #2a1750;
@@ -263,24 +263,79 @@ html[data-theme="neon80s"] .key.absent {
   --color-danger: #ff4d6d;
 }
 
+/* Base Tile Styling */
 html[data-theme="synthwave"] .tile {
-  border: 2px solid #55308c !important;
+  background: #1a0b34 !important;
+  border: 2px solid #3a1f66 !important;
+  color: #a68fd6 !important;
+  border-radius: 8px !important;
 }
+
+/* Filled (Typing before submit) */
+html[data-theme="synthwave"] .tile.filled {
+  border-color: #ff2ec4 !important;
+  box-shadow: 0 0 6px rgba(255, 46, 196, 0.4) !important;
+  color: #f5e9ff !important;
+}
+
+/* Correct Spot (Cyan Fill + Hot Pink Glow Border) */
 html[data-theme="synthwave"] .tile.correct {
+  background: #00fff0 !important;
   border: 2px solid #ff2ec4 !important;
-  box-shadow: 0 0 10px #ff2ec4 !important;
+  box-shadow: 0 0 12px #ff2ec4, inset 0 0 4px #00fff0 !important;
+  color: #0d0221 !important;
+  font-weight: 800;
+}
+
+/* Present Spot (Hot Pink Fill + Cyan Glow Border) */
+html[data-theme="synthwave"] .tile.present {
+  background: #ff2ec4 !important;
+  border: 2px solid #00fff0 !important;
+  box-shadow: 0 0 12px #00fff0, inset 0 0 4px #ff2ec4 !important;
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+/* Absent Spot (Darkened Purple Box) */
+html[data-theme="synthwave"] .tile.absent {
+  background: #120726 !important;
+  border: 2px solid #28124d !important;
+  color: #4d3175 !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Synthwave Keyboard ---------- */
+html[data-theme="synthwave"] .key {
+  background: #1f0f3d !important;
+  color: #f5e9ff !important;
+  border: 1px solid #3a1f66 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 0 4px rgba(255, 46, 196, 0.2) !important;
+}
+
+/* Keyboard - Correct Keys (Cyan Fill + Pink Glow) */
+html[data-theme="synthwave"] .key.correct {
   background: #00fff0 !important;
   color: #0d0221 !important;
+  border: 1px solid #ff2ec4 !important;
+  box-shadow: 0 0 10px #ff2ec4 !important;
 }
-html[data-theme="synthwave"] .tile.present {
-  border: 2px solid #00fff0 !important;
-  box-shadow: 0 0 10px #00fff0 !important;
+
+/* Keyboard - Present Keys (Pink Fill + Cyan Glow) */
+html[data-theme="synthwave"] .key.present {
   background: #ff2ec4 !important;
   color: #ffffff !important;
+  border: 1px solid #00fff0 !important;
+  box-shadow: 0 0 10px #00fff0 !important;
 }
-html[data-theme="synthwave"] .tile.absent {
-  border: 2px solid #55308c !important;
-  background: #2a1750 !important;
+
+/* Keyboard - Absent/Eliminated Keys (Dark & Dimmed) */
+html[data-theme="synthwave"] .key.absent {
+  background: #120726 !important;
+  color: #4d3175 !important;
+  border-color: #231242 !important;
+  opacity: 0.45 !important;
+  box-shadow: none !important;
 }
 
 /* ---------- Christmas ---------- */
