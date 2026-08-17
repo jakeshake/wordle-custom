@@ -451,24 +451,28 @@ html[data-theme="spooky"] .key.absent {
 }
 
 /* ---------- 3D Glossy Bubblegum ---------- */
+/* Light glossy-candy palette (dark text on pale tiles/keys) instead of the
+   original dark-navy set, so the vibrant pastel background photo reads at
+   near-full brightness instead of needing a heavy dark scrim to keep white
+   text legible. */
 [data-theme="bubblegum-3d"] {
-  --color-bg: #222938;
-  --color-surface: #2d3648;
-  --color-text: #ffffff;
-  --color-text-dim: #8b9bb4;
-  --color-border: #3d4a60;
-  --color-border-strong: #526380;
-  --color-accent: #ff9ebb;
+  --color-bg: #fff6fb;
+  --color-surface: #fffaf7;
+  --color-text: #4a2c46;
+  --color-text-dim: #9b7898;
+  --color-border: #f3c6de;
+  --color-border-strong: #ff8fc0;
+  --color-accent: #ff6fae;
 
-  --color-correct: #f3aa94;
-  --color-present: #9ce3d8;
-  --color-absent: #384356;
-  --key-text-on-color: #222938;
+  --color-correct: #ff8fc0;
+  --color-present: #6fdcc7;
+  --color-absent: #ecd9e6;
+  --key-text-on-color: #3a1f38;
 
-  --color-key-bg: #384356;
-  --color-key-text: #ffffff;
-  --color-modal-overlay: rgba(15, 18, 25, 0.75);
-  --color-danger: #ff5277;
+  --color-key-bg: #ffeef6;
+  --color-key-text: #4a2c46;
+  --color-modal-overlay: rgba(74, 44, 70, 0.55);
+  --color-danger: #ff4d7a;
 }
 
 html[data-theme="bubblegum-3d"] .tile {
@@ -802,9 +806,11 @@ body {
 /* ---------- Theme background images ---------- */
 /* Tiles and keys always paint a solid theme color, so they stay readable
    no matter what's behind them. The header title, timer, and icon buttons
-   sit directly on the page background with no box of their own, so each
-   image below is paired with a dark scrim tuned to that image's brightness
-   to keep that text legible while still letting the art show through. */
+      sit directly on the page background with no box of their own, so each
+   image below is paired with a scrim tuned to that image's brightness (dark
+   for a dark image + light theme text, light for a bright image + dark
+   theme text) to keep that text legible while still letting the art show
+   through. */
 [data-theme="ocean"] body,
 [data-theme="christmas"] body,
 [data-theme="spooky"] body,
@@ -833,8 +839,12 @@ body {
 }
 
 [data-theme="bubblegum-3d"] body {
+  /* Tiles/keys and body text switched to a dark-on-light palette for this
+     theme (see the theme block above), so the image no longer needs a dark
+     scrim to keep text legible — just a faint warm-white wash to keep the
+     header text crisp without muting the candy colors. */
   background-image:
-    linear-gradient(rgba(20, 12, 28, 0.6), rgba(20, 12, 28, 0.6)),
+    linear-gradient(rgba(255, 250, 252, 0.15), rgba(255, 250, 252, 0.15)),
     url("images/themes/bubblegum-3d.jpg");
 }
 
