@@ -254,6 +254,10 @@
 
       const guess = state.guesses[r];
       const isCurrentRow = r === state.guesses.length;
+      const isPendingRow = !guess && !isCurrentRow;
+      if (isPendingRow) {
+        row.classList.add("row-pending");
+      }
       const letters = guess
         ? guess.split("")
         : isCurrentRow
