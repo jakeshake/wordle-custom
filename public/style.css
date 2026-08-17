@@ -1010,7 +1010,15 @@ button {
   border-radius: 4px;
   color: var(--color-text);
   user-select: none;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+/* Rows not yet reached fade out (whatever theme background is behind the
+   board shows through), so the row you're actively guessing on stands out.
+   Already-submitted rows and the row you're currently typing in are
+   untouched — this only ever targets empty, not-yet-played rows. */
+.row-pending .tile {
+  opacity: 0.28;
 }
 
 .tile.filled {
