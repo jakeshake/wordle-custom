@@ -799,6 +799,45 @@ body {
   overflow-x: hidden;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
+/* ---------- Theme background images ---------- */
+/* Tiles and keys always paint a solid theme color, so they stay readable
+   no matter what's behind them. The header title, timer, and icon buttons
+   sit directly on the page background with no box of their own, so each
+   image below is paired with a dark scrim tuned to that image's brightness
+   to keep that text legible while still letting the art show through. */
+[data-theme="ocean"] body,
+[data-theme="christmas"] body,
+[data-theme="spooky"] body,
+[data-theme="bubblegum-3d"] body {
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+[data-theme="ocean"] body {
+  background-image:
+    linear-gradient(180deg, rgba(2, 10, 18, 0.75) 0%, rgba(2, 10, 18, 0.42) 25%, rgba(2, 10, 18, 0.32) 100%),
+    url("images/themes/ocean.jpg");
+}
+
+[data-theme="christmas"] body {
+  background-image:
+    linear-gradient(rgba(4, 12, 7, 0.4), rgba(4, 12, 7, 0.4)),
+    url("images/themes/christmas.jpg");
+}
+
+[data-theme="spooky"] body {
+  background-image:
+    linear-gradient(rgba(2, 4, 3, 0.42), rgba(2, 4, 3, 0.42)),
+    url("images/themes/spooky.jpg");
+}
+
+[data-theme="bubblegum-3d"] body {
+  background-image:
+    linear-gradient(rgba(20, 12, 28, 0.6), rgba(20, 12, 28, 0.6)),
+    url("images/themes/bubblegum-3d.jpg");
+}
+
 
 button {
   font-family: inherit;
