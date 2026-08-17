@@ -8,7 +8,7 @@ A clean, mobile-friendly Wordle clone with:
 - **Shared leaderboard** — pick a name (no password), play the Daily Challenge, and your result is submitted to a small backend so everyone on the household server sees the same standings. Tracks games played, win %, current streak, best streak, average guesses, best time, and average luck, separately for 5- and 6-letter.
 - **Speed timer** — starts on your first keystroke each Daily game, shown live above the board, recorded on completion, and tracked on the leaderboard as each player's best time.
 - **Luck rating** — on a win, shows how many answer-pool words were still possible right before your winning guess. Solve it in few guesses despite a wide-open field and you'll score high on luck; narrow it down methodically and you'll score low ("All Skill"). Averaged per player on the leaderboard.
-- **12 themes** — Dark, Light, Ocean, Sunset, Forest, Halloween, Christmas, Synthwave, Neon 80s, Spooky, Retro Terminal, Bubblegum — picked from the palette button, saved across visits.
+- **15 themes** — Dark, Light, Standard Neon, Neon City, Synthwave, Bubblegum 3D, Ocean, Sunset, Forest, Halloween, Christmas, Neon 80s, Spooky, Retro Terminal, Bubblegum — picked from the palette button, saved across visits.
 - A **huge valid-word dictionary** (8,645 five-letter / 15,232 six-letter words) so common guesses never get rejected, while the daily/practice *answer* always comes from a smaller curated common-word list (2,315 / 1,233 words) so the puzzle itself stays fair and guessable.
 
 ## Architecture
@@ -73,3 +73,15 @@ docker run -p 8080:80 -v wordly-data:/data wordly
 - **Add a theme**: add a `[data-theme="yourname"]` block in `public/style.css` with the same CSS custom properties as the existing themes, then add `{ id, name, swatch }` to the `THEMES` array at the top of `public/script.js`.
 - **Add a length**: add `GUESSES[n]` and `ANSWERS[n]` arrays in `public/words.js`, a `<button class="len-btn" data-len="n">n</button>` in `index.html`'s `.length-toggle`, and the board/keyboard/daily logic handles the rest automatically (max guesses = length + 1).
 - **Change the daily reset time or make it shared across timezones**: `todayDateString()` in `public/script.js` uses the browser's local date. Switch it to a fixed UTC-based string if you'd rather everyone share one global reset time regardless of timezone.
+
+## Theme background images
+
+`public/images/themes/` is where per-theme background images live. It's currently a staging folder — drop generated images in there and they'll get wired into their matching theme's CSS as a background next.
+
+Suggested convention (not yet enforced in code, since no images exist yet):
+
+- File name matches the theme's `id` from the `THEMES` array in `public/script.js` (e.g. `ocean.jpg`, `synthwave.png`, `neon-city.webp`).
+- Portrait-friendly / mobile-first framing, since the board is narrow and tall on phones.
+- Keep an eye on contrast — tiles and keys sit on top of the background, so busy or high-contrast images may need a dark/blur overlay added in CSS once they're in place.
+
+Once images are added, hooking them up is a matter of adding a `background-image` (or a CSS custom property like `--bg-image`) to the relevant `[data-theme="..."]` block in `public/style.css`.
