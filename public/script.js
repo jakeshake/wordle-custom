@@ -7,7 +7,7 @@
     { id: "neon-standard", name: "Standard Neon", swatch: "#39ff14" },
     { id: "neon-city", name: "Neon City", swatch: "#00e5ff" },
     { id: "synthwave", name: "Synthwave", swatch: "#ff2ec4" },
-    { id: "bubblegum-3d", name: "Bubblegum 3D", swatch: "#ff8fc0" },
+    { id: "bubblegum-3d", name: "Bubblegum 3D", swatch: "#6fdcc7" },
     { id: "ocean", name: "Ocean", swatch: "#2ea8b8" },
     { id: "sunset", name: "Sunset", swatch: "#e0703f" },
     { id: "forest", name: "Forest", swatch: "#6fae4f" },
