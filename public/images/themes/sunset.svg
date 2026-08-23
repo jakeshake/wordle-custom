@@ -1,0 +1,44 @@
+<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e101c"/>
+      <stop offset="28%" stop-color="#3a1830"/>
+      <stop offset="52%" stop-color="#7a2c3f"/>
+      <stop offset="74%" stop-color="#c14a30"/>
+      <stop offset="100%" stop-color="#ffb700"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="100%" r="60%">
+      <stop offset="0%" stop-color="#ffe08a" stop-opacity="0.85"/>
+      <stop offset="40%" stop-color="#ffb700" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ffb700" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sunDisc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe08a"/>
+      <stop offset="100%" stop-color="#e05a2b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#sky)"/>
+
+  <!-- cloud bands -->
+  <rect x="0" y="240" width="1080" height="24" fill="#3a1830" opacity="0.35"/>
+  <rect x="0" y="400" width="1080" height="16" fill="#7a2c3f" opacity="0.3"/>
+  <rect x="0" y="560" width="1080" height="20" fill="#b83256" opacity="0.22"/>
+
+  <!-- sun -->
+  <circle cx="540" cy="1180" r="620" fill="url(#sunGlow)"/>
+  <circle cx="540" cy="1180" r="260" fill="url(#sunDisc)"/>
+
+  <!-- distant hill layer -->
+  <path d="M0,1500 Q200,1455 400,1490 T800,1478 T1080,1500 L1080,1920 L0,1920 Z" fill="#0f050d"/>
+  <!-- near skyline silhouette -->
+  <g fill="#160810">
+    <rect x="60" y="1560" width="60" height="200"/>
+    <rect x="140" y="1520" width="40" height="240"/>
+    <rect x="200" y="1600" width="70" height="160"/>
+    <rect x="820" y="1580" width="50" height="180"/>
+    <rect x="890" y="1530" width="36" height="230"/>
+    <rect x="950" y="1610" width="80" height="150"/>
+  </g>
+  <path d="M0,1650 Q160,1600 320,1640 T640,1630 T960,1650 T1080,1640 L1080,1920 L0,1920 Z" fill="#100610"/>
+</svg>

@@ -814,7 +814,11 @@ body {
 [data-theme="ocean"] body,
 [data-theme="christmas"] body,
 [data-theme="spooky"] body,
-[data-theme="bubblegum-3d"] body {
+[data-theme="bubblegum-3d"] body,
+[data-theme="sunset"] body,
+[data-theme="neon-standard"] body,
+[data-theme="neon-city"] body,
+[data-theme="neon80s"] body {
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -846,6 +850,40 @@ body {
   background-image:
     linear-gradient(rgba(255, 250, 252, 0.15), rgba(255, 250, 252, 0.15)),
     url("images/themes/bubblegum-3d.jpg");
+}
+
+[data-theme="sunset"] body {
+  /* Dusk sky gradient — deep plum at the top (where the header sits) fading
+     through coral into a glowing gold horizon, matching the theme's
+     orange/coral/gold tile palette. Top is already dark, so only a light
+     wash is needed to keep header text crisp. */
+  background-image:
+    linear-gradient(rgba(12, 5, 11, 0.28), rgba(12, 5, 11, 0.28)),
+    url("images/themes/sunset.svg");
+}
+
+[data-theme="neon-standard"] body {
+  /* Dark wall with ambient green/yellow neon bloom, echoing the theme's
+     classic arcade-sign correct/present colors. */
+  background-image:
+    linear-gradient(rgba(2, 2, 4, 0.35), rgba(2, 2, 4, 0.35)),
+    url("images/themes/neon-standard.svg");
+}
+
+[data-theme="neon-city"] body {
+  /* Cyberpunk skyline in the theme's purple/cyan palette. */
+  background-image:
+    linear-gradient(rgba(3, 1, 12, 0.32), rgba(3, 1, 12, 0.32)),
+    url("images/themes/neon-city.svg");
+}
+
+[data-theme="neon80s"] body {
+  /* Outrun-style sunset grid in the theme's orange/cyan palette. The bottom
+     third gets bright, so a slightly stronger wash keeps the keyboard area
+     from washing out. */
+  background-image:
+    linear-gradient(180deg, rgba(2, 3, 8, 0.3) 0%, rgba(2, 3, 8, 0.2) 45%, rgba(2, 3, 8, 0.45) 100%),
+    url("images/themes/neon80s.svg");
 }
 
 

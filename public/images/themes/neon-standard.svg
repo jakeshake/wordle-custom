@@ -1,0 +1,44 @@
+<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d0e12"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+    <filter id="blur1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="46"/>
+    </filter>
+    <filter id="blur2" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#wall)"/>
+
+  <!-- faint wall seams -->
+  <g stroke="#1a1c24" stroke-width="2" opacity="0.5">
+    <line x1="0" y1="200" x2="1080" y2="200"/>
+    <line x1="0" y1="400" x2="1080" y2="400"/>
+    <line x1="0" y1="600" x2="1080" y2="600"/>
+    <line x1="0" y1="800" x2="1080" y2="800"/>
+    <line x1="0" y1="1000" x2="1080" y2="1000"/>
+    <line x1="0" y1="1200" x2="1080" y2="1200"/>
+    <line x1="0" y1="1400" x2="1080" y2="1400"/>
+    <line x1="0" y1="1600" x2="1080" y2="1600"/>
+    <line x1="0" y1="1800" x2="1080" y2="1800"/>
+  </g>
+
+  <!-- ambient neon bloom -->
+  <circle cx="200" cy="440" r="280" fill="#39ff14" opacity="0.3" filter="url(#blur1)"/>
+  <circle cx="880" cy="1480" r="340" fill="#ffe600" opacity="0.28" filter="url(#blur1)"/>
+  <circle cx="700" cy="760" r="200" fill="#39ff14" opacity="0.2" filter="url(#blur1)"/>
+
+  <!-- neon tube shapes -->
+  <rect x="220" y="880" width="640" height="220" rx="20" fill="none" stroke="#39ff14" stroke-width="12" opacity="0.9" filter="url(#blur2)"/>
+  <rect x="220" y="880" width="640" height="220" rx="20" fill="none" stroke="#c9ffb0" stroke-width="4"/>
+
+  <rect x="300" y="1180" width="480" height="90" rx="16" fill="none" stroke="#ffe600" stroke-width="10" opacity="0.85" filter="url(#blur2)"/>
+  <rect x="300" y="1180" width="480" height="90" rx="16" fill="none" stroke="#fff7c2" stroke-width="4"/>
+
+  <circle cx="200" cy="1620" r="70" fill="none" stroke="#39ff14" stroke-width="8" opacity="0.85" filter="url(#blur2)"/>
+  <circle cx="200" cy="1620" r="70" fill="none" stroke="#c9ffb0" stroke-width="3"/>
+</svg>

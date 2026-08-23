@@ -1,0 +1,76 @@
+<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="citySky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b071e"/>
+      <stop offset="60%" stop-color="#140e33"/>
+      <stop offset="100%" stop-color="#1c1044"/>
+    </linearGradient>
+    <filter id="cglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#citySky)"/>
+
+  <g fill="#00e5ff" opacity="0.5">
+    <circle cx="120" cy="140" r="3"/>
+    <circle cx="900" cy="220" r="2"/>
+    <circle cx="640" cy="100" r="2"/>
+    <circle cx="300" cy="260" r="2"/>
+    <circle cx="820" cy="380" r="2"/>
+    <circle cx="180" cy="420" r="3"/>
+    <circle cx="500" cy="180" r="2"/>
+  </g>
+
+  <!-- far buildings -->
+  <g fill="#150f37">
+    <rect x="0" y="1050" width="140" height="700"/>
+    <rect x="150" y="980" width="110" height="770"/>
+    <rect x="270" y="1100" width="160" height="650"/>
+    <rect x="440" y="900" width="130" height="850"/>
+    <rect x="580" y="1020" width="150" height="730"/>
+    <rect x="740" y="950" width="120" height="800"/>
+    <rect x="870" y="1080" width="140" height="670"/>
+    <rect x="1000" y="1000" width="80" height="750"/>
+  </g>
+
+  <!-- near buildings -->
+  <g fill="#0b0722">
+    <rect x="-20" y="1300" width="220" height="620"/>
+    <rect x="220" y="1220" width="180" height="700"/>
+    <rect x="420" y="1380" width="240" height="540"/>
+    <rect x="680" y="1260" width="200" height="660"/>
+    <rect x="900" y="1350" width="200" height="570"/>
+  </g>
+
+  <!-- glowing windows -->
+  <g fill="#00e5ff" opacity="0.85">
+    <rect x="40" y="1350" width="10" height="16"/>
+    <rect x="70" y="1400" width="10" height="16"/>
+    <rect x="260" y="1300" width="10" height="16"/>
+    <rect x="300" y="1450" width="10" height="16"/>
+    <rect x="470" y="1420" width="10" height="16"/>
+    <rect x="720" y="1330" width="10" height="16"/>
+    <rect x="950" y="1400" width="10" height="16"/>
+    <rect x="120" y="1480" width="10" height="16"/>
+    <rect x="600" y="1500" width="10" height="16"/>
+  </g>
+  <g fill="#8b00ff" opacity="0.85">
+    <rect x="100" y="1370" width="10" height="16"/>
+    <rect x="340" y="1350" width="10" height="16"/>
+    <rect x="500" y="1470" width="10" height="16"/>
+    <rect x="760" y="1420" width="10" height="16"/>
+    <rect x="980" y="1450" width="10" height="16"/>
+  </g>
+
+  <!-- neon signage glow accents -->
+  <rect x="440" y="900" width="130" height="14" fill="#00e5ff" opacity="0.8" filter="url(#cglow)"/>
+  <rect x="740" y="950" width="120" height="12" fill="#8b00ff" opacity="0.8" filter="url(#cglow)"/>
+  <rect x="150" y="980" width="110" height="10" fill="#00e5ff" opacity="0.6" filter="url(#cglow)"/>
+
+  <!-- vertical neon streak -->
+  <rect x="530" y="1150" width="6" height="770" fill="#00e5ff" opacity="0.5" filter="url(#cglow)"/>
+
+  <!-- ground glow -->
+  <rect x="0" y="1880" width="1080" height="40" fill="#00e5ff" opacity="0.15" filter="url(#cglow)"/>
+</svg>

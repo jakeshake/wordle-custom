@@ -76,12 +76,12 @@ docker run -p 8080:80 -v wordly-data:/data wordly
 
 ## Theme background images
 
-`public/images/themes/` is where per-theme background images live. It's currently a staging folder — drop generated images in there and they'll get wired into their matching theme's CSS as a background next.
+`public/images/themes/` holds per-theme background images, wired up as a `background-image` on the matching `[data-theme="..."]` block in `public/style.css` (see the "Theme background images" section near the top of that file). Currently wired: Ocean, Christmas, Spooky, Bubblegum 3D, Sunset, Standard Neon, Neon City, Neon 80s. Any theme without a file here just keeps its flat/gradient background.
 
-Suggested convention (not yet enforced in code, since no images exist yet):
+Convention:
 
-- File name matches the theme's `id` from the `THEMES` array in `public/script.js` (e.g. `ocean.jpg`, `synthwave.png`, `neon-city.webp`).
-- Portrait-friendly / mobile-first framing, since the board is narrow and tall on phones.
-- Keep an eye on contrast — tiles and keys sit on top of the background, so busy or high-contrast images may need a dark/blur overlay added in CSS once they're in place.
+- File name matches the theme's `id` from the `THEMES` array in `public/script.js` (e.g. `ocean.jpg`, `neon-city.svg`). Extension can be `.jpg`, `.png`, `.webp`, or `.svg`.
+- Portrait-friendly / mobile-first framing, since the board is narrow and tall on phones. `background-position: center top` keeps the top of the image anchored under the header.
+- Each wired theme pairs its image with a `linear-gradient(...)` scrim tuned to that image's brightness, layered in the same `background-image` declaration, so tiles/keys (which always paint a solid theme color) and header text stay legible on top.
 
-Once images are added, hooking them up is a matter of adding a `background-image` (or a CSS custom property like `--bg-image`) to the relevant `[data-theme="..."]` block in `public/style.css`.
+To add one for a theme that doesn't have it yet: drop the image in this folder, then add its `[data-theme="..."] body { background-image: linear-gradient(...), url("images/themes/yourfile"); }` rule alongside the others, and add the theme's selector to the shared `background-size/position/repeat` rule above them.

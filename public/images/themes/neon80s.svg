@@ -1,0 +1,61 @@
+<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050810"/>
+      <stop offset="45%" stop-color="#1a1440"/>
+      <stop offset="75%" stop-color="#ff6b00"/>
+      <stop offset="100%" stop-color="#00d9ff"/>
+    </linearGradient>
+    <radialGradient id="sunGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff3d6"/>
+      <stop offset="45%" stop-color="#ff6b00"/>
+      <stop offset="100%" stop-color="#ff007f"/>
+    </radialGradient>
+    <linearGradient id="gridFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00d9ff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#00d9ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#skyGrad)"/>
+
+  <!-- sun -->
+  <circle cx="540" cy="1150" r="340" fill="url(#sunGrad)"/>
+  <g fill="#050810">
+    <rect x="200" y="1230" width="680" height="14"/>
+    <rect x="220" y="1270" width="640" height="16"/>
+    <rect x="250" y="1315" width="580" height="18"/>
+    <rect x="290" y="1365" width="500" height="20"/>
+  </g>
+
+  <!-- horizon line -->
+  <rect x="0" y="1440" width="1080" height="6" fill="#00d9ff"/>
+
+  <!-- perspective grid -->
+  <g stroke="url(#gridFade)" stroke-width="3">
+    <line x1="540" y1="1440" x2="-400" y2="1920"/>
+    <line x1="540" y1="1440" x2="-40" y2="1920"/>
+    <line x1="540" y1="1440" x2="320" y2="1920"/>
+    <line x1="540" y1="1440" x2="540" y2="1920"/>
+    <line x1="540" y1="1440" x2="760" y2="1920"/>
+    <line x1="540" y1="1440" x2="1120" y2="1920"/>
+    <line x1="540" y1="1440" x2="1480" y2="1920"/>
+  </g>
+  <g stroke="#00d9ff" stroke-width="2" opacity="0.6">
+    <line x1="60" y1="1520" x2="1020" y2="1520"/>
+    <line x1="-40" y1="1620" x2="1120" y2="1620"/>
+    <line x1="-160" y1="1740" x2="1240" y2="1740"/>
+    <line x1="-320" y1="1880" x2="1400" y2="1880"/>
+  </g>
+
+  <!-- palm silhouettes -->
+  <g fill="#050810">
+    <rect x="90" y="1200" width="14" height="260"/>
+    <path d="M97,1200 Q40,1150 20,1100 Q70,1130 97,1180 Z"/>
+    <path d="M97,1200 Q160,1140 190,1090 Q140,1130 97,1180 Z"/>
+    <path d="M97,1200 Q60,1120 60,1060 Q100,1110 97,1180 Z"/>
+    <rect x="960" y="1240" width="12" height="220"/>
+    <path d="M966,1240 Q920,1195 905,1155 Q945,1180 966,1225 Z"/>
+    <path d="M966,1240 Q1015,1190 1035,1150 Q995,1180 966,1225 Z"/>
+  </g>
+</svg>
