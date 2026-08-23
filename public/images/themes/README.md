@@ -35,3 +35,12 @@ Name each file after the theme's `id` in the `THEMES` array
   applied, so the tiles and keyboard stay readable on top.
 - Not every theme needs an image — themes without a file here just keep
   their current flat/gradient background.
+- **Desktop/landscape handling**: these images are all portrait, so on a
+  wide/short viewport (landscape, e.g. a desktop browser window) they
+  automatically switch from `background-size: cover` to `contain` via a
+  shared `@media (min-aspect-ratio: 1/1)` rule in `style.css` — see
+  "Theme background images" there. This shows the whole image, letterboxed
+  against the theme's own background color, instead of `cover` cropping a
+  tall image down to a sliver to fill a wide window. No per-image work
+  needed when adding a new one; it's automatic as long as the theme's
+  selector is in both the base rule and the media query block.

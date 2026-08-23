@@ -823,6 +823,29 @@ body {
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
+  background-color: var(--color-bg);
+}
+
+/* All the art above is portrait-framed for phones. `cover` on a wide/short
+   desktop window forces the image to stretch to the viewport's width, which
+   pushes most of a tall image's height off-screen — often leaving just a
+   sliver of sky or wall instead of the actual scene. Past this breakpoint
+   (viewport wider than it is tall) we switch to `contain` instead, so the
+   whole image is always visible, letterboxed left/right against the theme's
+   own background color rather than cropped. */
+@media (min-aspect-ratio: 1/1) {
+  [data-theme="ocean"] body,
+  [data-theme="christmas"] body,
+  [data-theme="spooky"] body,
+  [data-theme="bubblegum-3d"] body,
+  [data-theme="sunset"] body,
+  [data-theme="neon-standard"] body,
+  [data-theme="neon-city"] body,
+  [data-theme="neon80s"] body,
+  [data-theme="synthwave"] body {
+    background-size: contain;
+    background-position: center top;
+  }
 }
 
 [data-theme="ocean"] body {
@@ -864,11 +887,12 @@ body {
 }
 
 [data-theme="neon-standard"] body {
-  /* Dark wall with ambient green/yellow neon bloom, echoing the theme's
-     classic arcade-sign correct/present colors. */
+  /* User-supplied reference art: green/gold neon tubing along a brick
+     room's ceiling corner. The glow sits right at the top of the image,
+     which lines up with center-top positioning under the header. */
   background-image:
-    linear-gradient(rgba(2, 2, 4, 0.35), rgba(2, 2, 4, 0.35)),
-    url("images/themes/neon-standard.svg");
+    linear-gradient(rgba(2, 4, 2, 0.25), rgba(2, 4, 2, 0.25)),
+    url("images/themes/neon-standard.webp");
 }
 
 [data-theme="neon-city"] body {
