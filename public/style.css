@@ -904,12 +904,12 @@ body {
 }
 
 [data-theme="neon80s"] body {
-  /* Scattered Miami-vice neon doodles (palm trees, flamingo, stars, bolts)
-     in the theme's orange/cyan palette, mostly dark background with glow
-     accents, so a light wash matching the other neon themes is enough. */
+  /* User-supplied reference art: retro arcade row (Pac-Man, Galaga,
+     Centipede cabinets) under a magenta/cyan neon ceiling, with retro
+     sneakers, boomboxes, and a Rubik's cube scattered on the floor. */
   background-image:
-    linear-gradient(rgba(2, 3, 8, 0.32), rgba(2, 3, 8, 0.32)),
-    url("images/themes/neon80s.svg");
+    linear-gradient(rgba(2, 3, 8, 0.25), rgba(2, 3, 8, 0.25)),
+    url("images/themes/neon80s.webp");
 }
 
 [data-theme="synthwave"] body {
