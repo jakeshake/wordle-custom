@@ -76,7 +76,7 @@ docker run -p 8080:80 -v wordly-data:/data wordly
 
 ## Theme background images
 
-`public/images/themes/` holds per-theme background images, wired up as a `background-image` on the matching `[data-theme="..."]` block in `public/style.css` (see the "Theme background images" section near the top of that file). Currently wired: Ocean, Christmas, Spooky, Bubblegum 3D, Sunset, Standard Neon, Neon City, Neon 80s. Any theme without a file here just keeps its flat/gradient background.
+`public/images/themes/` holds per-theme background images, wired up as a `background-image` on the matching `[data-theme="..."]` block in `public/style.css` (see the "Theme background images" section near the top of that file). Currently wired: Ocean, Christmas, Spooky, Bubblegum 3D, Sunset, Standard Neon, Neon City, Neon 80s, Synthwave. Any theme without a file here just keeps its flat/gradient background.
 
 Convention:
 

@@ -818,7 +818,8 @@ body {
 [data-theme="sunset"] body,
 [data-theme="neon-standard"] body,
 [data-theme="neon-city"] body,
-[data-theme="neon80s"] body {
+[data-theme="neon80s"] body,
+[data-theme="synthwave"] body {
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
@@ -878,12 +879,19 @@ body {
 }
 
 [data-theme="neon80s"] body {
-  /* Outrun-style sunset grid in the theme's orange/cyan palette. The bottom
-     third gets bright, so a slightly stronger wash keeps the keyboard area
-     from washing out. */
+  /* Scattered Miami-vice neon doodles (palm trees, flamingo, stars, bolts)
+     in the theme's orange/cyan palette, mostly dark background with glow
+     accents, so a light wash matching the other neon themes is enough. */
   background-image:
-    linear-gradient(180deg, rgba(2, 3, 8, 0.3) 0%, rgba(2, 3, 8, 0.2) 45%, rgba(2, 3, 8, 0.45) 100%),
+    linear-gradient(rgba(2, 3, 8, 0.32), rgba(2, 3, 8, 0.32)),
     url("images/themes/neon80s.svg");
+}
+
+[data-theme="synthwave"] body {
+  /* Outrun-style sunset grid in the theme's pink/cyan/purple palette. */
+  background-image:
+    linear-gradient(rgba(4, 1, 14, 0.3), rgba(4, 1, 14, 0.3)),
+    url("images/themes/synthwave.svg");
 }
 
 
