@@ -896,10 +896,11 @@ body {
 }
 
 [data-theme="neon-city"] body {
-  /* Cyberpunk skyline in the theme's purple/cyan palette. */
+  /* User-supplied reference art: wireframe cyberpunk street lined with
+     glowing cyan/magenta/gold skyscrapers, in the theme's palette. */
   background-image:
-    linear-gradient(rgba(3, 1, 12, 0.32), rgba(3, 1, 12, 0.32)),
-    url("images/themes/neon-city.svg");
+    linear-gradient(rgba(3, 1, 12, 0.25), rgba(3, 1, 12, 0.25)),
+    url("images/themes/neon-city.webp");
 }
 
 [data-theme="neon80s"] body {
