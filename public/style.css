@@ -888,10 +888,11 @@ body {
 }
 
 [data-theme="synthwave"] body {
-  /* Outrun-style sunset grid in the theme's pink/cyan/purple palette. */
+  /* User-supplied reference art: outrun sunset grid in the theme's
+     pink/cyan/purple palette. */
   background-image:
-    linear-gradient(rgba(4, 1, 14, 0.3), rgba(4, 1, 14, 0.3)),
-    url("images/themes/synthwave.svg");
+    linear-gradient(rgba(4, 1, 14, 0.22), rgba(4, 1, 14, 0.22)),
+    url("images/themes/synthwave.webp");
 }
 
 
