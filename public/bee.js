@@ -30,8 +30,12 @@
     practice: "bee:practice",
   };
 
+  // Hives are picked from the common list only; BEE_EXTRA (inflections like
+  // "doodled" and slightly rarer words) just widens what's accepted.
   const WORDS = BEE_WORDS;
   const MASKS = WORDS.map(S.letterMask);
+  const EXTRA = typeof BEE_EXTRA !== "undefined" ? BEE_EXTRA : [];
+  const EXTRA_MASKS = EXTRA.map(S.letterMask);
 
   const els = {
     game: document.getElementById("bee-game"),
@@ -100,6 +104,12 @@
   }
 
   function finalize(p) {
+    const centerBit = 1 << (p.center.charCodeAt(0) - 97);
+    for (let i = 0; i < EXTRA.length; i++) {
+      const m = EXTRA_MASKS[i];
+      if (m & centerBit && (m & ~p.set) === 0) p.answers.push(EXTRA[i]);
+    }
+    p.answers.sort();
     p.answerSet = new Set(p.answers);
     p.pangrams = p.answers.filter((w) => S.letterMask(w) === p.set);
     p.maxScore = p.answers.reduce((sum, w) => sum + wordScore(w, p), 0);

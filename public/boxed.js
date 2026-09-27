@@ -38,6 +38,7 @@
     if (pool) return pool;
     const words = BOXED_COMMON;
     const masks = words.map(S.letterMask);
+    const avoid = new Set(typeof BOXED_AVOID !== "undefined" ? BOXED_AVOID : []);
     const byFirst = {};
     const starters = [];
     words.forEach((w, i) => {
@@ -45,7 +46,7 @@
       const distinct = S.bitCount(masks[i]);
       if (w.length >= 4 && distinct >= 5 && distinct <= 9) starters.push(i);
     });
-    pool = { words, masks, byFirst, starters };
+    pool = { words, masks, byFirst, starters, avoid };
     return pool;
   }
 
@@ -83,15 +84,17 @@
 
   function buildPuzzle(seed) {
     const rand = S.seededRandom(seed);
-    const { words, masks, byFirst, starters } = getPool();
+    const { words, masks, byFirst, starters, avoid } = getPool();
     for (let attempt = 0; attempt < 2000; attempt++) {
       const ai = starters[Math.floor(rand() * starters.length)];
       const a = words[ai];
+      if (avoid.has(a)) continue;
       const matches = (byFirst[a[a.length - 1]] || []).filter(
         (bi) => bi !== ai && S.bitCount(masks[ai] | masks[bi]) === 12
       );
       if (!matches.length) continue;
       const b = words[matches[Math.floor(rand() * matches.length)]];
+      if (avoid.has(b)) continue;
       const sides = dealSides([a, b], rand);
       if (sides) return makePuzzle(sides, [a, b]);
     }
