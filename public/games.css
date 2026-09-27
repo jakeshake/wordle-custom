@@ -693,7 +693,8 @@ kbd {
   overflow: visible;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: manipulation;
+  /* Dragging across letters must not scroll or zoom the page. */
+  touch-action: none;
 }
 
 .box-frame {
@@ -719,6 +720,11 @@ kbd {
 
 .box-letter {
   cursor: pointer;
+}
+
+.box-drag {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .box-hit {

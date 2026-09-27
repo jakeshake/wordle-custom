@@ -306,6 +306,7 @@
     if (state.current.length > 1) {
       svg += `<polyline class="box-line current" points="${pathFor(state.current)}"></polyline>`;
     }
+    svg += '<line class="box-line current box-drag" style="display:none"></line>';
     p.sides.forEach((side, s) => {
       side.forEach((l, i) => {
         const [dx, dy] = dotPos(s, i);
@@ -325,7 +326,7 @@
 
     els.current.innerHTML = state.current
       ? state.current.toUpperCase().split("").map((c) => `<span>${c}</span>`).join("")
-      : '<span class="placeholder">Tap letters to spell a word</span>';
+      : '<span class="placeholder">Tap or slide across letters</span>';
     els.words.textContent = state.words.map((w) => w.toUpperCase()).join(" – ");
     els.par.textContent = state.solved
       ? `Solved in ${state.words.length} word${state.words.length === 1 ? "" : "s"} · par ${state.par}`
@@ -340,17 +341,22 @@
     setTimeout(() => els.current.classList.remove("shake"), 400);
   }
 
-  function addLetter(letter) {
-    if (state.solved) return;
+  // Returns true if the letter was added. `quiet` skips the shake, for
+  // letters a drag merely passes over.
+  function addLetter(letter, quiet = false) {
+    if (state.solved) return false;
     const sideOf = state.puzzle.sideOf;
-    if (!(letter in sideOf)) return nudge();
     const last = state.current.slice(-1);
-    if (last && sideOf[last] === sideOf[letter]) return nudge();
-    if (state.current.length >= 20) return;
+    if (!(letter in sideOf) || (last && sideOf[last] === sideOf[letter])) {
+      if (!quiet) nudge();
+      return false;
+    }
+    if (state.current.length >= 20) return false;
     ensureStarted();
     state.current += letter;
     render();
     persist();
+    return true;
   }
 
   function deleteLetter() {
@@ -398,11 +404,95 @@
     }
   }
 
-  els.box.addEventListener("click", (e) => {
-    const g = e.target.closest(".box-letter");
-    if (!g || !state || !state.puzzle) return;
-    addLetter(g.dataset.letter);
+  // ---------- tap + drag selection ----------
+  // Press a letter to add it, then keep your finger / mouse button down and
+  // glide over more letters to add them too. Letters on the same side as the
+  // previous one are skipped silently while dragging, so sliding along an
+  // edge doesn't pick up its neighbors.
+
+  let drag = null; // { pointerId } while a press is in progress
+
+  function toBoxCoords(e) {
+    const pt = els.box.createSVGPoint();
+    pt.x = e.clientX;
+    pt.y = e.clientY;
+    return pt.matrixTransform(els.box.getScreenCTM().inverse());
+  }
+
+  // Nearest letter to the pointer, measured against both the dot on the
+  // edge and the label outside it, within `radius` viewBox units. Dots are
+  // 50 units apart, so a slide from one letter to another can pass fairly
+  // close to a third; moves use a tight radius (you have to actually cross
+  // the dot or letter), while the initial press gets a generous one.
+  const PRESS_RADIUS = 28;
+  const SLIDE_RADIUS = 12;
+  function letterAt(e, radius) {
+    const { x, y } = toBoxCoords(e);
+    let best = null;
+    let bestDist = radius;
+    state.puzzle.sides.forEach((side, s) => {
+      side.forEach((l, i) => {
+        const targets = radius > SLIDE_RADIUS ? [dotPos(s, i), hitPos(s, i), labelPos(s, i)] : [dotPos(s, i), labelPos(s, i)];
+        for (const [px, py] of targets) {
+          const d = Math.hypot(px - x, py - y);
+          if (d < bestDist) {
+            bestDist = d;
+            best = l;
+          }
+        }
+      });
+    });
+    return best;
+  }
+
+  function updateDragLine(e) {
+    const line = els.box.querySelector(".box-drag");
+    const last = state.current.slice(-1);
+    if (!line || !last) return;
+    const [x1, y1] = letterPos(last);
+    const { x, y } = toBoxCoords(e);
+    line.setAttribute("x1", x1);
+    line.setAttribute("y1", y1);
+    line.setAttribute("x2", x);
+    line.setAttribute("y2", y);
+    line.style.display = "";
+  }
+
+  function endDrag() {
+    if (!drag) return;
+    drag = null;
+    const line = els.box.querySelector(".box-drag");
+    if (line) line.style.display = "none";
+  }
+
+  els.box.addEventListener("pointerdown", (e) => {
+    if (!state || !state.puzzle || state.solved) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    const letter = letterAt(e, PRESS_RADIUS);
+    if (!letter) return;
+    e.preventDefault();
+    // Pressing the word's current last letter (e.g. the carried-over start
+    // of the next word) just picks up the drag from there.
+    if (letter !== state.current.slice(-1)) addLetter(letter);
+    drag = { pointerId: e.pointerId };
+    try {
+      els.box.setPointerCapture(e.pointerId);
+    } catch {
+      // Capture isn't essential - moves still arrive while over the box.
+    }
+    updateDragLine(e);
   });
+
+  els.box.addEventListener("pointermove", (e) => {
+    if (!drag || e.pointerId !== drag.pointerId) return;
+    const letter = letterAt(e, SLIDE_RADIUS);
+    if (letter && letter !== state.current.slice(-1)) addLetter(letter, true);
+    updateDragLine(e);
+  });
+
+  els.box.addEventListener("pointerup", endDrag);
+  els.box.addEventListener("pointercancel", endDrag);
+  els.box.addEventListener("lostpointercapture", endDrag);
 
   document.getElementById("boxed-delete").addEventListener("click", () => state.puzzle && deleteLetter());
   document.getElementById("boxed-restart").addEventListener("click", () => state.puzzle && restart());
