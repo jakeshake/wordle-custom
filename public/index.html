@@ -4,146 +4,119 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <meta name="theme-color" content="#121213">
-<title>Wordly — 5 or 6 Letter Word Game</title>
+<title>Wordly Games</title>
+<script>try{var t=localStorage.getItem("wordly:theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="games.css">
 </head>
-<body>
+<body class="game-menu">
 <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
 <header class="app-header">
-  <div class="header-row">
-    <button id="help-btn" class="icon-btn" aria-label="How to play" title="How to play">?</button>
+  <div class="header-row title-row">
+    <div class="header-side">
+      <button id="theme-btn" class="icon-btn" aria-label="Change theme" title="Change theme">&#9681;</button>
+    </div>
     <h1 class="app-title">WORDLY</h1>
-    <button id="player-btn" class="icon-btn" aria-label="Player profile" title="Player profile">&#128100;</button>
-  </div>
-
-  <div class="header-row controls-row">
-    <div class="mode-toggle" role="group" aria-label="Game mode">
-      <button class="mode-btn active" data-mode="daily">Daily</button>
-      <button class="mode-btn" data-mode="practice">Practice</button>
+    <div class="header-side header-side-end">
+      <button id="player-btn" class="icon-btn" aria-label="Player profile" title="Player profile">&#128100;</button>
     </div>
-    <div class="length-toggle" role="group" aria-label="Word length">
-      <button class="len-btn active" data-len="5">5</button>
-      <button class="len-btn" data-len="6">6</button>
-    </div>
-    <button id="theme-btn" class="icon-btn" aria-label="Change theme" title="Change theme">&#9681;</button>
-    <button id="leaderboard-btn" class="icon-btn" aria-label="Leaderboard" title="Leaderboard">&#127942;</button>
-    <button id="new-game-btn" class="icon-btn" aria-label="New game" title="New game">&#8635;</button>
   </div>
 </header>
 
-<main class="game-main">
-  <div id="name-gate" class="name-gate hidden">
-    <h2>Who's playing?</h2>
-    <p>Pick a name so today's result counts on the leaderboard.</p>
-    <input id="gate-name-input" class="text-input" type="text" maxlength="40" placeholder="Your name" autocomplete="off" />
-    <button id="gate-name-btn" class="primary-btn">Start Daily Challenge</button>
-  </div>
-  <div id="daily-timer" class="daily-timer hidden">0:00</div>
-  <div id="board" class="board"></div>
+<main class="menu-main">
+  <p id="menu-greeting" class="menu-greeting">Pick a game</p>
+
+  <a class="game-card" href="/wordly">
+    <span class="game-icon icon-wordly" aria-hidden="true">
+      <span class="t correct">W</span><span class="t present">O</span><span class="t">R</span><span class="t correct">D</span>
+    </span>
+    <span class="game-info">
+      <span class="game-name">Wordly</span>
+      <span class="game-desc">Guess the 5 or 6 letter word.</span>
+      <span id="status-wordly" class="game-status"></span>
+    </span>
+  </a>
+
+  <a class="game-card" href="/bee">
+    <span class="game-icon icon-bee" aria-hidden="true">
+      <svg viewBox="-60 -54 120 108"><polygon points="50,0 25,43.3 -25,43.3 -50,0 -25,-43.3 25,-43.3"></polygon><text x="0" y="0" dy="0.35em">B</text></svg>
+    </span>
+    <span class="game-info">
+      <span class="game-name">Spelling Bee</span>
+      <span class="game-desc">How many words can you make from 7 letters?</span>
+      <span id="status-bee" class="game-status"></span>
+    </span>
+  </a>
+
+  <a class="game-card" href="/boxed">
+    <span class="game-icon icon-boxed" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <rect x="18" y="18" width="64" height="64"></rect>
+        <polyline points="40,18 82,50 60,82 18,40"></polyline>
+        <circle cx="40" cy="18" r="5"></circle><circle cx="60" cy="18" r="5"></circle>
+        <circle cx="82" cy="40" r="5"></circle><circle cx="82" cy="60" r="5"></circle>
+        <circle cx="40" cy="82" r="5"></circle><circle cx="60" cy="82" r="5"></circle>
+        <circle cx="18" cy="40" r="5"></circle><circle cx="18" cy="60" r="5"></circle>
+      </svg>
+    </span>
+    <span class="game-info">
+      <span class="game-name">Letter Boxed</span>
+      <span class="game-desc">Chain words around the square to use all 12 letters.</span>
+      <span id="status-boxed" class="game-status"></span>
+    </span>
+  </a>
+
+  <p class="menu-foot">New daily puzzles every midnight · each game has its own leaderboard &#127942;</p>
 </main>
 
-<footer class="keyboard-wrap">
-  <div id="keyboard" class="keyboard"></div>
-</footer>
+<script src="common.js"></script>
+<script>
+(() => {
+  const S = Shared;
+  S.initShell({ onNameSaved: greet });
 
-<!-- How to play modal -->
-<div id="help-modal" class="modal-overlay hidden">
-  <div class="modal">
-    <button class="modal-close" data-close="help-modal" aria-label="Close">&times;</button>
-    <h2>How to Play</h2>
-    <p>Guess the word before you run out of tries.</p>
-    <ul class="help-list">
-      <li>Each guess must be a valid word of the current length.</li>
-      <li>After each guess, tile colors show how close you were.</li>
-    </ul>
-    <div class="example-row">
-      <div class="tile correct">W</div>
-      <div class="tile">O</div>
-      <div class="tile">R</div>
-      <div class="tile">D</div>
-      <div class="tile">S</div>
-    </div>
-    <p class="example-text"><strong>W</strong> is in the word and in the correct spot.</p>
-    <div class="example-row">
-      <div class="tile">L</div>
-      <div class="tile present">I</div>
-      <div class="tile">G</div>
-      <div class="tile">H</div>
-      <div class="tile">T</div>
-    </div>
-    <p class="example-text"><strong>I</strong> is in the word but in the wrong spot.</p>
-    <div class="example-row">
-      <div class="tile">V</div>
-      <div class="tile">A</div>
-      <div class="tile">G</div>
-      <div class="tile absent">U</div>
-      <div class="tile">E</div>
-    </div>
-    <p class="example-text"><strong>U</strong> is not in the word at all.</p>
-    <p>If a guess repeats a letter, only as many copies light up as actually appear in the answer — the rest show absent, same as the original Wordle.</p>
-    <p><strong>Daily</strong> gives everyone the same word each day, resetting at midnight — play it to show up on the leaderboard. <strong>Practice</strong> is unlimited and doesn't count toward scores.</p>
-    <p>Daily games are timed from your first keystroke, and a win shows a <strong>Luck</strong> rating — how many possible words were still in play right before your winning guess. A low score means you solved it through deduction; a high score means you got there despite the odds.</p>
-  </div>
-</div>
+  function greet() {
+    const name = S.getPlayerName();
+    document.getElementById("menu-greeting").textContent = name ? `Hi ${name} — pick a game` : "Pick a game";
+  }
 
-<!-- Theme picker modal -->
-<div id="theme-modal" class="modal-overlay hidden">
-  <div class="modal">
-    <button class="modal-close" data-close="theme-modal" aria-label="Close">&times;</button>
-    <h2>Theme</h2>
-    <div id="theme-list" class="theme-list"></div>
-  </div>
-</div>
+  const today = S.todayDateString();
+  const set = (id, text, done) => {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.classList.toggle("done", !!done);
+  };
 
-<!-- Player name modal -->
-<div id="name-modal" class="modal-overlay hidden">
-  <div class="modal">
-    <button class="modal-close" data-close="name-modal" aria-label="Close">&times;</button>
-    <h2>Player Profile</h2>
-    <p>This name is used for the leaderboard.</p>
-    <input id="name-input" class="text-input" type="text" maxlength="40" placeholder="Your name" autocomplete="off" />
-    <button id="name-save-btn" class="primary-btn">Save</button>
-  </div>
-</div>
+  // Wordly: summarize both lengths' daily results.
+  const wordly = [5, 6]
+    .map((len) => {
+      const s = S.load(`wordly:daily:${len}:${today}`);
+      if (!s || !s.guesses || !s.guesses.length) return null;
+      if (!s.over) return `${len}-letter in progress`;
+      return s.won ? `${len}-letter ✓ in ${s.guesses.length}` : `${len}-letter ✗`;
+    })
+    .filter(Boolean);
+  set("status-wordly", wordly.length ? `Today: ${wordly.join(" · ")}` : "Today's words are waiting", wordly.length);
 
-<!-- Leaderboard modal -->
-<div id="leaderboard-modal" class="modal-overlay hidden">
-  <div class="modal modal-wide">
-    <button class="modal-close" data-close="leaderboard-modal" aria-label="Close">&times;</button>
-    <h2>Leaderboard</h2>
-    <div class="leaderboard-tabs" role="group" aria-label="Leaderboard length">
-      <button class="lb-tab active" data-lb-len="5">5-letter</button>
-      <button class="lb-tab" data-lb-len="6">6-letter</button>
-    </div>
-    <div id="leaderboard-content" class="leaderboard-content">
-      <p class="lb-status">Loading…</p>
-    </div>
-  </div>
-</div>
+  const bee = S.load(`bee:daily:${today}`);
+  if (bee && bee.found && bee.found.length) {
+    set("status-bee", `Today: ${bee.rank} · ${bee.score} pts · ${bee.found.length} words`, true);
+  } else {
+    set("status-bee", "Today's hive is waiting");
+  }
 
-<!-- End of game modal -->
-<div id="result-modal" class="modal-overlay hidden">
-  <div class="modal">
-    <button class="modal-close" data-close="result-modal" aria-label="Close">&times;</button>
-    <h2 id="result-title">Nice!</h2>
-    <p id="result-word" class="result-word"></p>
-    <div id="result-stats" class="result-stats hidden">
-      <div class="result-stat">
-        <span class="result-stat-label">Time</span>
-        <span id="result-time" class="result-stat-value">—</span>
-      </div>
-      <div class="result-stat">
-        <span class="result-stat-label">Luck</span>
-        <span id="result-luck" class="result-stat-value">—</span>
-      </div>
-    </div>
-    <p id="result-countdown" class="result-countdown hidden"></p>
-    <button id="play-again-btn" class="primary-btn">Play Again</button>
-  </div>
-</div>
+  const boxed = S.load(`boxed:daily:${today}`);
+  if (boxed && boxed.solved) {
+    set("status-boxed", `Today: ✓ solved in ${boxed.words.length} words`, true);
+  } else if (boxed && boxed.started) {
+    set("status-boxed", "Today: in progress", true);
+  } else {
+    set("status-boxed", "Today's box is waiting");
+  }
 
-<script src="words.js"></script>
-<script src="script.js"></script>
+  greet();
+})();
+</script>
 </body>
 </html>

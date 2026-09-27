@@ -1,23 +1,18 @@
 (() => {
   "use strict";
 
-  const THEMES = [
-    { id: "dark", name: "Dark", swatch: "#538d4e" },
-    { id: "light", name: "Light", swatch: "#6aaa64" },
-    { id: "neon-standard", name: "Standard Neon", swatch: "#39ff14" },
-    { id: "neon-city", name: "Neon City", swatch: "#00e5ff" },
-    { id: "synthwave", name: "Synthwave", swatch: "#ff2ec4" },
-    { id: "bubblegum-3d", name: "Bubblegum 3D", swatch: "#6fdcc7" },
-    { id: "ocean", name: "Ocean", swatch: "#2ea8b8" },
-    { id: "sunset", name: "Sunset", swatch: "#e0703f" },
-    { id: "forest", name: "Forest", swatch: "#6fae4f" },
-    { id: "halloween", name: "Halloween", swatch: "#ff7518" },
-    { id: "christmas", name: "Christmas", swatch: "#c41e3a" },
-    { id: "neon80s", name: "Neon 80s", swatch: "#ff6b00" },
-    { id: "spooky", name: "Spooky", swatch: "#7cb342" },
-    { id: "terminal", name: "Retro Terminal", swatch: "#33ff33" },
-    { id: "bubblegum", name: "Bubblegum", swatch: "#ff8fc7" },
-  ];
+  const {
+    todayDateString,
+    hashString,
+    msUntilNextMidnight,
+    formatTimer,
+    getPlayerName,
+    setPlayerName,
+    showToast,
+    openModal,
+    closeModal,
+    escapeHtml,
+  } = Shared;
 
   const KEY_ROWS = [
     ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
@@ -26,10 +21,8 @@
   ];
 
   const STORAGE_KEYS = {
-    theme: "wordly:theme",
     length: "wordly:length",
     mode: "wordly:mode",
-    playerName: "wordly:playerName",
     daily: (length, date) => `wordly:daily:${length}:${date}`,
   };
 
@@ -40,7 +33,6 @@
 
   const boardEl = document.getElementById("board");
   const keyboardEl = document.getElementById("keyboard");
-  const toastContainer = document.getElementById("toast-container");
   const nameGateEl = document.getElementById("name-gate");
   const dailyTimerEl = document.getElementById("daily-timer");
 
@@ -54,22 +46,6 @@
     return length + 1;
   }
 
-  function todayDateString() {
-    const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${y}-${m}-${day}`;
-  }
-
-  function hashString(str) {
-    let hash = 5381;
-    for (let i = 0; i < str.length; i++) {
-      hash = ((hash * 33) ^ str.charCodeAt(i)) >>> 0;
-    }
-    return hash >>> 0;
-  }
-
   function wordOfDay(length, dateStr) {
     const pool = ANSWERS[length];
     const seed = hashString(`${dateStr}:${length}`);
@@ -81,24 +57,8 @@
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
-  function msUntilNextMidnight() {
-    const now = new Date();
-    const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
-    return next.getTime() - now.getTime();
-  }
-
   function formatCountdown(ms) {
-    const totalMinutes = Math.max(0, Math.floor(ms / 60000));
-    const h = Math.floor(totalMinutes / 60);
-    const m = totalMinutes % 60;
-    return `Next word in ${h}h ${m}m`;
-  }
-
-  function formatTimer(ms) {
-    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-    const m = Math.floor(totalSeconds / 60);
-    const s = totalSeconds % 60;
-    return `${m}:${String(s).padStart(2, "0")}`;
+    return Shared.formatCountdown(ms, "word");
   }
 
   function luckLabel(score) {
@@ -106,16 +66,6 @@
     if (score >= 51) return "Lucky";
     if (score >= 21) return "Solid";
     return "All Skill";
-  }
-
-  // ---------- player identity ----------
-
-  function getPlayerName() {
-    return localStorage.getItem(STORAGE_KEYS.playerName) || "";
-  }
-
-  function setPlayerName(name) {
-    localStorage.setItem(STORAGE_KEYS.playerName, name);
   }
 
   // ---------- daily persistence ----------
@@ -354,14 +304,6 @@
         state.keyStates.set(letter, status);
       }
     });
-  }
-
-  function showToast(message) {
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.textContent = message;
-    toastContainer.appendChild(toast);
-    setTimeout(() => toast.remove(), 1300);
   }
 
   function shakeCurrentRow() {
@@ -629,66 +571,17 @@
     if (state.mode === "practice") startPractice(state.length);
   });
 
-  // ---- Modal helpers ----
-  function openModal(id) {
-    document.getElementById(id).classList.remove("hidden");
-  }
-  function closeModal(id) {
-    document.getElementById(id).classList.add("hidden");
-    if (id === "result-modal") stopCountdown();
-  }
+  // ---- Shell (theme, player name, modals) ----
+  Shared.initShell({
+    onNameSaved() {
+      if (state && state.mode === "daily" && !nameGateEl.classList.contains("hidden")) {
+        startDaily(state.length);
+      }
+    },
+  });
+  Shared.onModalClose("result-modal", stopCountdown);
 
   document.getElementById("help-btn").addEventListener("click", () => openModal("help-modal"));
-  document.getElementById("theme-btn").addEventListener("click", () => openModal("theme-modal"));
-
-  document.querySelectorAll("[data-close]").forEach((btn) => {
-    btn.addEventListener("click", () => closeModal(btn.dataset.close));
-  });
-
-  document.querySelectorAll(".modal-overlay").forEach((overlay) => {
-    overlay.addEventListener("click", (e) => {
-      if (e.target === overlay) closeModal(overlay.id);
-    });
-  });
-
-  // ---- Theme ----
-  function applyTheme(themeId) {
-    document.documentElement.setAttribute("data-theme", themeId);
-    localStorage.setItem(STORAGE_KEYS.theme, themeId);
-    renderThemeList(themeId);
-  }
-
-  function renderThemeList(activeId) {
-    const list = document.getElementById("theme-list");
-    list.innerHTML = "";
-    THEMES.forEach((theme) => {
-      const btn = document.createElement("button");
-      btn.className = "theme-option" + (theme.id === activeId ? " active" : "");
-      btn.innerHTML = `<span class="theme-swatch" style="background:${theme.swatch}"></span><span>${theme.name}</span>`;
-      btn.addEventListener("click", () => applyTheme(theme.id));
-      list.appendChild(btn);
-    });
-  }
-
-  // ---- Player name ----
-  document.getElementById("player-btn").addEventListener("click", () => {
-    document.getElementById("name-input").value = getPlayerName();
-    openModal("name-modal");
-  });
-
-  document.getElementById("name-save-btn").addEventListener("click", () => {
-    const input = document.getElementById("name-input");
-    const name = input.value.trim();
-    if (!name) {
-      input.focus();
-      return;
-    }
-    setPlayerName(name);
-    closeModal("name-modal");
-    if (state && state.mode === "daily" && !nameGateEl.classList.contains("hidden")) {
-      startDaily(state.length);
-    }
-  });
 
   document.getElementById("gate-name-btn").addEventListener("click", () => {
     const input = document.getElementById("gate-name-input");
@@ -744,12 +637,6 @@
     content.appendChild(table);
   }
 
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
   async function loadLeaderboard(length) {
     const content = document.getElementById("leaderboard-content");
     content.innerHTML = '<p class="lb-status">Loading…</p>';
@@ -778,13 +665,6 @@
 
   // ---- Init ----
   function init() {
-    const savedTheme = localStorage.getItem(STORAGE_KEYS.theme);
-    if (savedTheme && THEMES.some((t) => t.id === savedTheme)) {
-      applyTheme(savedTheme);
-    } else {
-      renderThemeList(null);
-    }
-
     const savedLength = Number(localStorage.getItem(STORAGE_KEYS.length));
     const startLength = savedLength === 6 ? 6 : 5;
     const savedMode = localStorage.getItem(STORAGE_KEYS.mode);

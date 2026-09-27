@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#121213">
+<title>Wordly — 5 or 6 Letter Word Game</title>
+<script>try{var t=localStorage.getItem("wordly:theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<header class="app-header">
+  <div class="header-row title-row">
+    <div class="header-side">
+      <a href="/" class="icon-btn" aria-label="All games" title="All games">&#8962;</a>
+      <button id="help-btn" class="icon-btn" aria-label="How to play" title="How to play">?</button>
+    </div>
+    <h1 class="app-title">WORDLY</h1>
+    <div class="header-side header-side-end">
+      <button id="player-btn" class="icon-btn" aria-label="Player profile" title="Player profile">&#128100;</button>
+    </div>
+  </div>
+
+  <div class="header-row controls-row">
+    <div class="mode-toggle" role="group" aria-label="Game mode">
+      <button class="mode-btn active" data-mode="daily">Daily</button>
+      <button class="mode-btn" data-mode="practice">Practice</button>
+    </div>
+    <div class="length-toggle" role="group" aria-label="Word length">
+      <button class="len-btn active" data-len="5">5</button>
+      <button class="len-btn" data-len="6">6</button>
+    </div>
+    <button id="theme-btn" class="icon-btn" aria-label="Change theme" title="Change theme">&#9681;</button>
+    <button id="leaderboard-btn" class="icon-btn" aria-label="Leaderboard" title="Leaderboard">&#127942;</button>
+    <button id="new-game-btn" class="icon-btn" aria-label="New game" title="New game">&#8635;</button>
+  </div>
+</header>
+
+<main class="game-main">
+  <div id="name-gate" class="name-gate hidden">
+    <h2>Who's playing?</h2>
+    <p>Pick a name so today's result counts on the leaderboard.</p>
+    <input id="gate-name-input" class="text-input" type="text" maxlength="40" placeholder="Your name" autocomplete="off" />
+    <button id="gate-name-btn" class="primary-btn">Start Daily Challenge</button>
+  </div>
+  <div id="daily-timer" class="daily-timer hidden">0:00</div>
+  <div id="board" class="board"></div>
+</main>
+
+<footer class="keyboard-wrap">
+  <div id="keyboard" class="keyboard"></div>
+</footer>
+
+<!-- How to play modal -->
+<div id="help-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="help-modal" aria-label="Close">&times;</button>
+    <h2>How to Play</h2>
+    <p>Guess the word before you run out of tries.</p>
+    <ul class="help-list">
+      <li>Each guess must be a valid word of the current length.</li>
+      <li>After each guess, tile colors show how close you were.</li>
+    </ul>
+    <div class="example-row">
+      <div class="tile correct">W</div>
+      <div class="tile">O</div>
+      <div class="tile">R</div>
+      <div class="tile">D</div>
+      <div class="tile">S</div>
+    </div>
+    <p class="example-text"><strong>W</strong> is in the word and in the correct spot.</p>
+    <div class="example-row">
+      <div class="tile">L</div>
+      <div class="tile present">I</div>
+      <div class="tile">G</div>
+      <div class="tile">H</div>
+      <div class="tile">T</div>
+    </div>
+    <p class="example-text"><strong>I</strong> is in the word but in the wrong spot.</p>
+    <div class="example-row">
+      <div class="tile">V</div>
+      <div class="tile">A</div>
+      <div class="tile">G</div>
+      <div class="tile absent">U</div>
+      <div class="tile">E</div>
+    </div>
+    <p class="example-text"><strong>U</strong> is not in the word at all.</p>
+    <p>If a guess repeats a letter, only as many copies light up as actually appear in the answer — the rest show absent, same as the original Wordle.</p>
+    <p><strong>Daily</strong> gives everyone the same word each day, resetting at midnight — play it to show up on the leaderboard. <strong>Practice</strong> is unlimited and doesn't count toward scores.</p>
+    <p>Daily games are timed from your first keystroke, and a win shows a <strong>Luck</strong> rating — how many possible words were still in play right before your winning guess. A low score means you solved it through deduction; a high score means you got there despite the odds.</p>
+  </div>
+</div>
+
+<!-- Leaderboard modal -->
+<div id="leaderboard-modal" class="modal-overlay hidden">
+  <div class="modal modal-wide">
+    <button class="modal-close" data-close="leaderboard-modal" aria-label="Close">&times;</button>
+    <h2>Leaderboard</h2>
+    <div class="leaderboard-tabs" role="group" aria-label="Leaderboard length">
+      <button class="lb-tab active" data-lb-len="5">5-letter</button>
+      <button class="lb-tab" data-lb-len="6">6-letter</button>
+    </div>
+    <div id="leaderboard-content" class="leaderboard-content">
+      <p class="lb-status">Loading…</p>
+    </div>
+  </div>
+</div>
+
+<!-- End of game modal -->
+<div id="result-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="result-modal" aria-label="Close">&times;</button>
+    <h2 id="result-title">Nice!</h2>
+    <p id="result-word" class="result-word"></p>
+    <div id="result-stats" class="result-stats hidden">
+      <div class="result-stat">
+        <span class="result-stat-label">Time</span>
+        <span id="result-time" class="result-stat-value">—</span>
+      </div>
+      <div class="result-stat">
+        <span class="result-stat-label">Luck</span>
+        <span id="result-luck" class="result-stat-value">—</span>
+      </div>
+    </div>
+    <p id="result-countdown" class="result-countdown hidden"></p>
+    <button id="play-again-btn" class="primary-btn">Play Again</button>
+  </div>
+</div>
+
+<script src="common.js"></script>
+<script src="words.js"></script>
+<script src="wordly.js"></script>
+</body>
+</html>

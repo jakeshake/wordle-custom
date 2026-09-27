@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#121213">
+<title>Letter Boxed — Wordly Games</title>
+<script>try{var t=localStorage.getItem("wordly:theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="games.css">
+</head>
+<body class="game-boxed">
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<header class="app-header">
+  <div class="header-row title-row">
+    <div class="header-side">
+      <a href="/" class="icon-btn" aria-label="All games" title="All games">&#8962;</a>
+      <button id="help-btn" class="icon-btn" aria-label="How to play" title="How to play">?</button>
+    </div>
+    <h1 class="app-title">LETTER BOXED</h1>
+    <div class="header-side header-side-end">
+      <button id="player-btn" class="icon-btn" aria-label="Player profile" title="Player profile">&#128100;</button>
+    </div>
+  </div>
+
+  <div class="header-row controls-row">
+    <div class="mode-toggle" role="group" aria-label="Game mode">
+      <button class="mode-btn active" data-mode="daily">Daily</button>
+      <button class="mode-btn" data-mode="practice">Practice</button>
+    </div>
+    <button id="theme-btn" class="icon-btn" aria-label="Change theme" title="Change theme">&#9681;</button>
+    <button id="leaderboard-btn" class="icon-btn" aria-label="Leaderboard" title="Leaderboard">&#127942;</button>
+    <button id="new-game-btn" class="icon-btn" aria-label="New puzzle" title="New puzzle">&#8635;</button>
+  </div>
+</header>
+
+<main class="game-main boxed-main">
+  <div id="name-gate" class="name-gate hidden">
+    <h2>Who's playing?</h2>
+    <p>Pick a name so today's solve counts on the leaderboard.</p>
+    <input id="gate-name-input" class="text-input" type="text" maxlength="40" placeholder="Your name" autocomplete="off" />
+    <button id="gate-name-btn" class="primary-btn">Start Daily Puzzle</button>
+  </div>
+
+  <div id="loading" class="boxed-loading">Loading dictionary…</div>
+
+  <div id="boxed-game" class="boxed-game hidden">
+    <div class="boxed-top">
+      <div id="boxed-current" class="boxed-current" aria-live="polite"></div>
+      <div id="boxed-words" class="boxed-words"></div>
+      <div class="boxed-meta">
+        <span id="boxed-par" class="boxed-par"></span>
+        <span id="boxed-timer" class="daily-timer hidden">0:00</span>
+      </div>
+    </div>
+
+    <svg id="box" class="box" viewBox="0 0 300 300" role="group" aria-label="Letter box"></svg>
+
+    <div class="bee-controls">
+      <button id="boxed-restart" class="pill-btn">Restart</button>
+      <button id="boxed-delete" class="pill-btn">Delete</button>
+      <button id="boxed-enter" class="pill-btn">Enter</button>
+    </div>
+
+    <button id="boxed-extra" class="link-btn">Yesterday's solution</button>
+  </div>
+</main>
+
+<!-- How to play -->
+<div id="help-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="help-modal" aria-label="Close">&times;</button>
+    <h2>How to Play</h2>
+    <p>Connect letters around the square to make words, and use all 12 letters.</p>
+    <ul class="help-list">
+      <li>Words must be at least 3 letters long.</li>
+      <li>Consecutive letters in a word can't come from the same side.</li>
+      <li>The last letter of each word becomes the first letter of the next.</li>
+      <li>Letters can be used more than once.</li>
+    </ul>
+    <p>Try to finish in as few words as you can. The puzzle shows a <strong>par</strong> to aim for, and every puzzle can be solved in 2 words.</p>
+    <p><strong>Delete</strong> removes a letter. Keep deleting past the start of a word to reopen the previous one. <strong>Restart</strong> clears everything.</p>
+    <p><strong>Daily</strong> gives everyone the same box, resetting at midnight, and counts on the leaderboard: fewer words is better, and time breaks ties. The clock only runs while the game is open on screen. <strong>Practice</strong> gives endless random boxes.</p>
+    <p class="help-keys">Keyboard: type letters, <kbd>Enter</kbd> to submit a word, <kbd>Backspace</kbd> to delete.</p>
+  </div>
+</div>
+
+<!-- Solution (yesterday / reveal) -->
+<div id="answers-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="answers-modal" aria-label="Close">&times;</button>
+    <h2 id="answers-title">Yesterday's Solution</h2>
+    <div id="answers-sides" class="answers-sides"></div>
+    <p id="answers-summary" class="answers-summary"></p>
+    <p id="answers-solution" class="result-word"></p>
+    <p id="answers-yours" class="answers-summary"></p>
+  </div>
+</div>
+
+<!-- Leaderboard -->
+<div id="leaderboard-modal" class="modal-overlay hidden">
+  <div class="modal modal-wide">
+    <button class="modal-close" data-close="leaderboard-modal" aria-label="Close">&times;</button>
+    <h2>Letter Boxed Leaderboard</h2>
+    <div class="leaderboard-tabs" role="group" aria-label="Leaderboard view">
+      <button class="lb-tab active" data-lb-view="today">Today</button>
+      <button class="lb-tab" data-lb-view="all">All-time</button>
+    </div>
+    <div id="leaderboard-content" class="leaderboard-content">
+      <p class="lb-status">Loading…</p>
+    </div>
+  </div>
+</div>
+
+<!-- Solved -->
+<div id="result-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="result-modal" aria-label="Close">&times;</button>
+    <h2 id="result-title">Solved!</h2>
+    <p id="result-text" class="result-text"></p>
+    <div id="result-stats" class="result-stats"></div>
+    <p id="result-ours" class="answers-summary"></p>
+    <p id="result-countdown" class="result-countdown hidden"></p>
+    <button id="play-again-btn" class="primary-btn hidden">New Puzzle</button>
+  </div>
+</div>
+
+<script src="common.js"></script>
+<script src="words-boxed.js" defer></script>
+<script src="boxed.js" defer></script>
+</body>
+</html>

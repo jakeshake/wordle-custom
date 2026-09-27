@@ -7,7 +7,7 @@ block in `public/style.css`.
 ## Naming
 
 Name each file after the theme's `id` in the `THEMES` array
-(`public/script.js`), e.g.:
+(`public/common.js`), e.g.:
 
 - `dark.jpg`
 - `light.jpg`

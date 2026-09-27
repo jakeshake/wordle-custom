@@ -1,0 +1,812 @@
+/* Styles for the game menu, Spelling Bee, and Letter Boxed. Loaded after
+   style.css, so every theme's custom properties apply here too. */
+
+/* ---------- Shared bits ---------- */
+.pill-btn {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  padding: 0.65rem 1.15rem;
+  min-width: 5.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pill-btn:active {
+  filter: brightness(0.85);
+}
+
+.pill-btn.round {
+  min-width: 0;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  font-size: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.3rem;
+}
+
+.help-subhead {
+  margin: 1rem 0 0.25rem;
+  font-size: 1rem;
+}
+
+.help-keys {
+  font-size: 0.8rem;
+  color: var(--color-text-dim);
+}
+
+kbd {
+  border: 1px solid var(--color-border-strong);
+  border-radius: 4px;
+  padding: 0 0.3rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+}
+
+.result-text {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.result-stats small {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--color-text-dim);
+}
+
+.lb-table tr.lb-me td {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+@keyframes game-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+.shake {
+  animation: game-shake 0.4s ease;
+}
+
+/* ---------- Menu ---------- */
+.menu-main {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.menu-greeting {
+  margin: 0.25rem 0 0.25rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.game-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  color: var(--color-text);
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.game-card:hover,
+.game-card:focus-visible {
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.game-card:active {
+  transform: scale(0.99);
+}
+
+.game-icon {
+  flex-shrink: 0;
+  width: 4.2rem;
+  height: 4.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.icon-wordly {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+  padding: 0.2rem;
+}
+
+.icon-wordly .t {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  background: var(--color-absent);
+  color: var(--color-text);
+}
+
+.icon-wordly .t.correct {
+  background: var(--color-correct);
+  color: var(--key-text-on-color);
+}
+
+.icon-wordly .t.present {
+  background: var(--color-present);
+  color: var(--key-text-on-color);
+}
+
+.icon-bee polygon {
+  fill: var(--bee-center, var(--color-present));
+}
+
+.icon-bee text {
+  fill: var(--bee-center-text, var(--key-text-on-color));
+  font-size: 44px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.icon-boxed rect {
+  fill: var(--color-bg);
+  stroke: var(--color-text);
+  stroke-width: 3;
+}
+
+.icon-boxed polyline {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.icon-boxed circle {
+  fill: var(--color-bg);
+  stroke: var(--color-text);
+  stroke-width: 2.5;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.game-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.game-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+}
+
+.game-status {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-dim);
+}
+
+.game-status.done {
+  color: var(--color-accent);
+}
+
+.menu-foot {
+  margin-top: auto;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-text-dim);
+}
+
+/* ---------- Spelling Bee ---------- */
+.bee-main {
+  justify-content: flex-start;
+}
+
+.bee-game {
+  width: 100%;
+  max-width: 440px;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.bee-rank {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  padding: 0.35rem 0.1rem;
+  cursor: pointer;
+}
+
+.bee-rank-name {
+  font-weight: 800;
+  font-size: 0.95rem;
+  min-width: 6.2rem;
+  text-align: left;
+}
+
+.bee-track {
+  position: relative;
+  flex: 1;
+  height: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.bee-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-border-strong);
+}
+
+.bee-track-fill {
+  position: absolute;
+  left: 0;
+  height: 2px;
+  background: var(--bee-center, var(--color-present));
+  transition: width 0.3s ease;
+}
+
+.bee-track-dots {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bee-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+}
+
+.bee-dot.done {
+  background: var(--bee-center, var(--color-present));
+}
+
+.bee-dot.current {
+  transform: scale(1.5);
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+.bee-score {
+  min-width: 2.2rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: var(--bee-center, var(--color-present));
+  color: var(--bee-center-text, var(--key-text-on-color));
+  font-weight: 800;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.bee-meta {
+  min-height: 1.1rem;
+  display: flex;
+  justify-content: center;
+  margin-top: -0.35rem;
+}
+
+.bee-found {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.bee-found-summary {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: pre;
+  text-overflow: ellipsis;
+}
+
+.bee-found-caret {
+  color: var(--color-text-dim);
+  transition: transform 0.2s ease;
+}
+
+.bee-found[aria-expanded="true"] .bee-found-caret {
+  transform: rotate(180deg);
+}
+
+.bee-found-panel {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-top: -0.3rem;
+}
+
+.bee-found-list,
+.answers-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 1.5rem;
+}
+
+.bee-found-list li,
+.answers-list li {
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--color-border);
+  break-inside: avoid;
+  font-size: 0.95rem;
+}
+
+.bee-found-list li.pangram,
+.answers-list li.pangram {
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+.answers-list li:not(.found) {
+  color: var(--color-text-dim);
+}
+
+.answers-list li.found::after {
+  content: " ✓";
+  color: var(--color-accent);
+}
+
+/* When the found-words panel is open it takes over the hive's space. */
+.bee-game.found-open .bee-input,
+.bee-game.found-open .hive,
+.bee-game.found-open .bee-controls,
+.bee-game.found-open .link-btn {
+  display: none;
+}
+
+.bee-input {
+  min-height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  margin-top: 0.3rem;
+}
+
+.bee-input .center {
+  color: var(--bee-center, var(--color-present));
+}
+
+.bee-input .bad {
+  color: var(--color-text-dim);
+  opacity: 0.6;
+}
+
+.bee-input.accepted {
+  animation: bee-pop 0.3s ease;
+}
+
+@keyframes bee-pop {
+  50% { transform: scale(1.08); }
+}
+
+.bee-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.8rem;
+  margin-left: 2px;
+  background: var(--bee-center, var(--color-present));
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+
+.hive {
+  width: min(78vw, 290px, 38dvh);
+  height: auto;
+  flex-shrink: 0;
+  overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.hive-cell {
+  cursor: pointer;
+  transition: opacity 0.16s ease;
+}
+
+.hive-cell polygon {
+  fill: var(--color-key-bg);
+  stroke: var(--color-border);
+  stroke-width: 1;
+  transition: transform 0.1s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.hive-cell text {
+  fill: var(--color-key-text);
+  font-size: 34px;
+  font-weight: 800;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.hive-cell.center polygon {
+  fill: var(--bee-center, var(--color-present));
+  stroke: none;
+}
+
+.hive-cell.center text {
+  fill: var(--bee-center-text, var(--key-text-on-color));
+}
+
+.hive-cell.pressed polygon {
+  transform: scale(0.92);
+}
+
+.hive.shuffling .hive-cell:not(.center) {
+  opacity: 0;
+}
+
+.bee-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.rank-summary {
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
+}
+
+.rank-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rank-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-dim);
+}
+
+.rank-list li.done {
+  color: var(--color-text);
+}
+
+.rank-list li.current {
+  color: var(--bee-center-text, var(--key-text-on-color));
+  background: var(--bee-center, var(--color-present));
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.answers-letters,
+.answers-sides {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.answers-letters span,
+.answers-sides span {
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--color-key-bg);
+  color: var(--color-key-text);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.answers-letters span.center {
+  background: var(--bee-center, var(--color-present));
+  color: var(--bee-center-text, var(--key-text-on-color));
+}
+
+.answers-summary {
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+}
+
+/* Themes whose "present" color is too dark or muted to read as the hive's
+   highlighted center get an explicit center color instead. */
+[data-theme="neon-city"] {
+  --bee-center: #ffff00;
+  --bee-center-text: #150f37;
+}
+
+[data-theme="ocean"] {
+  --bee-center: #00f0ff;
+  --bee-center-text: #041421;
+}
+
+[data-theme="neon-standard"] .hive-cell.center polygon,
+[data-theme="neon-city"] .hive-cell.center polygon,
+[data-theme="neon80s"] .hive-cell.center polygon,
+[data-theme="synthwave"] .hive-cell.center polygon,
+[data-theme="ocean"] .hive-cell.center polygon,
+[data-theme="sunset"] .hive-cell.center polygon {
+  filter: drop-shadow(0 0 6px var(--bee-center, var(--color-present)));
+}
+
+[data-theme="neon-standard"] .hive-cell:not(.center) polygon,
+[data-theme="neon-city"] .hive-cell:not(.center) polygon,
+[data-theme="neon80s"] .hive-cell:not(.center) polygon,
+[data-theme="synthwave"] .hive-cell:not(.center) polygon {
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+}
+
+/* ---------- Letter Boxed ---------- */
+.boxed-main {
+  justify-content: flex-start;
+}
+
+.boxed-loading {
+  margin: auto;
+  color: var(--color-text-dim);
+}
+
+.boxed-game {
+  width: 100%;
+  max-width: 440px;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.boxed-top {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding-top: 0.4rem;
+}
+
+.boxed-current {
+  min-height: 2.6rem;
+  min-width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--color-border-strong);
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+}
+
+.boxed-current .placeholder {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-text-dim);
+}
+
+.boxed-words {
+  min-height: 1.3rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.boxed-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.82rem;
+  color: var(--color-text-dim);
+}
+
+.boxed-meta .daily-timer {
+  font-size: 0.85rem;
+}
+
+.box {
+  width: min(88vw, 340px, 46dvh);
+  height: auto;
+  flex-shrink: 0;
+  overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.box-frame {
+  fill: var(--color-surface);
+  stroke: var(--color-text);
+  stroke-width: 3;
+}
+
+.box-line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.box-line.current {
+  stroke: var(--bee-center, var(--color-present));
+  stroke-dasharray: 7 6;
+  opacity: 1;
+}
+
+.box-letter {
+  cursor: pointer;
+}
+
+.box-hit {
+  fill: transparent;
+}
+
+.box-dot {
+  fill: var(--color-surface);
+  stroke: var(--color-text);
+  stroke-width: 2.5;
+  transition: fill 0.15s ease;
+}
+
+.box-letter.used .box-dot {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
+.box-letter.active .box-dot {
+  fill: var(--bee-center, var(--color-present));
+  stroke: var(--bee-center, var(--color-present));
+}
+
+.box-letter.last .box-dot {
+  stroke: var(--color-text);
+  stroke-width: 3;
+}
+
+.box-label {
+  fill: var(--color-text);
+  font-size: 25px;
+  font-weight: 800;
+  text-anchor: middle;
+  pointer-events: none;
+  /* Outline in the page color so labels stay readable over theme art. */
+  stroke: var(--color-bg);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+
+.box-letter.used .box-label {
+  fill: var(--color-accent);
+}
+
+.box-letter:active .box-dot {
+  transform: scale(1.2);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+[data-theme="neon-standard"] .box-line,
+[data-theme="neon-city"] .box-line,
+[data-theme="neon80s"] .box-line,
+[data-theme="synthwave"] .box-line,
+[data-theme="ocean"] .box-line {
+  filter: drop-shadow(0 0 4px var(--color-accent));
+  opacity: 0.8;
+}
+
+/* ---------- Short viewports ---------- */
+@media (max-height: 700px) {
+  .bee-game,
+  .boxed-game {
+    gap: 0.35rem;
+  }
+  .bee-input,
+  .boxed-current {
+    font-size: 1.6rem;
+    min-height: 2.2rem;
+  }
+  .pill-btn {
+    padding: 0.5rem 1rem;
+  }
+  .pill-btn.round {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+}
+
+/* Small dim text sits straight on the page background, which on image
+   themes is busy art - a soft halo in the page color keeps it legible. */
+.link-btn,
+.boxed-meta,
+.boxed-words,
+.boxed-current .placeholder,
+.bee-meta,
+.menu-greeting,
+.menu-foot {
+  text-shadow: 0 0 4px var(--color-bg), 0 0 8px var(--color-bg), 0 1px 2px var(--color-bg);
+}

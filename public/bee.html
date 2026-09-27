@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#121213">
+<title>Spelling Bee — Wordly Games</title>
+<script>try{var t=localStorage.getItem("wordly:theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="games.css">
+</head>
+<body class="game-bee">
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<header class="app-header">
+  <div class="header-row title-row">
+    <div class="header-side">
+      <a href="/" class="icon-btn" aria-label="All games" title="All games">&#8962;</a>
+      <button id="help-btn" class="icon-btn" aria-label="How to play" title="How to play">?</button>
+    </div>
+    <h1 class="app-title">SPELLING BEE</h1>
+    <div class="header-side header-side-end">
+      <button id="player-btn" class="icon-btn" aria-label="Player profile" title="Player profile">&#128100;</button>
+    </div>
+  </div>
+
+  <div class="header-row controls-row">
+    <div class="mode-toggle" role="group" aria-label="Game mode">
+      <button class="mode-btn active" data-mode="daily">Daily</button>
+      <button class="mode-btn" data-mode="practice">Practice</button>
+    </div>
+    <button id="theme-btn" class="icon-btn" aria-label="Change theme" title="Change theme">&#9681;</button>
+    <button id="leaderboard-btn" class="icon-btn" aria-label="Leaderboard" title="Leaderboard">&#127942;</button>
+    <button id="new-game-btn" class="icon-btn" aria-label="New puzzle" title="New puzzle">&#8635;</button>
+  </div>
+</header>
+
+<main class="game-main bee-main">
+  <div id="name-gate" class="name-gate hidden">
+    <h2>Who's playing?</h2>
+    <p>Pick a name so today's score counts on the leaderboard.</p>
+    <input id="gate-name-input" class="text-input" type="text" maxlength="40" placeholder="Your name" autocomplete="off" />
+    <button id="gate-name-btn" class="primary-btn">Start Daily Puzzle</button>
+  </div>
+
+  <div id="bee-game" class="bee-game">
+    <button id="bee-rank" class="bee-rank" aria-label="Show rankings">
+      <span id="bee-rank-name" class="bee-rank-name">Beginner</span>
+      <span class="bee-track">
+        <span id="bee-track-fill" class="bee-track-fill"></span>
+        <span id="bee-track-dots" class="bee-track-dots"></span>
+      </span>
+      <span id="bee-score" class="bee-score">0</span>
+    </button>
+
+    <div class="bee-meta">
+      <span id="bee-timer" class="daily-timer hidden">0:00</span>
+    </div>
+
+    <button id="bee-found" class="bee-found" aria-expanded="false">
+      <span id="bee-found-summary" class="bee-found-summary">You have found 0 words</span>
+      <span class="bee-found-caret">&#9662;</span>
+    </button>
+    <div id="bee-found-panel" class="bee-found-panel hidden"></div>
+
+    <div id="bee-input" class="bee-input" aria-live="polite"><span class="bee-caret"></span></div>
+
+    <svg id="hive" class="hive" viewBox="-136 -142 272 284" role="group" aria-label="Letters"></svg>
+
+    <div class="bee-controls">
+      <button id="bee-delete" class="pill-btn">Delete</button>
+      <button id="bee-shuffle" class="pill-btn round" aria-label="Shuffle letters" title="Shuffle">&#10227;</button>
+      <button id="bee-enter" class="pill-btn">Enter</button>
+    </div>
+
+    <button id="bee-extra" class="link-btn">Yesterday's answers</button>
+  </div>
+</main>
+
+<!-- How to play -->
+<div id="help-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="help-modal" aria-label="Close">&times;</button>
+    <h2>How to Play</h2>
+    <p>Make as many words as you can from the 7 letters in the hive.</p>
+    <ul class="help-list">
+      <li>Words must be at least 4 letters long.</li>
+      <li>Every word must include the <strong>center letter</strong>.</li>
+      <li>Letters can be used more than once.</li>
+      <li>Only common words count — no proper nouns, hyphenated words, or obscure Scrabble-only words.</li>
+    </ul>
+    <h3 class="help-subhead">Scoring</h3>
+    <ul class="help-list">
+      <li>4-letter words are worth 1 point.</li>
+      <li>Longer words earn 1 point per letter.</li>
+      <li>Each puzzle has at least one <strong>pangram</strong>, a word that uses all 7 letters. Pangrams are worth 7 extra points.</li>
+    </ul>
+    <p>Your rank climbs from Beginner up to <strong>Genius</strong> (70% of the total points) and <strong>Queen Bee</strong> (every word found). Tap the rank bar to see the thresholds.</p>
+    <p><strong>Daily</strong> gives everyone the same hive, resetting at midnight, and counts on the leaderboard. Your time to reach Genius is recorded — the clock only runs while the game is open on screen. <strong>Practice</strong> gives endless random hives.</p>
+    <p class="help-keys">Keyboard: type letters, <kbd>Enter</kbd> to submit, <kbd>Backspace</kbd> to delete, <kbd>Space</kbd> to shuffle.</p>
+  </div>
+</div>
+
+<!-- Rankings -->
+<div id="rank-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="rank-modal" aria-label="Close">&times;</button>
+    <h2>Rankings</h2>
+    <p id="rank-summary" class="rank-summary"></p>
+    <ul id="rank-list" class="rank-list"></ul>
+  </div>
+</div>
+
+<!-- Answers (yesterday / reveal) -->
+<div id="answers-modal" class="modal-overlay hidden">
+  <div class="modal modal-wide">
+    <button class="modal-close" data-close="answers-modal" aria-label="Close">&times;</button>
+    <h2 id="answers-title">Yesterday's Answers</h2>
+    <div id="answers-letters" class="answers-letters"></div>
+    <p id="answers-summary" class="answers-summary"></p>
+    <ul id="answers-list" class="answers-list"></ul>
+  </div>
+</div>
+
+<!-- Leaderboard -->
+<div id="leaderboard-modal" class="modal-overlay hidden">
+  <div class="modal modal-wide">
+    <button class="modal-close" data-close="leaderboard-modal" aria-label="Close">&times;</button>
+    <h2>Spelling Bee Leaderboard</h2>
+    <div class="leaderboard-tabs" role="group" aria-label="Leaderboard view">
+      <button class="lb-tab active" data-lb-view="today">Today</button>
+      <button class="lb-tab" data-lb-view="all">All-time</button>
+    </div>
+    <div id="leaderboard-content" class="leaderboard-content">
+      <p class="lb-status">Loading…</p>
+    </div>
+  </div>
+</div>
+
+<!-- Queen Bee celebration -->
+<div id="result-modal" class="modal-overlay hidden">
+  <div class="modal">
+    <button class="modal-close" data-close="result-modal" aria-label="Close">&times;</button>
+    <h2 id="result-title">Queen Bee!</h2>
+    <p id="result-text" class="result-text"></p>
+    <div id="result-stats" class="result-stats"></div>
+    <p id="result-countdown" class="result-countdown hidden"></p>
+    <button id="play-again-btn" class="primary-btn hidden">New Puzzle</button>
+  </div>
+</div>
+
+<script src="common.js"></script>
+<script src="words-bee.js"></script>
+<script src="bee.js"></script>
+</body>
+</html>

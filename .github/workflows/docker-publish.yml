@@ -60,6 +60,11 @@ jobs:
 
           echo "Checking static frontend is served..."
           curl -sf http://localhost:8080/ | grep -q "WORDLY" || (echo "index.html missing expected content" && exit 1)
+          curl -sf http://localhost:8080/ | grep -q "Spelling Bee" || (echo "game menu missing Spelling Bee" && exit 1)
+          curl -sf http://localhost:8080/wordly | grep -q "wordly.js" || (echo "/wordly page missing" && exit 1)
+          curl -sf http://localhost:8080/bee | grep -q "bee.js" || (echo "/bee page missing" && exit 1)
+          curl -sf http://localhost:8080/boxed | grep -q "boxed.js" || (echo "/boxed page missing" && exit 1)
+          curl -sf -H "Accept-Encoding: gzip" -o /dev/null -D - http://localhost:8080/words-boxed.js | grep -qi "content-encoding: gzip" || (echo "large assets not gzipped" && exit 1)
 
           echo "Submitting a test score with time and luck..."
           RESPONSE=$(curl -sf -X POST http://localhost:8080/api/score \
@@ -74,6 +79,31 @@ jobs:
           echo "$LB" | grep -q 'ci-smoke-test' || (echo "leaderboard missing submitted score: $LB" && exit 1)
           echo "$LB" | grep -q '"bestTimeMs":45000' || (echo "leaderboard missing bestTimeMs: $LB" && exit 1)
           echo "$LB" | grep -q '"avgLuck":72' || (echo "leaderboard missing avgLuck: $LB" && exit 1)
+
+          echo "Spelling Bee score + leaderboard..."
+          BEE=$(curl -sf -X POST http://localhost:8080/api/bee/score \
+            -H "Content-Type: application/json" \
+            -d '{"name":"ci-smoke-test","date":"2020-01-01","score":80,"maxScore":100,"words":30,"pangrams":1,"geniusMs":120000}')
+          echo "$BEE" | grep -q '"rank":"Genius"' || (echo "bee submit unexpected: $BEE" && exit 1)
+          BLB=$(curl -sf "http://localhost:8080/api/bee/leaderboard?date=2020-01-01")
+          echo "$BLB" | grep -q '"geniusDays":1' || (echo "bee leaderboard unexpected: $BLB" && exit 1)
+
+          echo "Letter Boxed score + leaderboard..."
+          BOX=$(curl -sf -X POST http://localhost:8080/api/boxed/score \
+            -H "Content-Type: application/json" \
+            -d '{"name":"ci-smoke-test","date":"2020-01-01","words":2,"timeMs":60000,"par":5}')
+          echo "$BOX" | grep -q '"words":2' || (echo "boxed submit unexpected: $BOX" && exit 1)
+          XLB=$(curl -sf "http://localhost:8080/api/boxed/leaderboard?date=2020-01-01")
+          echo "$XLB" | grep -q '"twoWordSolves":1' || (echo "boxed leaderboard unexpected: $XLB" && exit 1)
+
+          echo "Rate limiting kicks in on score spam..."
+          CODE=200
+          for i in $(seq 1 40); do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:8080/api/boxed/score \
+              -H "Content-Type: application/json" -d '{"name":"ci-spam","date":"2020-01-02","words":3}')
+            [ "$CODE" = "429" ] && break
+          done
+          [ "$CODE" = "429" ] || (echo "expected 429 after repeated writes, last code $CODE" && exit 1)
 
           echo "Smoke test passed"
           docker stop wordly-smoketest
