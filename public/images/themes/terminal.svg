@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMin slice">
+<defs>
+<radialGradient id="screen" cx="0.5" cy="0.45" r="0.75">
+  <stop offset="0" stop-color="#062a0a"/><stop offset="0.55" stop-color="#021405"/>
+  <stop offset="1" stop-color="#000000"/>
+</radialGradient>
+<radialGradient id="vignette" cx="0.5" cy="0.5" r="0.72">
+  <stop offset="0.6" stop-color="#000" stop-opacity="0"/>
+  <stop offset="1" stop-color="#000" stop-opacity="0.85"/>
+</radialGradient>
+<pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+  <path d="M60,0 H0 V60" fill="none" stroke="#33ff33" stroke-width="1" opacity="0.07"/>
+</pattern>
+</defs>
+<rect width="1080" height="1920" fill="url(#screen)"/>
+<rect width="1080" height="1920" fill="url(#grid)"/>
+<g font-family="Courier New, Consolas, monospace" font-size="30" fill="#33ff33" opacity="0.32">
+<text x="60" y="210" xml:space="preserve">WORDLY BIOS v2.84  (C) 1984 LEXICON SYSTEMS</text>
+<text x="60" y="254" xml:space="preserve">MEMORY TEST ........ 640K OK</text>
+<text x="60" y="298" xml:space="preserve">DETECTING DRIVES ... A: B: C:</text>
+<text x="60" y="342" xml:space="preserve">LOADING DICTIONARY.DAT</text>
+<text x="60" y="386" xml:space="preserve">  172823 ENTRIES INDEXED</text>
+<text x="60" y="430" xml:space="preserve">MOUNTING /GAMES ....... OK</text>
+<text x="60" y="474" xml:space="preserve">  WORDLY.EXE   BEE.EXE   BOXED.EXE</text>
+<text x="60" y="518" xml:space="preserve"></text>
+<text x="60" y="562" xml:space="preserve">C:\&gt; RUN WORDLY</text>
+<text x="60" y="606" xml:space="preserve">READY.</text>
+<rect x="60" y="626" width="18" height="30" opacity="1"/>
+</g>
+<g font-family="Courier New, Consolas, monospace" font-size="24" fill="#33ff33" opacity="0.16">
+<text x="60" y="1400">7C00: 79 42 BD F2 21 06 F0 84 77 62 F0 F3</text>
+<text x="60" y="1436">7C10: CB 4D 76 4D C7 07 20 51 15 9A 0F 89</text>
+<text x="60" y="1472">7C20: F2 C6 DA CA E3 44 BB 31 12 45 FD 6F</text>
+<text x="60" y="1508">7C30: 84 DF 9A D7 C5 B3 D0 76 AC 0E 8F 53</text>
+<text x="60" y="1544">7C40: A7 35 6C 88 91 3F 20 F6 F7 2D B0 22</text>
+<text x="60" y="1580">7C50: D2 4D 0A 96 DA D4 3C 16 17 C1 A9 8E</text>
+<text x="60" y="1616">7C60: 78 12 9E 03 27 37 10 65 D0 95 86 4F</text>
+<text x="60" y="1652">7C70: 15 AD A0 B8 46 C1 C0 EB C5 34 8A DC</text>
+<text x="60" y="1688">7C80: 79 9A DF 84 9B AD 05 D4 A1 0A C0 44</text>
+<text x="60" y="1724">7C90: 1E AA EE B4 B4 8E FA 0B 1F 0A BD 80</text>
+<text x="60" y="1760">7CA0: E9 98 A3 5A BA 5E A0 BD 87 99 C1 35</text>
+<text x="60" y="1796">7CB0: 0D 43 9E 71 89 7A A7 5F DE 31 34 A4</text>
+</g>
+<rect width="1080" height="1920" fill="url(#vignette)"/>
+<rect x="14" y="14" width="1052" height="1892" rx="60" fill="none" stroke="#33ff33" stroke-width="3" opacity="0.18"/>
+</svg>

@@ -816,3 +816,52 @@ kbd {
 .menu-foot {
   text-shadow: 0 0 4px var(--color-bg), 0 0 8px var(--color-bg), 0 1px 2px var(--color-bg);
 }
+
+/* ---------- Per-theme touches for the new games ---------- */
+[data-theme="bubblegum"] .hive-cell polygon {
+  stroke: #5a2a52;
+  stroke-width: 3;
+}
+
+[data-theme="bubblegum"] .pill-btn,
+[data-theme="bubblegum"] .game-card,
+[data-theme="bubblegum"] .bee-found {
+  border: 2.5px solid #5a2a52;
+  box-shadow: 0 3px 0 #5a2a52;
+}
+
+[data-theme="terminal"] .pill-btn,
+[data-theme="terminal"] .game-card,
+[data-theme="terminal"] .bee-found,
+[data-theme="terminal"] .bee-found-panel {
+  border-radius: 0;
+  border-color: #1a661a;
+}
+
+[data-theme="terminal"] .hive-cell:not(.center) polygon {
+  stroke: #1f8f1f;
+  stroke-width: 1.5;
+}
+
+[data-theme="art-deco"] .pill-btn,
+[data-theme="art-deco"] .game-card,
+[data-theme="art-deco"] .bee-found,
+[data-theme="art-deco"] .bee-found-panel {
+  border-radius: 0;
+  border-color: #6b5a2a;
+}
+
+[data-theme="art-deco"] .hive-cell:not(.center) polygon,
+[data-theme="forest"] .hive-cell:not(.center) polygon,
+[data-theme="halloween"] .hive-cell:not(.center) polygon {
+  stroke: var(--color-border-strong);
+  stroke-width: 1.2;
+}
+
+[data-theme="forest"] .hive-cell:not(.center) polygon {
+  stroke: #3d6b4c;
+}
+
+[data-theme="halloween"] .hive-cell:not(.center) polygon {
+  stroke: #5a2a40;
+}
