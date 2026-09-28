@@ -681,82 +681,87 @@ html[data-theme="sunset"] .key.absent {
 }
 
 /* ---------- Forest ---------- */
-/* Misty pines at night: moss-green correct tiles, firefly-amber present
-   tiles, bark-dark absent tiles. */
+/* Built around the user's reference art: a misty night forest split by a
+   glowing magenta river, with teal will-o'-wisp lights in the trees.
+   Correct = teal glow, present = magenta river glow, absent = the dark
+   blue-green of the pines. */
 [data-theme="forest"] {
-  --color-bg: #07140d;
-  --color-surface: #10241a;
-  --color-text: #e6f2e0;
-  --color-text-dim: #9dbb9f;
-  --color-border: #23402f;
-  --color-border-strong: #3d6b4c;
-  --color-accent: #7cc46a;
-  --color-on-accent: #0b1a10;
+  --color-bg: #020c10;
+  --color-surface: #0a1a20;
+  --color-text: #e8f4f2;
+  --color-text-dim: #93b4bf;
+  --color-border: #1c3440;
+  --color-border-strong: #3a6a7a;
+  --color-accent: #f236c1;
+  --color-on-accent: #1a0418;
 
-  --color-correct: #4e8f3a;
-  --color-present: #e0ac3e;
-  --color-absent: #13251a;
-  --key-text-on-color: #0b1a10;
+  --color-correct: #17b89f;
+  --color-present: #e232b8;
+  --color-absent: #081419;
+  --key-text-on-color: #03100f;
 
-  --color-key-bg: #15291d;
-  --color-key-text: #e6f2e0;
-  --color-modal-overlay: rgba(2, 8, 5, 0.8);
-  --color-danger: #e0655c;
-  --bee-center: #e8b64a;
-  --bee-center-text: #1f1606;
+  --color-key-bg: #0b1c22;
+  --color-key-text: #e8f4f2;
+  --color-modal-overlay: rgba(1, 6, 9, 0.82);
+  --color-danger: #ff5c7a;
+  --bee-center: #f236c1;
+  --bee-center-text: #1a0418;
 }
 
 html[data-theme="forest"] .tile {
-  background: rgba(16, 36, 26, 0.88) !important;
-  border: 2px solid #2a4a36 !important;
+  background: rgba(8, 22, 28, 0.86) !important;
+  border: 2px solid #1f3a46 !important;
   border-radius: 7px !important;
-  color: #e6f2e0 !important;
+  color: #e8f4f2 !important;
 }
 html[data-theme="forest"] .tile.filled {
-  border-color: #7cc46a !important;
-  box-shadow: 0 0 6px rgba(124, 196, 106, 0.35) !important;
+  border-color: #3ff0d8 !important;
+  box-shadow: 0 0 8px rgba(63, 240, 216, 0.45) !important;
 }
 html[data-theme="forest"] .tile.correct {
-  background: linear-gradient(160deg, #62a84c, #3f7a2e) !important;
-  border: 2px solid #9fdc7f !important;
-  box-shadow: 0 0 10px rgba(124, 196, 106, 0.55) !important;
-  color: #ffffff !important;
+  background: linear-gradient(160deg, #22d6b8, #0f8f7c) !important;
+  border: 2px solid #8ffff0 !important;
+  box-shadow: 0 0 14px rgba(63, 240, 216, 0.6), inset 0 0 6px rgba(143, 255, 240, 0.45) !important;
+  color: #021614 !important;
   font-weight: 800;
 }
 html[data-theme="forest"] .tile.present {
-  background: linear-gradient(160deg, #f2c655, #c8922a) !important;
-  border: 2px solid #ffe78a !important;
-  box-shadow: 0 0 14px rgba(242, 222, 106, 0.6) !important;
-  color: #1f1606 !important;
+  background: linear-gradient(160deg, #f65ad0, #b81f95) !important;
+  border: 2px solid #ffb3ec !important;
+  box-shadow: 0 0 16px rgba(242, 54, 193, 0.7), inset 0 0 6px rgba(255, 179, 236, 0.45) !important;
+  color: #ffffff !important;
   font-weight: 800;
 }
 html[data-theme="forest"] .tile.absent {
-  background: #0c1a12 !important;
-  border: 2px solid #1a2e22 !important;
-  color: #56735c !important;
+  background: #061117 !important;
+  border: 2px solid #122630 !important;
+  color: #4f6d78 !important;
   box-shadow: none !important;
 }
 html[data-theme="forest"] .key {
-  background: #15291d !important;
-  color: #e6f2e0 !important;
-  border: 1px solid #2a4a36 !important;
+  background: #0b1c22 !important;
+  color: #e8f4f2 !important;
+  border: 1px solid #1f3a46 !important;
   border-radius: 7px !important;
+  box-shadow: 0 0 4px rgba(63, 240, 216, 0.12) !important;
 }
 html[data-theme="forest"] .key.correct {
-  background: #4e8f3a !important;
-  color: #ffffff !important;
-  border-color: #9fdc7f !important;
+  background: #17b89f !important;
+  color: #021614 !important;
+  border-color: #8ffff0 !important;
+  box-shadow: 0 0 10px rgba(63, 240, 216, 0.55) !important;
 }
 html[data-theme="forest"] .key.present {
-  background: #e0ac3e !important;
-  color: #1f1606 !important;
-  border-color: #ffe78a !important;
-  box-shadow: 0 0 8px rgba(242, 222, 106, 0.5) !important;
+  background: #e232b8 !important;
+  color: #ffffff !important;
+  border-color: #ffb3ec !important;
+  box-shadow: 0 0 10px rgba(242, 54, 193, 0.6) !important;
 }
 html[data-theme="forest"] .key.absent {
-  background: #0a150f !important;
-  color: #5f7f67 !important;
-  border-color: #1a2e22 !important;
+  background: #050e13 !important;
+  color: #5a7682 !important;
+  border-color: #122630 !important;
+  box-shadow: none !important;
   opacity: 1;
 }
 
@@ -1259,11 +1264,12 @@ body {
 }
 
 [data-theme="forest"] body {
-  /* Hand-built SVG (tools/make_theme_art.py): moonlit pines fading into
-     fog, fireflies drifting through the lower half. */
+  /* User-supplied reference art: misty night forest with a glowing
+     magenta river and teal lights. The top of the image is pale fog, so
+     it gets a darker band behind the header text. */
   background-image:
-    linear-gradient(rgba(3, 10, 6, 0.2), rgba(3, 10, 6, 0.2)),
-    url("images/themes/forest.svg");
+    linear-gradient(180deg, rgba(1, 8, 12, 0.72) 0%, rgba(1, 8, 12, 0.38) 16%, rgba(1, 8, 12, 0.22) 100%),
+    url("images/themes/forest.webp");
 }
 
 [data-theme="halloween"] body {

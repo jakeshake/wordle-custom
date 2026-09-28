@@ -29,92 +29,6 @@ def f(n):
     return f"{n:.1f}".rstrip("0").rstrip(".")
 
 
-# ---------------------------------------------------------------- forest
-
-def pine(x, base, h, w, tiers, color):
-    """Tiered pine silhouette: stacked triangles plus a trunk."""
-    parts = [f'<rect x="{f(x - w * 0.05)}" y="{f(base - h * 0.12)}" width="{f(w * 0.1)}" height="{f(h * 0.14)}" fill="{color}"/>']
-    top = base - h
-    for t in range(tiers):
-        frac = (t + 1) / tiers
-        tier_w = w * (0.35 + 0.65 * frac)
-        tier_bottom = top + h * 0.88 * frac
-        tier_top = top + h * 0.88 * (t / tiers) - h * 0.04
-        parts.append(
-            f'<path d="M{f(x)},{f(tier_top)} L{f(x + tier_w / 2)},{f(tier_bottom)} '
-            f'Q{f(x)},{f(tier_bottom - h * 0.05)} {f(x - tier_w / 2)},{f(tier_bottom)} Z" fill="{color}"/>'
-        )
-    return "".join(parts)
-
-
-def forest():
-    rnd = random.Random(7)
-    defs = """
-<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-  <stop offset="0" stop-color="#050d0a"/><stop offset="0.35" stop-color="#0b1f18"/>
-  <stop offset="0.62" stop-color="#1a3a2e"/><stop offset="1" stop-color="#0a1510"/>
-</linearGradient>
-<radialGradient id="moonGlow" cx="0.72" cy="0.16" r="0.5">
-  <stop offset="0" stop-color="#e6f5dc" stop-opacity="0.55"/>
-  <stop offset="0.25" stop-color="#9fd1b0" stop-opacity="0.18"/>
-  <stop offset="1" stop-color="#9fd1b0" stop-opacity="0"/>
-</radialGradient>
-<linearGradient id="fog" x1="0" y1="0" x2="0" y2="1">
-  <stop offset="0" stop-color="#b8e0c8" stop-opacity="0"/>
-  <stop offset="0.5" stop-color="#b8e0c8" stop-opacity="0.16"/>
-  <stop offset="1" stop-color="#b8e0c8" stop-opacity="0"/>
-</linearGradient>
-<linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
-  <stop offset="0" stop-color="#dff5e3" stop-opacity="0.16"/>
-  <stop offset="1" stop-color="#dff5e3" stop-opacity="0"/>
-</linearGradient>
-<radialGradient id="fly">
-  <stop offset="0" stop-color="#fffbc2"/><stop offset="0.25" stop-color="#f2f07a" stop-opacity="0.9"/>
-  <stop offset="1" stop-color="#d9e84a" stop-opacity="0"/>
-</radialGradient>
-"""
-    body = [f'<rect width="{W}" height="{H}" fill="url(#sky)"/>']
-    for _ in range(70):
-        x, y = rnd.uniform(0, W), rnd.uniform(0, 700)
-        body.append(f'<circle cx="{f(x)}" cy="{f(y)}" r="{f(rnd.uniform(0.8, 2.2))}" fill="#e6f5dc" opacity="{f(rnd.uniform(0.2, 0.7))}"/>')
-    body.append(f'<rect width="{W}" height="{H}" fill="url(#moonGlow)"/>')
-    body.append('<circle cx="780" cy="300" r="88" fill="#eef7e6"/>')
-    body.append('<circle cx="752" cy="282" r="16" fill="#d7e6cf" opacity="0.7"/><circle cx="805" cy="330" r="11" fill="#d7e6cf" opacity="0.6"/>')
-    # moonlight rays fanning down-left through the canopy
-    for i in range(4):
-        a = math.radians(108 + i * 13)
-        x2, y2 = 780 + math.cos(a) * 2000, 300 + math.sin(a) * 2000
-        spread = 140 + i * 50
-        body.append(
-            f'<path d="M780,300 L{f(x2 - spread)},{f(y2)} L{f(x2 + spread)},{f(y2)} Z" fill="url(#ray)" opacity="{f(0.75 - i * 0.12)}"/>'
-        )
-    # tree lines, back to front: lighter + mistier far away, near-black up close
-    layers = [
-        (1040, 260, 90, "#2c5a47", 0.10),
-        (1180, 360, 120, "#1d4233", 0.16),
-        (1360, 480, 160, "#12291f", 0.22),
-        (1600, 640, 210, "#07140d", 0.0),
-    ]
-    for li, (base, h, w, color, fog_opacity) in enumerate(layers):
-        x = -w * 0.3
-        trees = []
-        while x < W + w:
-            hh = h * rnd.uniform(0.75, 1.15)
-            ww = w * rnd.uniform(0.8, 1.15)
-            trees.append(pine(x, base + rnd.uniform(-30, 30), hh, ww, rnd.randint(4, 6), color))
-            x += ww * rnd.uniform(0.45, 0.8)
-        body.append("".join(trees))
-        body.append(f'<rect x="0" y="{base - 40}" width="{W}" height="{H - base + 40}" fill="{color}"/>')
-        if fog_opacity:
-            body.append(f'<rect x="0" y="{base - 180}" width="{W}" height="260" fill="url(#fog)" opacity="{f(fog_opacity / 0.16)}"/>')
-    # fireflies drift in the lower half, a few up among the trees
-    for _ in range(46):
-        x, y = rnd.uniform(20, W - 20), rnd.uniform(950, 1880)
-        r = rnd.uniform(9, 20)
-        body.append(f'<circle cx="{f(x)}" cy="{f(y)}" r="{f(r)}" fill="url(#fly)" opacity="{f(rnd.uniform(0.55, 1))}"/>')
-    return svg("\n".join(body), defs)
-
-
 # ------------------------------------------------------------- halloween
 
 def bat(x, y, s, rot):
@@ -424,7 +338,6 @@ def art_deco():
 
 def main():
     for name, fn in [
-        ("forest", forest),
         ("halloween", halloween),
         ("terminal", terminal),
         ("bubblegum", bubblegum),

@@ -859,7 +859,12 @@ kbd {
 }
 
 [data-theme="forest"] .hive-cell:not(.center) polygon {
-  stroke: #3d6b4c;
+  stroke: #2a5566;
+}
+
+[data-theme="forest"] .hive-cell.center polygon,
+[data-theme="forest"] .box-line {
+  filter: drop-shadow(0 0 6px rgba(242, 54, 193, 0.7));
 }
 
 [data-theme="halloween"] .hive-cell:not(.center) polygon {
