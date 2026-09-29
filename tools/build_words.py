@@ -4,9 +4,10 @@
 Outputs (committed, served as-is by the app):
   public/words-bee.js    BEE_WORDS    - common words; daily hives are picked
                                         from these (and they're answers)
-                         BEE_EXTRA    - more accepted answers: inflections
-                                        of common words ("doodled",
-                                        "needled") and slightly rarer words
+                         BEE_EXTRA    - more accepted answers: well-known
+                                        dictionary words (SCOWL), inflections
+                                        of common words, and petitions from
+                                        tools/bee-petitions.txt
   public/words-boxed.js  BOXED_VALID  - every word Letter Boxed accepts
                          BOXED_COMMON - common words the daily puzzle's
                                         built-in solution is drawn from
@@ -15,13 +16,18 @@ Sources:
   ENABLE word list (public domain Scrabble-style dictionary)
   wordfreq (pip install wordfreq) for word commonness
   lemminflect (pip install lemminflect) for inflected forms of common words
+  SCOWL (spell-checker word lists, downloaded automatically) for which
+    words are well known, independent of how often they appear in text
   LDNOOBW English list to keep offensive words out of answer lists
 
 Usage:  pip install wordfreq lemminflect && python3 tools/build_words.py
 """
 
+import glob
 import os
 import re
+import tarfile
+import unicodedata
 import urllib.request
 
 import wordfreq
@@ -31,6 +37,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, "tools", ".cache")
 
 ENABLE_URL = "https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt"
+SCOWL_URL = "https://downloads.sourceforge.net/project/wordlist/SCOWL/2020.12.07/scowl-2020.12.07.tar.gz"
+PETITIONS = os.path.join(ROOT, "tools", "bee-petitions.txt")
 BLOCK_URL = (
     "https://raw.githubusercontent.com/LDNOOBW/"
     "List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/master/en"
@@ -58,6 +66,21 @@ EXTRA_BLOCK = {
     "raghead", "towelhead", "wetback", "coon", "coons", "fag", "fags", "faggot",
 }
 
+# Words blocked after puzzles were already being played. They stay in
+# BEE_WORDS (the list hives are picked from) so no daily hive changes, and
+# are listed in BEE_AVOID, which the game drops from every answer list.
+# Add new blocks here rather than to EXTRA_BLOCK.
+LATE_BLOCK = {
+    "negroid", "mulatto", "mulattoes", "nazi", "nazis", "heil", "heiled",
+    # Crude words NYT-style puzzles leave out.
+    "crap", "crapped", "crapping", "crappy", "crappier", "crappiest", "turd",
+    "turds", "fart", "farted", "farting", "farts", "poop", "pooped", "pooping",
+    "peed", "peeing", "pecker", "peckers", "prick", "pricks", "bimbo", "bimbos",
+    "floozy", "floozie", "trollop", "penile", "pubic", "ejaculate", "ejaculated",
+    "ejaculating", "bugger", "buggered", "buggering", "buggery", "goddam",
+    "goddamn", "goddamned", "damn", "damned", "damning",
+}
+
 # Spelling Bee: how common a word must be to count as an answer. NYT only
 # accepts reasonably common words; 2.6 on wordfreq's Zipf scale keeps
 # everyday vocabulary while dropping Scrabble-only obscurities.
@@ -72,6 +95,12 @@ BEE_INFLECTION_TAGS = ("VBD", "VBN", "VBG", "JJR", "JJS")
 # The inflected form itself must still turn up in real text now and then,
 # which drops rule-generated oddities like "hoboed" or "ghettoing".
 BEE_INFLECTION_MIN_ZIPF = 1.0
+# Word frequency is a poor signal for "would a solver know this word":
+# real words like epee (1.8), appall (1.5) score below junk like dene
+# (2.5). SCOWL ranks words by how widely they're known instead (10 = most
+# common ... 95 = most obscure); 55 is a standard-size spell checker and
+# covers words like fidget, blithe, myrrh, ennui without the oddities.
+BEE_SCOWL_MAX_LEVEL = 55
 # Letter Boxed: the generator builds each daily puzzle around a two-word
 # solution from this (more common) pool so the intended answer is fair.
 BOXED_COMMON_MIN_ZIPF = 3.3
@@ -84,6 +113,44 @@ def fetch(url, name):
         urllib.request.urlretrieve(url, path)
     with open(path) as f:
         return [line.strip().lower() for line in f if line.strip()]
+
+
+def scowl_levels():
+    """word -> lowest SCOWL size level it appears in (US + common English)."""
+    os.makedirs(CACHE, exist_ok=True)
+    tar_path = os.path.join(CACHE, "scowl.tar.gz")
+    if not os.path.exists(tar_path):
+        urllib.request.urlretrieve(SCOWL_URL, tar_path)
+    out_dir = os.path.join(CACHE, "scowl")
+    if not os.path.isdir(out_dir):
+        with tarfile.open(tar_path) as t:
+            t.extractall(out_dir)
+    levels = {}
+    for path in glob.glob(os.path.join(out_dir, "*", "final", "*")):
+        m = re.match(r"(english|american)-words\.(\d+)$", os.path.basename(path))
+        if not m:
+            continue
+        level = int(m.group(2))
+        with open(path, encoding="latin-1") as fh:
+            for line in fh:
+                # SCOWL spells some loanwords with accents (épée -> epee).
+                w = unicodedata.normalize("NFKD", line.strip()).encode("ascii", "ignore").decode()
+                if re.fullmatch(r"[a-z]+", w):
+                    levels[w] = min(levels.get(w, 99), level)
+    return levels
+
+
+def read_petitions():
+    """tools/bee-petitions.txt: one word per line to add, or -word to remove."""
+    add, remove = set(), set()
+    if os.path.exists(PETITIONS):
+        with open(PETITIONS) as fh:
+            for line in fh:
+                w = line.split("#", 1)[0].strip().lower()
+                if not w:
+                    continue
+                (remove if w.startswith("-") else add).add(w.lstrip("-"))
+    return add, remove
 
 
 def main():
@@ -102,6 +169,9 @@ def main():
     ]
     bee = sorted(w for w in bee_candidates if zipf(w) >= BEE_MIN_ZIPF)
     bee_set = set(bee)
+    bee_avoid = sorted(w for w in bee if w in LATE_BLOCK)
+    blocked |= LATE_BLOCK
+    bee_candidates = [w for w in bee_candidates if w not in LATE_BLOCK]
 
     candidate_set = set(bee_candidates)
     extra = set()
@@ -114,6 +184,17 @@ def main():
                     f for f in forms
                     if f in candidate_set and f not in bee_set and zipf(f) >= BEE_INFLECTION_MIN_ZIPF
                 )
+    levels = scowl_levels()
+    extra.update(
+        w for w in bee_candidates
+        if w not in bee_set and levels.get(w, 99) <= BEE_SCOWL_MAX_LEVEL
+    )
+    petition_add, petition_remove = read_petitions()
+    for w in sorted(petition_add):
+        if w not in candidate_set:
+            print(f"petition skipped (not in ENABLE, has S, too many letters, or blocked): {w}")
+    extra.update(w for w in petition_add if w in candidate_set and w not in bee_set)
+    extra -= petition_remove
     bee_extra = sorted(extra)
 
     # Letter Boxed: consecutive letters must sit on different sides, so a
@@ -128,13 +209,14 @@ def main():
         w for w in boxed_valid
         if w not in base_blocked and 3 <= len(w) <= 10 and zipf(w) >= BOXED_COMMON_MIN_ZIPF
     )
-    boxed_avoid = sorted(w for w in boxed_common if w in EXTRA_BLOCK)
+    boxed_avoid = sorted(w for w in boxed_common if w in EXTRA_BLOCK or w in LATE_BLOCK)
 
     header = "// Generated by tools/build_words.py - do not edit by hand.\n"
     with open(os.path.join(ROOT, "public", "words-bee.js"), "w") as f:
         f.write(header)
         f.write('const BEE_WORDS = "%s".split(" ");\n' % " ".join(bee))
         f.write('const BEE_EXTRA = "%s".split(" ");\n' % " ".join(bee_extra))
+        f.write('const BEE_AVOID = "%s".split(" ");\n' % " ".join(bee_avoid))
     with open(os.path.join(ROOT, "public", "words-boxed.js"), "w") as f:
         f.write(header)
         f.write('const BOXED_VALID = "%s".split(" ");\n' % " ".join(boxed_valid))

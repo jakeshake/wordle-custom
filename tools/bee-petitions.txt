@@ -1,0 +1,10 @@
+# Spelling Bee word petitions.
+#
+# One word per line to accept it as a Spelling Bee answer even though the
+# automatic lists miss it; prefix with "-" to reject a word they include.
+# Then run: python3 tools/build_words.py
+#
+# Words must be in the ENABLE dictionary, 4+ letters, no S, and at most 7
+# distinct letters (otherwise no hive could ever contain them).
+
+appellee   # requested by the household, 2026-09
