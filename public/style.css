@@ -766,82 +766,87 @@ html[data-theme="forest"] .key.absent {
 }
 
 /* ---------- Halloween ---------- */
-/* Harvest moon night: pumpkin-orange correct, witch-purple present. */
+/* Built around the user's reference art: painted haunted house under an
+   orange moon, violet sky, grinning jack-o'-lanterns. Correct = glowing
+   pumpkin orange, present = haunted violet, absent = night indigo, with
+   candle-yellow edges like the lit windows. */
 [data-theme="halloween"] {
-  --color-bg: #0a0406;
-  --color-surface: #1a0c14;
-  --color-text: #ffe8cc;
-  --color-text-dim: #d1a37a;
-  --color-border: #3a1a2a;
-  --color-border-strong: #ff7518;
-  --color-accent: #ff7518;
-  --color-on-accent: #1a0a05;
+  --color-bg: #0e0a24;
+  --color-surface: #191138;
+  --color-text: #fbeedc;
+  --color-text-dim: #c3a9d6;
+  --color-border: #3a2a66;
+  --color-border-strong: #f59a2a;
+  --color-accent: #f5891f;
+  --color-on-accent: #1a0c05;
 
-  --color-correct: #ff7518;
-  --color-present: #7d3c98;
-  --color-absent: #140a10;
-  --key-text-on-color: #1a0a05;
+  --color-correct: #f07a1c;
+  --color-present: #8e44c4;
+  --color-absent: #130d2c;
+  --key-text-on-color: #1a0c05;
 
-  --color-key-bg: #24121c;
-  --color-key-text: #ffe8cc;
-  --color-modal-overlay: rgba(5, 2, 4, 0.82);
-  --color-danger: #ff4d4d;
-  --bee-center: #ff7518;
-  --bee-center-text: #1a0a05;
+  --color-key-bg: #1e1442;
+  --color-key-text: #fbeedc;
+  --color-modal-overlay: rgba(8, 5, 22, 0.84);
+  --color-danger: #ff5a5a;
+  --bee-center: #f5891f;
+  --bee-center-text: #1a0c05;
 }
 
 html[data-theme="halloween"] .tile {
-  background: rgba(20, 10, 16, 0.9) !important;
-  border: 2px solid #3a1a2a !important;
-  border-radius: 6px !important;
-  color: #ffe8cc !important;
+  background: rgba(22, 14, 50, 0.88) !important;
+  border: 2px solid #3a2a66 !important;
+  border-radius: 7px !important;
+  color: #fbeedc !important;
 }
 html[data-theme="halloween"] .tile.filled {
-  border-color: #ff7518 !important;
-  box-shadow: 0 0 8px rgba(255, 117, 24, 0.45) !important;
+  border-color: #f5c542 !important;
+  box-shadow: 0 0 8px rgba(245, 197, 66, 0.45) !important;
 }
 html[data-theme="halloween"] .tile.correct {
-  background: linear-gradient(160deg, #ff9a3c, #e05a0c) !important;
-  border: 2px solid #ffd24a !important;
-  box-shadow: 0 0 14px rgba(255, 140, 40, 0.65), inset 0 0 6px rgba(255, 226, 122, 0.5) !important;
-  color: #1a0a05 !important;
+  background: linear-gradient(160deg, #ffa244, #d9560f) !important;
+  border: 2px solid #ffd76a !important;
+  box-shadow: 0 0 16px rgba(255, 150, 40, 0.7), inset 0 0 8px rgba(255, 215, 106, 0.55) !important;
+  color: #1a0c05 !important;
   font-weight: 800;
 }
 html[data-theme="halloween"] .tile.present {
-  background: linear-gradient(160deg, #9446b8, #5a2673) !important;
-  border: 2px solid #c38cff !important;
-  box-shadow: 0 0 12px rgba(160, 90, 220, 0.6) !important;
+  background: linear-gradient(160deg, #a45ad8, #5e2a96) !important;
+  border: 2px solid #d4a8ff !important;
+  box-shadow: 0 0 14px rgba(164, 90, 216, 0.65), inset 0 0 6px rgba(212, 168, 255, 0.45) !important;
   color: #ffffff !important;
   font-weight: 800;
 }
 html[data-theme="halloween"] .tile.absent {
-  background: #0f070b !important;
-  border: 2px solid #22101a !important;
-  color: #6b4a5a !important;
+  background: #0f0a24 !important;
+  border: 2px solid #22184a !important;
+  color: #6c5c94 !important;
   box-shadow: none !important;
 }
 html[data-theme="halloween"] .key {
-  background: #24121c !important;
-  color: #ffe8cc !important;
-  border: 1px solid #3a1a2a !important;
-  border-radius: 6px !important;
+  background: #1e1442 !important;
+  color: #fbeedc !important;
+  border: 1px solid #3a2a66 !important;
+  border-radius: 7px !important;
+  box-shadow: 0 0 4px rgba(245, 137, 31, 0.12) !important;
 }
 html[data-theme="halloween"] .key.correct {
-  background: #ff7518 !important;
-  color: #1a0a05 !important;
-  border-color: #ffd24a !important;
-  box-shadow: 0 0 8px rgba(255, 117, 24, 0.55) !important;
+  background: #f07a1c !important;
+  color: #1a0c05 !important;
+  border-color: #ffd76a !important;
+  box-shadow: 0 0 10px rgba(255, 150, 40, 0.6) !important;
 }
 html[data-theme="halloween"] .key.present {
-  background: #7d3c98 !important;
+  background: #8e44c4 !important;
   color: #ffffff !important;
-  border-color: #c38cff !important;
-  box-shadow: 0 0 8px rgba(160, 90, 220, 0.5) !important;
+  border-color: #d4a8ff !important;
+  box-shadow: 0 0 10px rgba(164, 90, 216, 0.55) !important;
 }
 html[data-theme="halloween"] .key.absent {
-  background: #0f070b !important;
-  color: #7a5868 !important;
-  border-color: #22101a !important;
+  background: #0c0820 !important;
+  color: #6c5c94 !important;
+  border-color: #1d1540 !important;
+  box-shadow: none !important;
   opacity: 1;
 }
 
@@ -1273,11 +1278,11 @@ body {
 }
 
 [data-theme="halloween"] body {
-  /* Hand-built SVG: harvest moon with bats, haunted house on the hill,
-     dead tree, glowing jack-o'-lanterns along the bottom. */
+  /* User-supplied reference art: painted haunted house, orange moon,
+     violet sky, jack-o'-lanterns. Light top wash keeps the header crisp. */
   background-image:
-    linear-gradient(rgba(5, 2, 4, 0.18), rgba(5, 2, 4, 0.18)),
-    url("images/themes/halloween.svg");
+    linear-gradient(180deg, rgba(8, 5, 22, 0.6) 0%, rgba(8, 5, 22, 0.25) 14%, rgba(8, 5, 22, 0.18) 100%),
+    url("images/themes/halloween.webp");
 }
 
 [data-theme="terminal"] body {

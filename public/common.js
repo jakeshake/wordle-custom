@@ -13,7 +13,7 @@ window.Shared = (() => {
     { id: "ocean", name: "Ocean", swatch: "#2ea8b8" },
     { id: "sunset", name: "Sunset", swatch: "#e0703f" },
     { id: "forest", name: "Forest", swatch: "#f236c1" },
-    { id: "halloween", name: "Halloween", swatch: "#ff7518" },
+    { id: "halloween", name: "Halloween", swatch: "#f5891f" },
     { id: "christmas", name: "Christmas", swatch: "#c41e3a" },
     { id: "neon80s", name: "Neon 80s", swatch: "#ff6b00" },
     { id: "spooky", name: "Spooky", swatch: "#7cb342" },

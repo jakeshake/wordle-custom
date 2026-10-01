@@ -868,5 +868,10 @@ kbd {
 }
 
 [data-theme="halloween"] .hive-cell:not(.center) polygon {
-  stroke: #5a2a40;
+  stroke: #5a3f99;
+}
+
+[data-theme="halloween"] .hive-cell.center polygon,
+[data-theme="halloween"] .box-line {
+  filter: drop-shadow(0 0 6px rgba(255, 150, 40, 0.7));
 }

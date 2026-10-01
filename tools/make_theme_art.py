@@ -29,113 +29,6 @@ def f(n):
     return f"{n:.1f}".rstrip("0").rstrip(".")
 
 
-# ------------------------------------------------------------- halloween
-
-def bat(x, y, s, rot):
-    return (
-        f'<path transform="translate({f(x)},{f(y)}) rotate({f(rot)}) scale({f(s)})" fill="#0a0406" '
-        'd="M0,6 C-6,-4 -14,-8 -26,-6 C-22,-2 -22,2 -24,6 C-18,3 -14,5 -12,9 C-9,5 -5,5 -3,8 '
-        'L-2,3 L0,5 L2,3 L3,8 C5,5 9,5 12,9 C14,5 18,3 24,6 C22,2 22,-2 26,-6 C14,-8 6,-4 0,6 Z"/>'
-    )
-
-
-def pumpkin(x, y, s):
-    face = (
-        f'<path d="M{f(x - 30 * s)},{f(y - 8 * s)} l{f(14 * s)},{f(-16 * s)} l{f(12 * s)},{f(16 * s)} Z" fill="#ffe27a"/>'
-        f'<path d="M{f(x + 4 * s)},{f(y - 8 * s)} l{f(14 * s)},{f(-16 * s)} l{f(12 * s)},{f(16 * s)} Z" fill="#ffe27a"/>'
-        f'<path d="M{f(x - 34 * s)},{f(y + 10 * s)} q{f(34 * s)},{f(26 * s)} {f(68 * s)},0 l{f(-10 * s)},{f(4 * s)} '
-        f'l{f(-6 * s)},{f(-6 * s)} l{f(-8 * s)},{f(8 * s)} l{f(-8 * s)},{f(-8 * s)} l{f(-8 * s)},{f(8 * s)} '
-        f'l{f(-8 * s)},{f(-8 * s)} l{f(-6 * s)},{f(6 * s)} Z" fill="#ffd24a"/>'
-    )
-    return (
-        f'<circle cx="{f(x)}" cy="{f(y)}" r="{f(95 * s)}" fill="url(#pglow)"/>'
-        f'<rect x="{f(x - 5 * s)}" y="{f(y - 62 * s)}" width="{f(10 * s)}" height="{f(20 * s)}" rx="{f(3 * s)}" fill="#3d5a1e"/>'
-        f'<ellipse cx="{f(x - 26 * s)}" cy="{f(y)}" rx="{f(30 * s)}" ry="{f(44 * s)}" fill="#d9560f"/>'
-        f'<ellipse cx="{f(x + 26 * s)}" cy="{f(y)}" rx="{f(30 * s)}" ry="{f(44 * s)}" fill="#d9560f"/>'
-        f'<ellipse cx="{f(x)}" cy="{f(y)}" rx="{f(34 * s)}" ry="{f(46 * s)}" fill="#f07418"/>'
-        + face
-    )
-
-
-def halloween():
-    rnd = random.Random(31)
-    defs = """
-<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-  <stop offset="0" stop-color="#07030a"/><stop offset="0.3" stop-color="#1d0b2a"/>
-  <stop offset="0.55" stop-color="#3b1440"/><stop offset="0.8" stop-color="#5a1f35"/>
-  <stop offset="1" stop-color="#1a0a10"/>
-</linearGradient>
-<radialGradient id="moonGlow" cx="0.5" cy="0.27" r="0.45">
-  <stop offset="0" stop-color="#ffb347" stop-opacity="0.55"/>
-  <stop offset="0.4" stop-color="#ff7518" stop-opacity="0.18"/>
-  <stop offset="1" stop-color="#ff7518" stop-opacity="0"/>
-</radialGradient>
-<radialGradient id="moon" cx="0.42" cy="0.38" r="0.7">
-  <stop offset="0" stop-color="#ffe6a6"/><stop offset="0.6" stop-color="#ffb347"/>
-  <stop offset="1" stop-color="#f07a1c"/>
-</radialGradient>
-<radialGradient id="pglow">
-  <stop offset="0" stop-color="#ffb347" stop-opacity="0.55"/>
-  <stop offset="1" stop-color="#ff7518" stop-opacity="0"/>
-</radialGradient>
-<radialGradient id="win">
-  <stop offset="0" stop-color="#ffcf5a"/><stop offset="1" stop-color="#ff8a1a"/>
-</radialGradient>
-"""
-    b = [f'<rect width="{W}" height="{H}" fill="url(#sky)"/>']
-    for _ in range(60):
-        b.append(f'<circle cx="{f(rnd.uniform(0, W))}" cy="{f(rnd.uniform(0, 900))}" r="{f(rnd.uniform(0.8, 2))}" fill="#ffe6c9" opacity="{f(rnd.uniform(0.2, 0.6))}"/>')
-    b.append(f'<rect width="{W}" height="{H}" fill="url(#moonGlow)"/>')
-    b.append('<circle cx="540" cy="520" r="250" fill="url(#moon)"/>')
-    for cx, cy, r in [(470, 450, 34), (610, 560, 26), (520, 640, 18), (640, 420, 14)]:
-        b.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#e08a2a" opacity="0.28"/>')
-    # thin clouds drifting across the moon
-    for y, x0, w, o in [(470, 180, 520, 0.55), (610, 430, 560, 0.45), (330, 620, 360, 0.35)]:
-        b.append(f'<ellipse cx="{x0 + w / 2}" cy="{y}" rx="{w / 2}" ry="16" fill="#1d0b2a" opacity="{o}"/>')
-    for x, y, s, r in [(300, 330, 2.4, -12), (760, 300, 2.0, 10), (840, 640, 1.6, 18), (220, 720, 1.5, -20),
-                       (650, 200, 1.2, 6), (430, 780, 1.1, -8), (920, 470, 1.3, 14), (130, 470, 1.1, -4)]:
-        b.append(bat(x, y, s, r))
-    # far hill with the haunted house, lit windows
-    b.append('<path d="M0,1390 C200,1330 380,1370 560,1320 C720,1280 900,1300 1080,1260 L1080,1920 L0,1920 Z" fill="#12061a"/>')
-    house = [
-        '<g fill="#07030a">',
-        '<rect x="760" y="1150" width="190" height="160"/>',
-        '<path d="M740,1155 L855,1065 L970,1155 Z"/>',
-        '<rect x="700" y="1200" width="80" height="110"/><path d="M690,1205 L740,1150 L790,1205 Z"/>',
-        '<rect x="890" y="1010" width="22" height="80"/>',
-        '<rect x="820" y="1080" width="46" height="90"/><path d="M810,1085 L843,1030 L876,1085 Z"/>',
-        '</g>',
-    ]
-    b += house
-    for wx, wy in [(785, 1190), (905, 1190), (835, 1100), (722, 1235), (845, 1245)]:
-        b.append(f'<rect x="{wx}" y="{wy}" width="20" height="28" fill="url(#win)"/>')
-    # near hill, dead tree, fence
-    b.append('<path d="M0,1560 C220,1500 420,1540 620,1500 C820,1460 950,1500 1080,1470 L1080,1920 L0,1920 Z" fill="#0a0406"/>')
-    tree = (
-        '<g fill="none" stroke="#0a0406" stroke-linecap="round">'
-        '<path d="M170,1560 C160,1440 190,1330 150,1220" stroke-width="34"/>'
-        '<path d="M155,1250 C110,1190 70,1170 20,1160" stroke-width="16"/>'
-        '<path d="M160,1300 C230,1250 280,1180 330,1160" stroke-width="16"/>'
-        '<path d="M300,1170 C320,1130 350,1110 390,1100" stroke-width="8"/>'
-        '<path d="M150,1220 C160,1150 130,1100 150,1040" stroke-width="12"/>'
-        '<path d="M60,1165 C40,1130 50,1100 30,1080" stroke-width="7"/>'
-        '<path d="M150,1080 C190,1060 210,1030 240,1020" stroke-width="6"/>'
-        '</g>'
-    )
-    b.append(tree)
-    fence = ['<g fill="#0a0406">']
-    for i in range(12):
-        x = 470 + i * 50
-        y = 1520 - i * 3
-        fence.append(f'<path d="M{x},{y} l8,-16 l8,16 v70 h-16 Z"/>')
-    fence.append('<rect x="460" y="1530" width="620" height="8"/><rect x="460" y="1565" width="620" height="8"/></g>')
-    b += fence
-    b.append(pumpkin(160, 1720, 1.35))
-    b.append(pumpkin(930, 1700, 1.1))
-    b.append(pumpkin(560, 1800, 0.8))
-    return svg("\n".join(b), defs)
-
-
 # -------------------------------------------------------------- terminal
 
 BOOT_LOG = [
@@ -338,7 +231,6 @@ def art_deco():
 
 def main():
     for name, fn in [
-        ("halloween", halloween),
         ("terminal", terminal),
         ("bubblegum", bubblegum),
         ("art-deco", art_deco),
