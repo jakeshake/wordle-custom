@@ -585,99 +585,88 @@ html[data-theme="ocean"] .key.absent {
 }
 
 /* ---------- Sunset ---------- */
+/* Built around the user's reference photo: blazing red-orange sky over a
+   long pier, golden sun at the horizon, electric-blue surf, navy sea.
+   Correct = ocean blue (the sky's complement), present = golden sun,
+   absent = deep sea navy; coral-orange accents echo the clouds. */
 [data-theme="sunset"] {
-  --color-bg: #1e101c;
-  --color-surface: #2b1728;
-  --color-text: #fbeee6;
-  --color-text-dim: #b8869c;
-  --color-border: #42203c;
-  --color-border-strong: #ffb700;
-  --color-accent: #e05a2b;
+  --color-bg: #0b1828;
+  --color-surface: #11243a;
+  --color-text: #fff3e6;
+  --color-text-dim: #c9b3a4;
+  --color-border: #2b4a6a;
+  --color-border-strong: #f0643a;
+  --color-accent: #f0643a;
+  --color-on-accent: #1a0905;
 
-  --color-correct: #e05a2b;
-  --color-present: #b83256;
-  --color-absent: #120811;
-  --key-text-on-color: #ffffff;
+  --color-correct: #1f8fd0;
+  --color-present: #f5b335;
+  --color-absent: #0d1d30;
+  --key-text-on-color: #1a1205;
 
-  --color-key-bg: #281526;
-  --color-key-text: #fbeee6;
-  --color-modal-overlay: rgba(20, 8, 18, 0.85);
-  --color-danger: #ff4d6d;
+  --color-key-bg: #10243a;
+  --color-key-text: #fff3e6;
+  --color-modal-overlay: rgba(5, 10, 18, 0.82);
+  --color-danger: #ff5c5c;
+  --bee-center: #f5b335;
+  --bee-center-text: #1a1205;
 }
 
-/* Base Tile Styling */
 html[data-theme="sunset"] .tile {
-  background: #2b1728 !important;
-  border: 2px solid #42203c !important;
-  color: #b8869c !important;
-  border-radius: 8px !important;
+  background: rgba(11, 26, 44, 0.84) !important;
+  border: 2px solid #2b4a6a !important;
+  border-radius: 7px !important;
+  color: #fff3e6 !important;
 }
-
-/* Filled (Typing before submit) */
 html[data-theme="sunset"] .tile.filled {
-  border-color: #ffb700 !important;
-  box-shadow: 0 0 8px rgba(255, 183, 0, 0.4) !important;
-  color: #fbeee6 !important;
+  border-color: #ff8a5c !important;
+  box-shadow: 0 0 8px rgba(240, 100, 58, 0.5) !important;
 }
-
-/* Correct Spot (Golden Glowing Sunset Orange Box) */
 html[data-theme="sunset"] .tile.correct {
-  background: #e05a2b !important;
-  border: 2px solid #ffb700 !important;
-  box-shadow: 0 0 14px #ffb700, inset 0 0 6px #ffb700 !important;
+  background: linear-gradient(160deg, #3bb0ec, #1468a8) !important;
+  border: 2px solid #9fe3ff !important;
+  box-shadow: 0 0 14px rgba(59, 176, 236, 0.6), inset 0 0 6px rgba(159, 227, 255, 0.45) !important;
   color: #ffffff !important;
   font-weight: 800;
 }
-
-/* Present Spot (Coral Pink Glowing Magenta Box) */
 html[data-theme="sunset"] .tile.present {
-  background: #b83256 !important;
-  border: 2px solid #ff4081 !important;
-  box-shadow: 0 0 12px #ff4081, inset 0 0 4px #ff4081 !important;
-  color: #ffe3ec !important;
+  background: linear-gradient(160deg, #ffd166, #e8962a) !important;
+  border: 2px solid #fff0b8 !important;
+  box-shadow: 0 0 14px rgba(255, 196, 80, 0.65), inset 0 0 6px rgba(255, 240, 184, 0.5) !important;
+  color: #1a1205 !important;
   font-weight: 800;
 }
-
-/* Absent Spot (Dark Twilight Box) */
 html[data-theme="sunset"] .tile.absent {
-  background: #120811 !important;
-  border: 2px solid #281225 !important;
-  color: #5e3353 !important;
+  background: #0a1626 !important;
+  border: 2px solid #182c44 !important;
+  color: #5d7690 !important;
   box-shadow: none !important;
 }
-
-/* ---------- Sunset Keyboard ---------- */
 html[data-theme="sunset"] .key {
-  background: #281526 !important;
-  color: #fbeee6 !important;
-  border: 1px solid #42203c !important;
-  border-radius: 6px !important;
-  box-shadow: 0 0 4px rgba(224, 90, 43, 0.2) !important;
+  background: #10243a !important;
+  color: #fff3e6 !important;
+  border: 1px solid #2f5072 !important;
+  border-radius: 7px !important;
+  box-shadow: 0 0 4px rgba(240, 100, 58, 0.12) !important;
 }
-
-/* Keyboard - Correct Keys (Orange & Golden Glow) */
 html[data-theme="sunset"] .key.correct {
-  background: #e05a2b !important;
+  background: #1f8fd0 !important;
   color: #ffffff !important;
-  border: 1px solid #ffb700 !important;
-  box-shadow: 0 0 10px #ffb700 !important;
+  border-color: #9fe3ff !important;
+  box-shadow: 0 0 10px rgba(59, 176, 236, 0.55) !important;
 }
-
-/* Keyboard - Present Keys (Magenta & Coral Glow) */
 html[data-theme="sunset"] .key.present {
-  background: #b83256 !important;
-  color: #ffe3ec !important;
-  border: 1px solid #ff4081 !important;
-  box-shadow: 0 0 10px #ff4081 !important;
+  background: #f5b335 !important;
+  color: #1a1205 !important;
+  border-color: #fff0b8 !important;
+  box-shadow: 0 0 10px rgba(255, 196, 80, 0.55) !important;
 }
-
-/* Keyboard - Absent/Eliminated Keys (Dark Twilight & Faded) */
 html[data-theme="sunset"] .key.absent {
-  background: #100610 !important;
-  color: #5e3353 !important;
-  border-color: #1f0b1d !important;
-  opacity: 0.45 !important;
+  background: #081320 !important;
+  color: #5d7690 !important;
+  border-color: #142538 !important;
   box-shadow: none !important;
+  opacity: 1 !important;
 }
 
 /* ---------- Forest ---------- */
@@ -1225,13 +1214,12 @@ body {
 }
 
 [data-theme="sunset"] body {
-  /* Dusk sky gradient — deep plum at the top (where the header sits) fading
-     through coral into a glowing gold horizon, matching the theme's
-     orange/coral/gold tile palette. Top is already dark, so only a light
-     wash is needed to keep header text crisp. */
+  /* User-supplied reference photo: red-orange sunset over a pier, golden
+     horizon, electric-blue surf. The sky behind the header is bright, so
+     it gets a darker band there; the rest only a light wash. */
   background-image:
-    linear-gradient(rgba(12, 5, 11, 0.28), rgba(12, 5, 11, 0.28)),
-    url("images/themes/sunset.svg");
+    linear-gradient(180deg, rgba(10, 6, 14, 0.62) 0%, rgba(10, 6, 14, 0.3) 14%, rgba(10, 6, 14, 0.14) 40%, rgba(10, 6, 14, 0.2) 100%),
+    url("images/themes/sunset.webp");
 }
 
 [data-theme="neon-standard"] body {

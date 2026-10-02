@@ -11,7 +11,7 @@ window.Shared = (() => {
     { id: "synthwave", name: "Synthwave", swatch: "#ff2ec4" },
     { id: "bubblegum-3d", name: "Bubblegum 3D", swatch: "#6fdcc7" },
     { id: "ocean", name: "Ocean", swatch: "#2ea8b8" },
-    { id: "sunset", name: "Sunset", swatch: "#e0703f" },
+    { id: "sunset", name: "Sunset", swatch: "#f0643a" },
     { id: "forest", name: "Forest", swatch: "#f236c1" },
     { id: "halloween", name: "Halloween", swatch: "#f5891f" },
     { id: "christmas", name: "Christmas", swatch: "#c41e3a" },
