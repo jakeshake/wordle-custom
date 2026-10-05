@@ -30,15 +30,13 @@
     practice: "bee:practice",
   };
 
-  // Hives are picked from the common list only; BEE_EXTRA (inflections like
-  // "doodled" and slightly rarer words) just widens what's accepted.
+  // Hives are picked from BEE_WORDS (a stable common-word list, so daily
+  // puzzles never reshuffle); what counts as an answer comes from
+  // BEE_ANSWERS, which is modeled on the NYT's own accepted words.
   const WORDS = BEE_WORDS;
   const MASKS = WORDS.map(S.letterMask);
-  const EXTRA = typeof BEE_EXTRA !== "undefined" ? BEE_EXTRA : [];
-  const EXTRA_MASKS = EXTRA.map(S.letterMask);
-  // Words blocked after launch: still counted when picking a hive (so no
-  // daily puzzle changes) but never accepted as answers.
-  const AVOID = new Set(typeof BEE_AVOID !== "undefined" ? BEE_AVOID : []);
+  const ANSWERS = BEE_ANSWERS;
+  const ANSWER_MASKS = ANSWERS.map(S.letterMask);
 
   const els = {
     game: document.getElementById("bee-game"),
@@ -108,11 +106,11 @@
 
   function finalize(p) {
     const centerBit = 1 << (p.center.charCodeAt(0) - 97);
-    for (let i = 0; i < EXTRA.length; i++) {
-      const m = EXTRA_MASKS[i];
-      if (m & centerBit && (m & ~p.set) === 0) p.answers.push(EXTRA[i]);
+    p.answers = [];
+    for (let i = 0; i < ANSWERS.length; i++) {
+      const m = ANSWER_MASKS[i];
+      if (m & centerBit && (m & ~p.set) === 0) p.answers.push(ANSWERS[i]);
     }
-    p.answers = p.answers.filter((w) => !AVOID.has(w)).sort();
     p.answerSet = new Set(p.answers);
     p.pangrams = p.answers.filter((w) => S.letterMask(w) === p.set);
     p.maxScore = p.answers.reduce((sum, w) => sum + wordScore(w, p), 0);

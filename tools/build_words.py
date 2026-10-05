@@ -2,17 +2,26 @@
 """Regenerate the Spelling Bee and Letter Boxed word lists.
 
 Outputs (committed, served as-is by the app):
-  public/words-bee.js    BEE_WORDS    - common words; daily hives are picked
-                                        from these (and they're answers)
-                         BEE_EXTRA    - more accepted answers: well-known
-                                        dictionary words (SCOWL), inflections
-                                        of common words, and petitions from
-                                        tools/bee-petitions.txt
+  public/words-bee.js    BEE_WORDS    - common words daily hives are picked
+                                        from (generator input only; kept
+                                        stable so puzzles never reshuffle)
+                         BEE_ANSWERS  - every accepted Spelling Bee answer,
+                                        modeled on the NYT's own list (below)
   public/words-boxed.js  BOXED_VALID  - every word Letter Boxed accepts
                          BOXED_COMMON - common words the daily puzzle's
                                         built-in solution is drawn from
 
+Spelling Bee answers follow the NYT. Archives of past NYT puzzles record
+which words the NYT accepted, and - since every word that fit a puzzle's
+letters but isn't in its answer list was turned down - which it rejected.
+Each word takes its most recent NYT verdict. Words the NYT has never had a
+chance to judge fall back to our own list (common words, well-known
+dictionary words, inflections). Petitions override everything.
+
 Sources:
+  NYT Spelling Bee answer archives on GitHub (cloned automatically):
+    tedmiston/spelling-bee-answers, philshem/scrape_bee,
+    bwillenbring/nytimes-bee
   ENABLE word list (public domain Scrabble-style dictionary)
   wordfreq (pip install wordfreq) for word commonness
   lemminflect (pip install lemminflect) for inflected forms of common words
@@ -24,8 +33,10 @@ Usage:  pip install wordfreq lemminflect && python3 tools/build_words.py
 """
 
 import glob
+import json
 import os
 import re
+import subprocess
 import tarfile
 import unicodedata
 import urllib.request
@@ -39,6 +50,11 @@ CACHE = os.path.join(ROOT, "tools", ".cache")
 ENABLE_URL = "https://raw.githubusercontent.com/dolph/dictionary/master/enable1.txt"
 SCOWL_URL = "https://downloads.sourceforge.net/project/wordlist/SCOWL/2020.12.07/scowl-2020.12.07.tar.gz"
 PETITIONS = os.path.join(ROOT, "tools", "bee-petitions.txt")
+NYT_ARCHIVES = [
+    "tedmiston/spelling-bee-answers",
+    "philshem/scrape_bee",
+    "bwillenbring/nytimes-bee",
+]
 BLOCK_URL = (
     "https://raw.githubusercontent.com/LDNOOBW/"
     "List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/master/en"
@@ -67,8 +83,8 @@ EXTRA_BLOCK = {
 }
 
 # Words blocked after puzzles were already being played. They stay in
-# BEE_WORDS (the list hives are picked from) so no daily hive changes, and
-# are listed in BEE_AVOID, which the game drops from every answer list.
+# BEE_WORDS (the list hives are picked from) so no daily hive changes, but
+# never appear in BEE_ANSWERS (and Letter Boxed skips them via BOXED_AVOID).
 # Add new blocks here rather than to EXTRA_BLOCK.
 LATE_BLOCK = {
     "negroid", "mulatto", "mulattoes", "nazi", "nazis", "heil", "heiled",
@@ -140,6 +156,70 @@ def scowl_levels():
     return levels
 
 
+def clone_archive(repo):
+    path = os.path.join(CACHE, "nyt", repo.replace("/", "__"))
+    if not os.path.isdir(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        subprocess.run(
+            ["git", "clone", "-q", "--depth", "1", f"https://github.com/{repo}", path],
+            check=True,
+            env={**os.environ, "GIT_LFS_SKIP_SMUDGE": "1"},
+        )
+    return path
+
+
+def nyt_history():
+    """(puzzles, extra_accepted): puzzles maps date -> (letter mask, center
+    bit, set of answers); extra_accepted is NYT answers known only as a bare
+    word list (no puzzle to say what was rejected alongside them)."""
+    puzzles = {}
+
+    def add(p):
+        if not isinstance(p, dict) or "answers" not in p or "printDate" not in p:
+            return
+        answers = {a.lower() for a in p["answers"] if re.fullmatch(r"[A-Za-z]+", a)}
+        letters = "".join(p["validLetters"]).lower()
+        puzzles[p["printDate"]] = (mask(letters), mask(p["centerLetter"].lower()), answers)
+
+    ted = clone_archive(NYT_ARCHIVES[0])
+    for path in glob.glob(os.path.join(ted, "days", "*.json")):
+        with open(path) as fh:
+            add(json.load(fh))
+    phil = clone_archive(NYT_ARCHIVES[1])
+    for path in glob.glob(os.path.join(phil, "data", "*.json")):
+        with open(path) as fh:
+            day = json.load(fh)
+        add(day.get("today"))
+        add(day.get("yesterday"))
+    bw = clone_archive(NYT_ARCHIVES[2])
+    with open(os.path.join(bw, "local_dictionary", "words.json")) as fh:
+        # Not always valid JSON, so pull the words out directly.
+        extra = {w.lower() for w in re.findall(r'"word":\s*"([A-Za-z]+)"', fh.read())}
+    return puzzles, extra
+
+
+def mask(word):
+    m = 0
+    for ch in word:
+        m |= 1 << (ord(ch) - 97)
+    return m
+
+
+def nyt_verdicts(puzzles, pool):
+    """word -> True/False: was it in the answers the most recent time it fit
+    a puzzle (center letter + only puzzle letters, 4+ long)?"""
+    masks = [(w, mask(w)) for w in pool]
+    verdict = {}
+    for date in sorted(puzzles):
+        letters, center, answers = puzzles[date]
+        for w, m in masks:
+            if m & center and not m & ~letters and len(w) >= 4:
+                verdict[w] = w in answers
+        for a in answers:
+            verdict[a] = True
+    return verdict
+
+
 def read_petitions():
     """tools/bee-petitions.txt: one word per line to add, or -word to remove."""
     add, remove = set(), set()
@@ -169,33 +249,47 @@ def main():
     ]
     bee = sorted(w for w in bee_candidates if zipf(w) >= BEE_MIN_ZIPF)
     bee_set = set(bee)
-    bee_avoid = sorted(w for w in bee if w in LATE_BLOCK)
     blocked |= LATE_BLOCK
     bee_candidates = [w for w in bee_candidates if w not in LATE_BLOCK]
 
+    # Our own list: the fallback for words the NYT has never judged.
     candidate_set = set(bee_candidates)
-    extra = set()
+    ours = set(bee)
     for base in enable:
         if base in blocked or zipf(base) < BEE_INFLECTION_BASE_MIN_ZIPF:
             continue
         for tag, forms in getAllInflections(base).items():
             if tag in BEE_INFLECTION_TAGS:
-                extra.update(
+                ours.update(
                     f for f in forms
-                    if f in candidate_set and f not in bee_set and zipf(f) >= BEE_INFLECTION_MIN_ZIPF
+                    if f in candidate_set and zipf(f) >= BEE_INFLECTION_MIN_ZIPF
                 )
     levels = scowl_levels()
-    extra.update(
-        w for w in bee_candidates
-        if w not in bee_set and levels.get(w, 99) <= BEE_SCOWL_MAX_LEVEL
-    )
+    ours.update(w for w in bee_candidates if levels.get(w, 99) <= BEE_SCOWL_MAX_LEVEL)
+
+    # NYT history: most recent verdict wins.
+    puzzles, nyt_extra = nyt_history()
+    nyt_answers = {a for _, _, ans in puzzles.values() for a in ans}
+    pool = candidate_set | ours | nyt_answers | nyt_extra
+    verdict = nyt_verdicts(puzzles, pool)
+    nyt_ok = {w for w, ok in verdict.items() if ok}
+    untested = {w for w in (ours | nyt_extra) if w not in verdict}
+
+    def playable(w):
+        return len(w) >= 4 and "s" not in w and len(set(w)) <= 7 and re.fullmatch(r"[a-z]+", w)
+
+    answers = {w for w in nyt_ok | untested if playable(w) and w not in blocked}
     petition_add, petition_remove = read_petitions()
     for w in sorted(petition_add):
-        if w not in candidate_set:
-            print(f"petition skipped (not in ENABLE, has S, too many letters, or blocked): {w}")
-    extra.update(w for w in petition_add if w in candidate_set and w not in bee_set)
-    extra -= petition_remove
-    bee_extra = sorted(extra)
+        if not playable(w) or w in blocked:
+            print(f"petition skipped (has S, too short, too many letters, or blocked): {w}")
+    answers |= {w for w in petition_add if playable(w) and w not in blocked}
+    answers -= petition_remove
+    bee_answers = sorted(answers)
+    print(
+        f"nyt history: {len(puzzles)} puzzles ({min(puzzles)} .. {max(puzzles)}), "
+        f"{len(nyt_ok)} accepted, {sum(1 for v in verdict.values() if not v)} rejected"
+    )
 
     # Letter Boxed: consecutive letters must sit on different sides, so a
     # doubled letter ("ll", "ee") can never be played - drop those words.
@@ -215,15 +309,14 @@ def main():
     with open(os.path.join(ROOT, "public", "words-bee.js"), "w") as f:
         f.write(header)
         f.write('const BEE_WORDS = "%s".split(" ");\n' % " ".join(bee))
-        f.write('const BEE_EXTRA = "%s".split(" ");\n' % " ".join(bee_extra))
-        f.write('const BEE_AVOID = "%s".split(" ");\n' % " ".join(bee_avoid))
+        f.write('const BEE_ANSWERS = "%s".split(" ");\n' % " ".join(bee_answers))
     with open(os.path.join(ROOT, "public", "words-boxed.js"), "w") as f:
         f.write(header)
         f.write('const BOXED_VALID = "%s".split(" ");\n' % " ".join(boxed_valid))
         f.write('const BOXED_COMMON = "%s".split(" ");\n' % " ".join(boxed_common))
         f.write('const BOXED_AVOID = "%s".split(" ");\n' % " ".join(boxed_avoid))
 
-    print(f"bee answers: {len(bee)} common + {len(bee_extra)} extra")
+    print(f"bee: {len(bee)} hive-picking words, {len(bee_answers)} accepted answers")
     print(f"boxed valid: {len(boxed_valid)}, boxed common: {len(boxed_common)}")
 
 
